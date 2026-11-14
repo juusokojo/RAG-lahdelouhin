@@ -1,0 +1,1502 @@
+{
+  "adams_christenson_2000.pdf": {
+    "tiedosto": "adams_christenson_2000.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Adams",
+        "etu": "Kimberly S."
+      },
+      {
+        "suku": "Christenson",
+        "etu": "Sandra L."
+      }
+    ],
+    "vuosi": "2000",
+    "otsikko": "Trust and the family–school relationship: Examination of parent–teacher differences in elementary and secondary grades",
+    "julkaisu": "Journal of School Psychology",
+    "vuosikerta": "38",
+    "numero": "5",
+    "sivut": "477–497",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "",
+    "doi": "10.1016/S0022-4405(00)00048-0",
+    "url": "",
+    "aloitussivu": 477,
+    "tarkistettu": false,
+    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. DOI johdettu sivun 1 PII-tunnisteesta."
+  },
+  "badash_etal_2026.pdf": {
+    "tiedosto": "badash_etal_2026.pdf",
+    "tyyppi": "raportti",
+    "tekijat": [],
+    "vuosi": "2026",
+    "otsikko": "Simulation-based training in teacher education: Impacts of AI chatbots and human-actor simulations on self-efficacy in parent–teacher communication",
+    "julkaisu": "",
+    "vuosikerta": "",
+    "numero": "",
+    "sivut": "",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "",
+    "doi": "",
+    "url": "",
+    "aloitussivu": null,
+    "tarkistettu": false,
+    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. PUUTTUU: tekijät ja julkaisupaikka (konferenssi) eivät näy PDF:ssä, täydennä käsin. PDF:ssä ei ole sivunumeroita, joten viitteeseen tulee PDF-sivu."
+  },
+  "bearman_ajjawi_2018.pdf": {
+    "tiedosto": "bearman_ajjawi_2018.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Bearman",
+        "etu": "Margaret"
+      },
+      {
+        "suku": "Ajjawi",
+        "etu": "Rola"
+      }
+    ],
+    "vuosi": "2018",
+    "otsikko": "From “Seeing Through” to “Seeing With”: Assessment Criteria and the Myths of Transparency",
+    "julkaisu": "Frontiers in Education",
+    "vuosikerta": "3",
+    "numero": "",
+    "sivut": "",
+    "artikkelinumero": "96",
+    "toimittajat": [],
+    "kustantaja": "Frontiers Media SA",
+    "doi": "10.3389/feduc.2018.00096",
+    "url": "",
+    "aloitussivu": 1,
+    "tarkistettu": false,
+    "huomio": "Crossrefillä ei sivuja vertailuun"
+  },
+  "brame_2016.pdf": {
+    "tiedosto": "brame_2016.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Brame",
+        "etu": "Cynthia J."
+      }
+    ],
+    "vuosi": "2016",
+    "otsikko": "Effective Educational Videos: Principles and Guidelines for Maximizing Student Learning from Video Content",
+    "julkaisu": "CBE—Life Sciences Education",
+    "vuosikerta": "15",
+    "numero": "4",
+    "sivut": "es6",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "American Society for Cell Biology (ASCB)",
+    "doi": "10.1187/cbe.16-03-0125",
+    "url": "",
+    "aloitussivu": null,
+    "tarkistettu": false,
+    "huomio": "Aloitussivua ei päätelty: PDF:stä ei löytynyt yksinäisiä sivunumeroita; Crossrefin sivut es6"
+  },
+  "bronfenbrenner_morris_2006.pdf": {
+    "tiedosto": "bronfenbrenner_morris_2006.pdf",
+    "tyyppi": "luku",
+    "tekijat": [
+      {
+        "suku": "Bronfenbrenner",
+        "etu": "Urie"
+      },
+      {
+        "suku": "Morris",
+        "etu": "Pamela A."
+      }
+    ],
+    "vuosi": "2006",
+    "otsikko": "The bioecological model of human development",
+    "julkaisu": "Handbook of child psychology: Vol. 1. Theoretical models of human development (6th ed.)",
+    "vuosikerta": "",
+    "numero": "",
+    "sivut": "793–828",
+    "artikkelinumero": "",
+    "toimittajat": [
+      {
+        "suku": "Lerner",
+        "etu": "Richard M."
+      }
+    ],
+    "kustantaja": "Wiley",
+    "doi": "10.1002/9780470147658.chpsy0114",
+    "url": "",
+    "aloitussivu": 793,
+    "tarkistettu": false,
+    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. Teoksen nimi, toimittaja, kustantaja ja DOI eivät näy PDF:ssä, vaan ne on täytetty yleistiedon pohjalta: varmista."
+  },
+  "cheng_etal_2014.pdf": {
+    "tiedosto": "cheng_etal_2014.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Cheng",
+        "etu": "Adam"
+      },
+      {
+        "suku": "Eppich",
+        "etu": "Walter"
+      },
+      {
+        "suku": "Grant",
+        "etu": "Vincent"
+      },
+      {
+        "suku": "Sherbino",
+        "etu": "Jonathan"
+      },
+      {
+        "suku": "Zendejas",
+        "etu": "Benjamin"
+      },
+      {
+        "suku": "Cook",
+        "etu": "David A"
+      }
+    ],
+    "vuosi": "2014",
+    "otsikko": "Debriefing for technology‐enhanced simulation: a systematic review and meta‐analysis",
+    "julkaisu": "Medical Education",
+    "vuosikerta": "48",
+    "numero": "7",
+    "sivut": "657–666",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Wiley",
+    "doi": "10.1111/medu.12432",
+    "url": "",
+    "aloitussivu": 657,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "chernikova_etal_2020.pdf": {
+    "tiedosto": "chernikova_etal_2020.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Chernikova",
+        "etu": "Olga"
+      },
+      {
+        "suku": "Heitzmann",
+        "etu": "Nicole"
+      },
+      {
+        "suku": "Stadler",
+        "etu": "Matthias"
+      },
+      {
+        "suku": "Holzberger",
+        "etu": "Doris"
+      },
+      {
+        "suku": "Seidel",
+        "etu": "Tina"
+      },
+      {
+        "suku": "Fischer",
+        "etu": "Frank"
+      }
+    ],
+    "vuosi": "2020",
+    "otsikko": "Simulation-Based Learning in Higher Education: A Meta-Analysis",
+    "julkaisu": "Review of Educational Research",
+    "vuosikerta": "90",
+    "numero": "4",
+    "sivut": "499–541",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "American Educational Research Association (AERA)",
+    "doi": "10.3102/0034654320933544",
+    "url": "",
+    "aloitussivu": 499,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "chiou_etal_2020.pdf": {
+    "tiedosto": "chiou_etal_2020.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Chiou",
+        "etu": "Erin K."
+      },
+      {
+        "suku": "Schroeder",
+        "etu": "Noah L."
+      },
+      {
+        "suku": "Craig",
+        "etu": "Scotty D."
+      }
+    ],
+    "vuosi": "2020",
+    "otsikko": "How we trust, perceive, and learn from virtual humans: The influence of voice quality",
+    "julkaisu": "Computers & Education",
+    "vuosikerta": "146",
+    "numero": "",
+    "sivut": "",
+    "artikkelinumero": "103756",
+    "toimittajat": [],
+    "kustantaja": "Elsevier BV",
+    "doi": "10.1016/j.compedu.2019.103756",
+    "url": "",
+    "aloitussivu": 1,
+    "tarkistettu": false,
+    "huomio": "Crossrefin sivu '103756' on yksittäinen luku (tulkittu artikkelinumeroksi); PDF:n sivutus alkaa luvusta 1"
+  },
+  "craig_schroeder_2017.pdf": {
+    "tiedosto": "craig_schroeder_2017.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Craig",
+        "etu": "Scotty D."
+      },
+      {
+        "suku": "Schroeder",
+        "etu": "Noah L."
+      }
+    ],
+    "vuosi": "2017",
+    "otsikko": "Reconsidering the voice effect when learning from a virtual human",
+    "julkaisu": "Computers & Education",
+    "vuosikerta": "114",
+    "numero": "",
+    "sivut": "193–205",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Elsevier BV",
+    "doi": "10.1016/j.compedu.2017.07.003",
+    "url": "",
+    "aloitussivu": 193,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "craig_schroeder_2019.pdf": {
+    "tiedosto": "craig_schroeder_2019.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Craig",
+        "etu": "Scotty D."
+      },
+      {
+        "suku": "Schroeder",
+        "etu": "Noah L."
+      }
+    ],
+    "vuosi": "2019",
+    "otsikko": "Text-to-Speech Software and Learning: Investigating the Relevancy of the Voice Effect",
+    "julkaisu": "Journal of Educational Computing Research",
+    "vuosikerta": "57",
+    "numero": "6",
+    "sivut": "1534–1548",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "SAGE Publications",
+    "doi": "10.1177/0735633118802877",
+    "url": "",
+    "aloitussivu": 1534,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "deconinck_etal_2023.pdf": {
+    "tiedosto": "deconinck_etal_2023.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "De Coninck",
+        "etu": "Karen"
+      },
+      {
+        "suku": "Keppens",
+        "etu": "Karolien"
+      },
+      {
+        "suku": "Valcke",
+        "etu": "Martin"
+      },
+      {
+        "suku": "Dehaene",
+        "etu": "Heidelinde"
+      },
+      {
+        "suku": "De Neve",
+        "etu": "Jan"
+      },
+      {
+        "suku": "Vanderlinde",
+        "etu": "Ruben"
+      }
+    ],
+    "vuosi": "2023",
+    "otsikko": "Exploring the effectiveness of clinical simulations to develop student teachers’ parent-teacher communication competence",
+    "julkaisu": "Research Papers in Education",
+    "vuosikerta": "38",
+    "numero": "1",
+    "sivut": "69–101",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Informa UK Limited",
+    "doi": "10.1080/02671522.2021.1961291",
+    "url": "",
+    "aloitussivu": null,
+    "tarkistettu": false,
+    "huomio": "Aloitussivu ja Crossrefin sivut ristiriidassa: PDF:stä päätelty 68, Crossref 69–101; aloitussivua ei asetettu"
+  },
+  "dotger_2010.pdf": {
+    "tiedosto": "dotger_2010.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Dotger",
+        "etu": "Benjamin H."
+      }
+    ],
+    "vuosi": "2010",
+    "otsikko": "“I had no idea”: Developing dispositional awareness and sensitivity through a cross-professional pedagogy",
+    "julkaisu": "Teaching and Teacher Education",
+    "vuosikerta": "26",
+    "numero": "4",
+    "sivut": "805–812",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Elsevier BV",
+    "doi": "10.1016/j.tate.2009.10.017",
+    "url": "",
+    "aloitussivu": 805,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "duque_etal_2023.pdf": {
+    "tiedosto": "duque_etal_2023.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Duque",
+        "etu": "P."
+      },
+      {
+        "suku": "Varela",
+        "etu": "J.A."
+      },
+      {
+        "suku": "Garrido",
+        "etu": "P."
+      },
+      {
+        "suku": "Valencia",
+        "etu": "O."
+      },
+      {
+        "suku": "Terradillos",
+        "etu": "E."
+      }
+    ],
+    "vuosi": "2023",
+    "otsikko": "Impact of prebriefing on emotions in a high-fidelity simulation session: A randomized controlled study",
+    "julkaisu": "Revista Española de Anestesiología y Reanimación (English Edition)",
+    "vuosikerta": "70",
+    "numero": "8",
+    "sivut": "447–457",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Elsevier BV",
+    "doi": "10.1016/j.redare.2022.05.006",
+    "url": "",
+    "aloitussivu": 447,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "eppich_cheng_2015.pdf": {
+    "tiedosto": "eppich_cheng_2015.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Eppich",
+        "etu": "Walter"
+      },
+      {
+        "suku": "Cheng",
+        "etu": "Adam"
+      }
+    ],
+    "vuosi": "2015",
+    "otsikko": "Promoting Excellence and Reflective Learning in Simulation (PEARLS): Development and Rationale for a Blended Approach to Health Care Simulation Debriefing",
+    "julkaisu": "Simulation in Healthcare: The Journal of the Society for Simulation in Healthcare",
+    "vuosikerta": "10",
+    "numero": "2",
+    "sivut": "106–115",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Ovid Technologies (Wolters Kluwer Health)",
+    "doi": "10.1097/sih.0000000000000072",
+    "url": "",
+    "aloitussivu": 106,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "eriksson_arnkil_2012.pdf": {
+    "tiedosto": "eriksson_arnkil_2012.pdf",
+    "tyyppi": "kirja",
+    "tekijat": [
+      {
+        "suku": "Eriksson",
+        "etu": "Esa"
+      },
+      {
+        "suku": "Arnkil",
+        "etu": "Tom Erik"
+      }
+    ],
+    "vuosi": "2012",
+    "otsikko": "Huoli puheeksi: Opas varhaisista dialogeista (8. painos)",
+    "julkaisu": "",
+    "vuosikerta": "",
+    "numero": "",
+    "sivut": "",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Terveyden ja hyvinvoinnin laitos",
+    "doi": "",
+    "url": "",
+    "aloitussivu": -2,
+    "tarkistettu": false,
+    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. Sarja: Oppaita 60. Kustantaja päätelty (nimiösivulla Stakes, aiemmin Stakesin kustantama 2009): varmista. Painettu s. 3 = PDF-sivu 6."
+  },
+  "fiorella_mayer_2018.pdf": {
+    "tiedosto": "fiorella_mayer_2018.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Fiorella",
+        "etu": "Logan"
+      },
+      {
+        "suku": "Mayer",
+        "etu": "Richard E."
+      }
+    ],
+    "vuosi": "2018",
+    "otsikko": "What works and doesn't work with instructional video",
+    "julkaisu": "Computers in Human Behavior",
+    "vuosikerta": "89",
+    "numero": "",
+    "sivut": "465–470",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Elsevier BV",
+    "doi": "10.1016/j.chb.2018.07.015",
+    "url": "",
+    "aloitussivu": 465,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "gartmeier_etal_2015.pdf": {
+    "tiedosto": "gartmeier_etal_2015.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Gartmeier",
+        "etu": "Martin"
+      },
+      {
+        "suku": "Bauer",
+        "etu": "Johannes"
+      },
+      {
+        "suku": "Fischer",
+        "etu": "Martin R."
+      },
+      {
+        "suku": "Hoppe-Seyler",
+        "etu": "Tobias"
+      },
+      {
+        "suku": "Karsten",
+        "etu": "Gudrun"
+      },
+      {
+        "suku": "Kiessling",
+        "etu": "Claudia"
+      },
+      {
+        "suku": "Möller",
+        "etu": "Grit E."
+      },
+      {
+        "suku": "Wiesbeck",
+        "etu": "Anne"
+      },
+      {
+        "suku": "Prenzel",
+        "etu": "Manfred"
+      }
+    ],
+    "vuosi": "2015",
+    "otsikko": "Fostering professional communication skills of future physicians and teachers: effects of e-learning with video cases and role-play",
+    "julkaisu": "Instructional Science",
+    "vuosikerta": "43",
+    "numero": "4",
+    "sivut": "443–462",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Springer Science and Business Media LLC",
+    "doi": "10.1007/s11251-014-9341-6",
+    "url": "",
+    "aloitussivu": 443,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "gerich_schmitz_2016.pdf": {
+    "tiedosto": "gerich_schmitz_2016.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Gerich",
+        "etu": "Mara"
+      },
+      {
+        "suku": "Schmitz",
+        "etu": "Bernhard"
+      }
+    ],
+    "vuosi": "2016",
+    "otsikko": "Using Simulated Parent-Teacher Talks to Assess and Improve Prospective Teachers’ Counseling Competence",
+    "julkaisu": "Journal of Education and Learning",
+    "vuosikerta": "5",
+    "numero": "2",
+    "sivut": "285",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Canadian Center of Science and Education",
+    "doi": "10.5539/jel.v5n2p285",
+    "url": "",
+    "aloitussivu": 285,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "guo_etal_2014.pdf": {
+    "tiedosto": "guo_etal_2014.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Guo",
+        "etu": "Philip J."
+      },
+      {
+        "suku": "Kim",
+        "etu": "Juho"
+      },
+      {
+        "suku": "Rubin",
+        "etu": "Rob"
+      }
+    ],
+    "vuosi": "2014",
+    "otsikko": "How video production affects student engagement: an empirical study of MOOC videos",
+    "julkaisu": "Proceedings of the first ACM conference on Learning @ scale conference",
+    "vuosikerta": "",
+    "numero": "",
+    "sivut": "41–50",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "ACM",
+    "doi": "10.1145/2556325.2566239",
+    "url": "",
+    "aloitussivu": 41,
+    "tarkistettu": false,
+    "huomio": "Konferenssijulkaisu: lähdeluettelorivi muotoiltu artikkelina, tarkista"
+  },
+  "hallmen_etal_2025.pdf": {
+    "tiedosto": "hallmen_etal_2025.pdf",
+    "tyyppi": "raportti",
+    "tekijat": [
+      {
+        "suku": "Hallmen",
+        "etu": "Tobias"
+      },
+      {
+        "suku": "Gietl",
+        "etu": "Kathrin"
+      },
+      {
+        "suku": "Hillesheim",
+        "etu": "Karoline"
+      },
+      {
+        "suku": "Bauermann",
+        "etu": "Moritz"
+      },
+      {
+        "suku": "Friedrich",
+        "etu": "Annemarie"
+      },
+      {
+        "suku": "André",
+        "etu": "Elisabeth"
+      }
+    ],
+    "vuosi": "2025",
+    "otsikko": "AI-based feedback in counselling competence training of prospective teachers",
+    "julkaisu": "",
+    "vuosikerta": "",
+    "numero": "",
+    "sivut": "",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "arXiv",
+    "doi": "10.48550/arXiv.2505.03423",
+    "url": "",
+    "aloitussivu": 1,
+    "tarkistettu": false,
+    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. arXiv-esijulkaisu (arXiv:2505.03423v1), ei painettua sivutusta: sivut ovat PDF-sivuja 1–9. Tarkista, onko artikkeli sittemmin julkaistu konferenssissa."
+  },
+  "honkasilta_2016.pdf": {
+    "tiedosto": "honkasilta_2016.pdf",
+    "tyyppi": "kirja",
+    "tekijat": [
+      {
+        "suku": "Honkasilta",
+        "etu": "Juho"
+      }
+    ],
+    "vuosi": "2016",
+    "otsikko": "Voices behind and beyond the label: The master narrative of ADHD (de)constructed by diagnosed children and their parents",
+    "julkaisu": "",
+    "vuosikerta": "",
+    "numero": "",
+    "sivut": "",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "University of Jyväskylä",
+    "doi": "",
+    "url": "http://urn.fi/URN:ISBN:978-951-39-6636-2",
+    "aloitussivu": -2,
+    "tarkistettu": false,
+    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. Väitöskirja, sarja Jyväskylä Studies in Education, Psychology and Social Research 553. Painettu s. 12 = PDF-sivu 15. PDF sisältää vain yhteenveto-osan."
+  },
+  "honkasilta_etal_2015.pdf": {
+    "tiedosto": "honkasilta_etal_2015.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Honkasilta",
+        "etu": "Juho"
+      },
+      {
+        "suku": "Vehkakoski",
+        "etu": "Tanja"
+      },
+      {
+        "suku": "Vehmas",
+        "etu": "Simo"
+      }
+    ],
+    "vuosi": "2015",
+    "otsikko": "Power Struggle, Submission and Partnership: Agency Constructions of Mothers of Children with ADHD Diagnosis in Their Narrated School Involvement",
+    "julkaisu": "Scandinavian Journal of Educational Research",
+    "vuosikerta": "59",
+    "numero": "6",
+    "sivut": "674–690",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Informa UK Limited",
+    "doi": "10.1080/00313831.2014.965794",
+    "url": "",
+    "aloitussivu": null,
+    "tarkistettu": false,
+    "huomio": "Aloitussivu ja Crossrefin sivut ristiriidassa: PDF:stä päätelty 673, Crossref 674–690; aloitussivua ei asetettu"
+  },
+  "inacsl_etal_2021.pdf": {
+    "tiedosto": "inacsl_etal_2021.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "McDermott",
+        "etu": "Donna S."
+      },
+      {
+        "suku": "Ludlow",
+        "etu": "Jocelyn"
+      },
+      {
+        "suku": "Horsley",
+        "etu": "Elizabeth"
+      },
+      {
+        "suku": "Meakim",
+        "etu": "Colleen"
+      }
+    ],
+    "vuosi": "2021",
+    "otsikko": "Healthcare Simulation Standards of Best PracticeTM Prebriefing: Preparation and Briefing",
+    "julkaisu": "Clinical Simulation in Nursing",
+    "vuosikerta": "58",
+    "numero": "",
+    "sivut": "9–13",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Elsevier BV",
+    "doi": "10.1016/j.ecns.2021.08.008",
+    "url": "",
+    "aloitussivu": 9,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "jonsson_2014.pdf": {
+    "tiedosto": "jonsson_2014.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Jonsson",
+        "etu": "Anders"
+      }
+    ],
+    "vuosi": "2014",
+    "otsikko": "Rubrics as a way of providing transparency in assessment",
+    "julkaisu": "Assessment & Evaluation in Higher Education",
+    "vuosikerta": "39",
+    "numero": "7",
+    "sivut": "840–852",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Informa UK Limited",
+    "doi": "10.1080/02602938.2013.875117",
+    "url": "",
+    "aloitussivu": null,
+    "tarkistettu": false,
+    "huomio": "Aloitussivu ja Crossrefin sivut ristiriidassa: PDF:stä päätelty 839, Crossref 840–852; aloitussivua ei asetettu"
+  },
+  "kolbe_etal_2020.pdf": {
+    "tiedosto": "kolbe_etal_2020.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Kolbe",
+        "etu": "Michaela"
+      },
+      {
+        "suku": "Eppich",
+        "etu": "Walter"
+      },
+      {
+        "suku": "Rudolph",
+        "etu": "Jenny"
+      },
+      {
+        "suku": "Meguerdichian",
+        "etu": "Michael"
+      },
+      {
+        "suku": "Catena",
+        "etu": "Helen"
+      },
+      {
+        "suku": "Cripps",
+        "etu": "Amy"
+      },
+      {
+        "suku": "Grant",
+        "etu": "Vincent"
+      },
+      {
+        "suku": "Cheng",
+        "etu": "Adam"
+      }
+    ],
+    "vuosi": "2020",
+    "otsikko": "Managing psychological safety in debriefings: a dynamic balancing act",
+    "julkaisu": "BMJ Simulation and Technology Enhanced Learning",
+    "vuosikerta": "6",
+    "numero": "3",
+    "sivut": "164–171",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "BMJ",
+    "doi": "10.1136/bmjstel-2019-000470",
+    "url": "",
+    "aloitussivu": 164,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "koskela_2025.pdf": {
+    "tiedosto": "koskela_2025.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Koskela",
+        "etu": "Teija"
+      }
+    ],
+    "vuosi": "2025",
+    "otsikko": "Signs of Trust – Parent’s Vulnerability and Trust when Collaborating with Their Child’s Teacher",
+    "julkaisu": "ZSE Zeitschrift für Soziologie der Erziehung und Sozialisation",
+    "vuosikerta": "",
+    "numero": "3",
+    "sivut": "171–188",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Beltz Verlagsgruppe GmbH & Co. KG",
+    "doi": "10.3262/zse2503171",
+    "url": "",
+    "aloitussivu": null,
+    "tarkistettu": false,
+    "huomio": "Aloitussivua ei päätelty: sivunumeroista saatu aloitussivu 0 (kansilehti tai muu poikkeama); Crossrefin sivut 171–188"
+  },
+  "kuusimaki_etal_2019a.pdf": {
+    "tiedosto": "kuusimaki_etal_2019a.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Kuusimäki",
+        "etu": "Anne-Mari"
+      },
+      {
+        "suku": "Uusitalo-Malmivaara",
+        "etu": "Lotta"
+      },
+      {
+        "suku": "Tirri",
+        "etu": "Kirsi"
+      }
+    ],
+    "vuosi": "2019",
+    "otsikko": "Parents’ and Teachers’ Views on Digital Communication in Finland",
+    "julkaisu": "Education Research International",
+    "vuosikerta": "2019",
+    "numero": "",
+    "sivut": "1–7",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Wiley",
+    "doi": "10.1155/2019/8236786",
+    "url": "",
+    "aloitussivu": 1,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "kuusimaki_etal_2019b.pdf": {
+    "tiedosto": "kuusimaki_etal_2019b.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Kuusimäki",
+        "etu": "Anne-Mari"
+      },
+      {
+        "suku": "Uusitalo-Malmivaara",
+        "etu": "Lotta"
+      },
+      {
+        "suku": "Tirri",
+        "etu": "Kirsi"
+      }
+    ],
+    "vuosi": "2019",
+    "otsikko": "The Role of Digital School-Home Communication in Teacher Well-Being",
+    "julkaisu": "Frontiers in Psychology",
+    "vuosikerta": "10",
+    "numero": "",
+    "sivut": "",
+    "artikkelinumero": "2257",
+    "toimittajat": [],
+    "kustantaja": "Frontiers Media SA",
+    "doi": "10.3389/fpsyg.2019.02257",
+    "url": "",
+    "aloitussivu": 1,
+    "tarkistettu": false,
+    "huomio": "Crossrefillä ei sivuja vertailuun"
+  },
+  "lendrum_etal_2015.pdf": {
+    "tiedosto": "lendrum_etal_2015.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Lendrum",
+        "etu": "Ann"
+      },
+      {
+        "suku": "Barlow",
+        "etu": "Alexandra"
+      },
+      {
+        "suku": "Humphrey",
+        "etu": "Neil"
+      }
+    ],
+    "vuosi": "2015",
+    "otsikko": "Developing positive school–home relationships through structured conversations with parents of learners with special educational needs and disabilities ( SEND )",
+    "julkaisu": "Journal of Research in Special Educational Needs",
+    "vuosikerta": "15",
+    "numero": "2",
+    "sivut": "87–96",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Wiley",
+    "doi": "10.1111/1471-3802.12023",
+    "url": "",
+    "aloitussivu": 87,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "levin_etal_2023.pdf": {
+    "tiedosto": "levin_etal_2023.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Levin",
+        "etu": "Orna"
+      },
+      {
+        "suku": "Frei-Landau",
+        "etu": "Rivi"
+      },
+      {
+        "suku": "Goldberg",
+        "etu": "Chen"
+      }
+    ],
+    "vuosi": "2023",
+    "otsikko": "Development and validation of a scale to measure the simulation-based learning outcomes in teacher education",
+    "julkaisu": "Frontiers in Education",
+    "vuosikerta": "8",
+    "numero": "",
+    "sivut": "",
+    "artikkelinumero": "1116626",
+    "toimittajat": [],
+    "kustantaja": "Frontiers Media SA",
+    "doi": "10.3389/feduc.2023.1116626",
+    "url": "",
+    "aloitussivu": 1,
+    "tarkistettu": false,
+    "huomio": "Crossrefillä ei sivuja vertailuun"
+  },
+  "lohvansuu_etal_2021.pdf": {
+    "tiedosto": "lohvansuu_etal_2021.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Lohvansuu",
+        "etu": "Kaisa"
+      },
+      {
+        "suku": "Torppa",
+        "etu": "Minna"
+      },
+      {
+        "suku": "Ahonen",
+        "etu": "Timo"
+      },
+      {
+        "suku": "Eklund",
+        "etu": "Kenneth"
+      },
+      {
+        "suku": "Hämäläinen",
+        "etu": "Jarmo A."
+      },
+      {
+        "suku": "Leppänen",
+        "etu": "Paavo H. T."
+      },
+      {
+        "suku": "Lyytinen",
+        "etu": "Heikki"
+      }
+    ],
+    "vuosi": "2021",
+    "otsikko": "Unveiling the Mysteries of Dyslexia—Lessons Learned from the Prospective Jyväskylä Longitudinal Study of Dyslexia",
+    "julkaisu": "Brain Sciences",
+    "vuosikerta": "11",
+    "numero": "4",
+    "sivut": "427",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "MDPI AG",
+    "doi": "10.3390/brainsci11040427",
+    "url": "",
+    "aloitussivu": null,
+    "tarkistettu": false,
+    "huomio": "Aloitussivua ei päätelty: PDF:stä ei löytynyt yksinäisiä sivunumeroita; Crossrefin sivut 427"
+  },
+  "loibl_etal_2017.pdf": {
+    "tiedosto": "loibl_etal_2017.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Loibl",
+        "etu": "Katharina"
+      },
+      {
+        "suku": "Roll",
+        "etu": "Ido"
+      },
+      {
+        "suku": "Rummel",
+        "etu": "Nikol"
+      }
+    ],
+    "vuosi": "2017",
+    "otsikko": "Towards a Theory of When and How Problem Solving Followed by Instruction Supports Learning",
+    "julkaisu": "Educational Psychology Review",
+    "vuosikerta": "29",
+    "numero": "4",
+    "sivut": "693–715",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Springer Science and Business Media LLC",
+    "doi": "10.1007/s10648-016-9379-x",
+    "url": "",
+    "aloitussivu": 693,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "mayer_etal_2003.pdf": {
+    "tiedosto": "mayer_etal_2003.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Mayer",
+        "etu": "Richard E."
+      },
+      {
+        "suku": "Sobko",
+        "etu": "Kristina"
+      },
+      {
+        "suku": "Mautone",
+        "etu": "Patricia D."
+      }
+    ],
+    "vuosi": "2003",
+    "otsikko": "Social cues in multimedia learning: Role of speaker's voice.",
+    "julkaisu": "Journal of Educational Psychology",
+    "vuosikerta": "95",
+    "numero": "2",
+    "sivut": "419–425",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "American Psychological Association (APA)",
+    "doi": "10.1037/0022-0663.95.2.419",
+    "url": "",
+    "aloitussivu": null,
+    "tarkistettu": false,
+    "huomio": "Aloitussivua ei päätelty: sivunumeroita löytyi vain 1/7 sivulta peräkkäisinä; Crossrefin sivut 419–425"
+  },
+  "noetel_etal_2021.pdf": {
+    "tiedosto": "noetel_etal_2021.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Noetel",
+        "etu": "Michael"
+      },
+      {
+        "suku": "Griffith",
+        "etu": "Shantell"
+      },
+      {
+        "suku": "Delaney",
+        "etu": "Oscar"
+      },
+      {
+        "suku": "Sanders",
+        "etu": "Taren"
+      },
+      {
+        "suku": "Parker",
+        "etu": "Philip"
+      },
+      {
+        "suku": "del Pozo Cruz",
+        "etu": "Borja"
+      },
+      {
+        "suku": "Lonsdale",
+        "etu": "Chris"
+      }
+    ],
+    "vuosi": "2021",
+    "otsikko": "Video Improves Learning in Higher Education: A Systematic Review",
+    "julkaisu": "Review of Educational Research",
+    "vuosikerta": "91",
+    "numero": "2",
+    "sivut": "204–236",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "American Educational Research Association (AERA)",
+    "doi": "10.3102/0034654321990713",
+    "url": "",
+    "aloitussivu": 204,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "noetel_etal_2022.pdf": {
+    "tiedosto": "noetel_etal_2022.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Noetel",
+        "etu": "Michael"
+      },
+      {
+        "suku": "Griffith",
+        "etu": "Shantell"
+      },
+      {
+        "suku": "Delaney",
+        "etu": "Oscar"
+      },
+      {
+        "suku": "Harris",
+        "etu": "Nicola Rose"
+      },
+      {
+        "suku": "Sanders",
+        "etu": "Taren"
+      },
+      {
+        "suku": "Parker",
+        "etu": "Philip"
+      },
+      {
+        "suku": "del Pozo Cruz",
+        "etu": "Borja"
+      },
+      {
+        "suku": "Lonsdale",
+        "etu": "Chris"
+      }
+    ],
+    "vuosi": "2022",
+    "otsikko": "Multimedia Design for Learning: An Overview of Reviews With Meta-Meta-Analysis",
+    "julkaisu": "Review of Educational Research",
+    "vuosikerta": "92",
+    "numero": "3",
+    "sivut": "413–454",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "American Educational Research Association (AERA)",
+    "doi": "10.3102/00346543211052329",
+    "url": "",
+    "aloitussivu": 413,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "page-cutrara_turk_2017.pdf": {
+    "tiedosto": "page-cutrara_turk_2017.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Page-Cutrara",
+        "etu": "Karin"
+      },
+      {
+        "suku": "Turk",
+        "etu": "Melanie"
+      }
+    ],
+    "vuosi": "2017",
+    "otsikko": "Impact of prebriefing on competency performance, clinical judgment and experience in simulation: An experimental study",
+    "julkaisu": "Nurse Education Today",
+    "vuosikerta": "48",
+    "numero": "",
+    "sivut": "78–83",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Elsevier BV",
+    "doi": "10.1016/j.nedt.2016.09.012",
+    "url": "",
+    "aloitussivu": 78,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "palmu_etal_2025.pdf": {
+    "tiedosto": "palmu_etal_2025.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Palmu",
+        "etu": "Minna"
+      },
+      {
+        "suku": "Perander",
+        "etu": "Katarina"
+      },
+      {
+        "suku": "Pöysä",
+        "etu": "Sanni"
+      },
+      {
+        "suku": "Kiuru",
+        "etu": "Noona"
+      },
+      {
+        "suku": "Pakarinen",
+        "etu": "Eija"
+      }
+    ],
+    "vuosi": "2025",
+    "otsikko": "Vanhempien jännitteiset kasvatuskumppanuuden ideaalit kodin ja koulun yhteistyössä",
+    "julkaisu": "Kasvatus & Aika",
+    "vuosikerta": "19",
+    "numero": "4",
+    "sivut": "72–89",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Kasvatus ja Aika",
+    "doi": "10.33350/ka.152405",
+    "url": "",
+    "aloitussivu": 72,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "panadero_jonsson_2013.pdf": {
+    "tiedosto": "panadero_jonsson_2013.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Panadero",
+        "etu": "Ernesto"
+      },
+      {
+        "suku": "Jonsson",
+        "etu": "Anders"
+      }
+    ],
+    "vuosi": "2013",
+    "otsikko": "The use of scoring rubrics for formative assessment purposes revisited: A review",
+    "julkaisu": "Educational Research Review",
+    "vuosikerta": "9",
+    "numero": "",
+    "sivut": "129–144",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Elsevier BV",
+    "doi": "10.1016/j.edurev.2013.01.002",
+    "url": "",
+    "aloitussivu": 129,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "pekkanen_2015.pdf": {
+    "tiedosto": "pekkanen_2015.pdf",
+    "tyyppi": "raportti",
+    "tekijat": [
+      {
+        "suku": "Pekkanen",
+        "etu": "Liisa"
+      }
+    ],
+    "vuosi": "2015",
+    "otsikko": "Luokanopettajaksi opiskelevien kokemukset valmiuksistaan kodin ja koulun väliseen yhteistyöhön [Pro gradu -tutkielma]",
+    "julkaisu": "",
+    "vuosikerta": "",
+    "numero": "",
+    "sivut": "",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Jyväskylän yliopisto",
+    "doi": "",
+    "url": "",
+    "aloitussivu": -3,
+    "tarkistettu": false,
+    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. Otsikko kansilehdeltä; tiivistelmäsivulla otsikko on eri muodossa. Painettu s. 1 = PDF-sivu 5. Lisää JYX-osoite url-kenttään."
+  },
+  "perala-littunen_book_2019.pdf": {
+    "tiedosto": "perala-littunen_book_2019.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Perälä-Littunen",
+        "etu": "Satu"
+      },
+      {
+        "suku": "Böök",
+        "etu": "Marja Leena"
+      }
+    ],
+    "vuosi": "2019",
+    "otsikko": "Finnish teacher-students’ views on home-school cooperation",
+    "julkaisu": "International Journal about Parents in Education",
+    "vuosikerta": "11",
+    "numero": "1",
+    "sivut": "37–45",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "",
+    "doi": "",
+    "url": "",
+    "aloitussivu": 37,
+    "tarkistettu": false,
+    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. Ei DOI:ta. Loppusivu laskettu PDF:n sivumäärästä (9 sivua)."
+  },
+  "renkl_2014.pdf": {
+    "tiedosto": "renkl_2014.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Renkl",
+        "etu": "Alexander"
+      }
+    ],
+    "vuosi": "2014",
+    "otsikko": "Toward an Instructionally Oriented Theory of Example‐Based Learning",
+    "julkaisu": "Cognitive Science",
+    "vuosikerta": "38",
+    "numero": "1",
+    "sivut": "1–37",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Wiley",
+    "doi": "10.1111/cogs.12086",
+    "url": "",
+    "aloitussivu": 1,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "rudolph_etal_2014.pdf": {
+    "tiedosto": "rudolph_etal_2014.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Rudolph",
+        "etu": "Jenny W."
+      },
+      {
+        "suku": "Raemer",
+        "etu": "Daniel B."
+      },
+      {
+        "suku": "Simon",
+        "etu": "Robert"
+      }
+    ],
+    "vuosi": "2014",
+    "otsikko": "Establishing a Safe Container for Learning in Simulation: The Role of the Presimulation Briefing",
+    "julkaisu": "Simulation in Healthcare: The Journal of the Society for Simulation in Healthcare",
+    "vuosikerta": "9",
+    "numero": "6",
+    "sivut": "339–349",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Ovid Technologies (Wolters Kluwer Health)",
+    "doi": "10.1097/sih.0000000000000047",
+    "url": "",
+    "aloitussivu": 339,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "sinha_kapur_2021.pdf": {
+    "tiedosto": "sinha_kapur_2021.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Sinha",
+        "etu": "Tanmay"
+      },
+      {
+        "suku": "Kapur",
+        "etu": "Manu"
+      }
+    ],
+    "vuosi": "2021",
+    "otsikko": "When Problem Solving Followed by Instruction Works: Evidence for Productive Failure",
+    "julkaisu": "Review of Educational Research",
+    "vuosikerta": "91",
+    "numero": "5",
+    "sivut": "761–798",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "American Educational Research Association (AERA)",
+    "doi": "10.3102/00346543211019105",
+    "url": "",
+    "aloitussivu": 761,
+    "tarkistettu": false,
+    "huomio": ""
+  },
+  "solantaus_2019.pdf": {
+    "tiedosto": "solantaus_2019.pdf",
+    "tyyppi": "raportti",
+    "tekijat": [
+      {
+        "suku": "Solantaus",
+        "etu": "Tytti"
+      }
+    ],
+    "vuosi": "2019",
+    "otsikko": "Alakoulun Lapset puheeksi -lokikirja",
+    "julkaisu": "",
+    "vuosikerta": "",
+    "numero": "",
+    "sivut": "",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "MIELI Suomen Mielenterveys ry",
+    "doi": "",
+    "url": "",
+    "aloitussivu": 0,
+    "tarkistettu": false,
+    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. Tekijä päätelty osioiden ©-merkinnöistä (neuvonpito-osio: Mika Niemelä ja Tytti Solantaus). Julkaisija päätelty tekstissä mainitusta osoitteesta mieli.fi: varmista ja lisää url. Painettu s. 1 = PDF-sivu 2."
+  },
+  "torrance_2007.pdf": {
+    "tiedosto": "torrance_2007.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Torrance",
+        "etu": "Harry"
+      }
+    ],
+    "vuosi": "2007",
+    "otsikko": "Assessment as learning? How the use of explicit learning objectives, assessment criteria and feedback in post‐secondary education and training can come to dominate learning. 1",
+    "julkaisu": "Assessment in Education: Principles, Policy & Practice",
+    "vuosikerta": "14",
+    "numero": "3",
+    "sivut": "281–294",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "Informa UK Limited",
+    "doi": "10.1080/09695940701591867",
+    "url": "",
+    "aloitussivu": null,
+    "tarkistettu": false,
+    "huomio": "Aloitussivu ja Crossrefin sivut ristiriidassa: PDF:stä päätelty 280, Crossref 281–294; aloitussivua ei asetettu"
+  },
+  "walker_dotger_2012.pdf": {
+    "tiedosto": "walker_dotger_2012.pdf",
+    "tyyppi": "artikkeli",
+    "tekijat": [
+      {
+        "suku": "Walker",
+        "etu": "Joan M. T."
+      },
+      {
+        "suku": "Dotger",
+        "etu": "Benjamin H."
+      }
+    ],
+    "vuosi": "2012",
+    "otsikko": "Because Wisdom Can’t Be Told: Using Comparison of Simulated Parent–Teacher Conferences to Assess Teacher Candidates’ Readiness for Family-School Partnership",
+    "julkaisu": "Journal of Teacher Education",
+    "vuosikerta": "63",
+    "numero": "1",
+    "sivut": "62–75",
+    "artikkelinumero": "",
+    "toimittajat": [],
+    "kustantaja": "SAGE Publications",
+    "doi": "10.1177/0022487111419300",
+    "url": "",
+    "aloitussivu": 62,
+    "tarkistettu": false,
+    "huomio": ""
+  }
+}

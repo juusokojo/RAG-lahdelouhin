@@ -1,0 +1,25 @@
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+
+# Artikkelit ja niiden teksti (tekijänoikeuden alaista aineistoa, ei koskaan repoon)
+*.pdf
+.valimuisti/
+
+# Ajojen tulokset: sisältävät artikkelilainauksia ja mallin raakavastauksia
+tulokset/
+
+# Paikallinen muistio Lehmuksen rajapinnasta ja ylläpidon vastauksista
+docs/lehmus-api.md
+
+# Salaisuudet ja paikalliset asetukset
+.env
+.env.*
+.claude/
+
+# Käyttöjärjestelmä, editorit ja Wordin lukitustiedostot
+.DS_Store
+~$*.docx
+.vscode/
+.idea/

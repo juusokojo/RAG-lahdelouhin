@@ -1,0 +1,148 @@
+TEHTÄVÄ:
+Laadi teoriakoonti opettajankoulutuksen rooliharjoittelutyökalun opetuspaketteja varten.
+Opiskelija harjoittelee vaikeaa keskustelua tekoälyn esittämän huoltajan kanssa puhumalla.
+Jokaiseen skenaarioon tehdään yhteinen johdantovideo, 2–3 minuutin ennakkovideo ja
+syventävä video jälkipuinnin yhteyteen. Vastaa liitteen kysymyksiin K1–K9.
+
+SÄÄNNÖT
+1. Käytä vain liitettyjä lähteitä. Älä keksi lähteitä, sivunumeroita tai lainauksia.
+   Jos lähteistä ei löydy vastausta, kirjoita: "Ei vastausta liitetyissä lähteissä."
+2. Merkitse jokaiseen väitteeseen lähde ja sivu tai kohta.
+3. Erottele jokaisessa vastauksessa kaksi osaa:
+   - LÄHDE SANOO: mitä lähde toteaa, omin sanoin.
+   - EHDOTUS VIDEOON: miten sen voi käyttää opetuspaketissa.
+4. Arvioi näytön vahvuus: vahva (meta-analyysi tai useampi koe), kohtalainen (yksittäinen
+   koe tai laadullinen tutkimus), alustava (konferenssitiivistelmä, pieni aineisto) tai
+   asiantuntijan näkemys (opas, standardi).
+5. Merkitse, jos päätelmä on siirretty toiselta alalta (hoitotyö, lääketiede, matematiikka).
+6. Jos lähteet ovat ristiriidassa, esitä molemmat kannat. Älä valitse puolta, ellei näyttö
+   ole selvästi vahvempi toisella puolella.
+7. Kerro lopuksi, mitkä lähteet olivat käytössä kokotekstinä ja mitkä vain osittain.
+8. Kirjoita suomeksi. Säilytä menetelmien ja mallien alkuperäiset nimet.
+
+RAPORTIN RAKENNE
+1. Päätössuositus: ohjeistuksen ajoitus (K1), enintään puoli sivua.
+2. Yhteinen johdanto: ennakkopohjustus, fiktiosopimus ja tekoälyn rajat (K2, K8).
+3. Ennakkovideo: keskustelun vaiheet ja luottamusta rakentavat teot (K3) sekä
+   arviointiperusteiden kuvaus (K4). Erottele yhteinen osa ja toimijuuden muodon
+   mukaan vaihtuvat osat.
+4. Syventävä video (K5).
+5. Videon toteutus ja kertojaääni (K6, K7).
+6. Suomalaiset käsitteet ja termit, joita ei enää käytetä (K8).
+7. Ristiriidat, aukot ja rajoitukset (K9).
+8. Lähdeluettelo APA 7 -muodossa ja tieto siitä, miten kukin lähde luettiin.
+
+KYSYMYSPATTERI KOONTITYÖKALULLE
+Kysymyksiä on 34 yhdeksässä ryhmässä. Ryhmä K1 ratkaisee videoiden rakenteen, joten se
+kannattaa ajaa ensin, jos työkalu sallii useamman ajon. Merkintä suluissa kertoo, mihin
+osaan vastaus menee: P = päätös, J = yhteinen johdanto, E = ennakkovideo,
+S = syventävä video, T = toteutus.
+
+K1. Ohjeistuksen ajoitus
+
+1. (P) Kun opeteltava taito on vuorovaikutustaito, kuten vaikea keskustelu huoltajan
+   kanssa, puoltaako tutkimus käytännön ohjeita ennen ensimmäistä harjoitusta vai vasta
+   sen jälkeen? Erottele vaikutukset käsitteelliseen ymmärrykseen, toiminnalliseen
+   taitoon ja siirtoon oikeisiin tilanteisiin.
+2. (P) Mitkä Sinhan ja Kapurin (2021) moderaattorit, erityisesti oppijan ikä ja yleisten
+   taitojen oppiminen, koskevat aikuisia opettajaopiskelijoita, jotka harjoittelevat
+   viestintää? Mitä kirjoittajat itse sanovat tulosten rajoista?
+3. (P) Mitä Chernikovan ryhmän (2020) tulos ennakkotiedon merkityksestä tarkoittaa
+   opiskelijalle, joka ei ole koskaan käynyt vanhempainkeskustelua? Minkälaisia
+   esimerkkejä ja tukirakenteita meta-analyysi suosittaa noviiseille?
+4. (P) Missä järjestyksessä verkko-opiskelu ja roolipeli toteutettiin Gartmeierin ryhmän
+   (2015) kokeessa, ja mitä kontrastiiviset videoesimerkit sisälsivät?
+5. (P) Onko ehdotettu kaksivaiheinen malli (lyhyt ennakkovideo, syventävä video
+   ensimmäisen yrityksen jälkeen) tuettu, ja millä ehdoilla? Jos lähteet ovat
+   ristiriidassa, esitä molemmat kannat ja niiden näytön vahvuus.
+
+K2. Ennakkopohjustus
+
+6. (J, E) Mitä INACSL:n standardi (2021) ja Rudolphin ryhmä (2014) lukevat
+   ennakkopohjustukseen? Erottele valmistautuminen ja briefing.
+7. (J) Miten fiktiosopimus ja poistumistapa esitetään, kun ohjaaja ei ole paikalla ja
+   ennakkopohjustus tapahtuu videolla?
+8. (E) Mitä ennakkopohjustuksessa ei pidä kertoa, jotta harjoituksen aitous ja
+   oppimisarvo säilyvät?
+9. (J) Miten opiskelijalle kerrotaan tekoälyhahmon rajoista heikentämättä sitoutumista
+   harjoitukseen?
+
+K3. Keskustelun kulku: käytännön ohjeet
+
+10. (E) Mitkä ovat Lendrumin ryhmän (2015) strukturoidun keskustelun vaiheet, ja mitä
+    opettaja tekee kussakin vaiheessa?
+11. (E) Mitkä ovat Walkerin ja Dotgerin (2012) asiantuntijapaneelin määrittelemät hyvän
+    tapaamisen vaiheet? Missä ne vastaavat Lendrumin malliin ja missä eroavat siitä?
+12. (E) Mitkä Huolen puheeksiotto- ja Lapset puheeksi -menetelmien periaatteet sopivat
+    opettajan ja huoltajan keskusteluun, kun opettaja on aloitteellinen osapuoli?
+13. (E) Mitkä opettajan konkreettiset teot rakentavat ja heikentävät luottamusta Koskelan
+    (2025) sekä Adamsin ja Christensonin (2000) mukaan? Anna jokaisesta teosta lyhyt,
+    yleisellä tasolla pysyvä kuvaus.
+14. (E) Miten opettaja kutsuu vanhemman osallistumaan Hoover-Dempseyn ryhmän (2005)
+    mallin mukaan, ja miten roolikäsitys ja pystyvyys näkyvät keskustelussa?
+15. (E) Miten ohjeiden pitää erota, kun vanhempi tulee keskusteluun kumppanina, lastaan
+    puolustavana taistelijana tai uupuneena (Honkasilta ym. 2015)? Tämä määrää
+    skenaariokohtaiset osat.
+16. (E) Mitä tutkimus sanoo havaintoihin perustuvasta puheesta ja leimaavista sanoista,
+    kun opettaja kertoo lapsen haasteesta?
+17. (E) Millainen on hyvä sopimus keskustelun lopussa (kuka, mitä, milloin, miten
+    seurataan), ja mitä lähteet sanovat seurannan merkityksestä?
+
+K4. Arviointiperusteiden kuvaaminen
+
+18. (E) Miten arviointiperusteet kuvataan opiskelijalle niin, että ne ohjaavat toimintaa
+    mutta eivät muutu tarkistuslistaksi? Käytä Jonssonia (2014), Bearmania ja Ajjawia
+    (2018) ja Torrancea (2007).
+19. (E) Mitkä ohjauskompetenssin osa-alueet Gerich ja Schmitz (2016) sekä Gartmeierin
+    ryhmä nimeävät? Miten ne vastaavat skenaarioiden jälkipuinnin kriteerejä
+    (esimerkiksi kuuntelu ja huolen sanoittaminen, konkreettinen tieto lapsen koulusta,
+    avoimet kysymykset, yhteinen kokeilu ja seuranta, selkeä kieli)?
+20. (E, S) Millä tavalla De Coninckin ryhmä (2023) ja Levinin ryhmä (2023) mittasivat
+    viestintäkompetenssia ja oppimistuloksia, ja mitä osioista voi lainata kriteerien
+    yleiseen kuvaukseen?
+21. (E) Lisääkö kriteerien kertominen etukäteen suorituspainetta tai jännitystä, ja miten
+    sitä voi lieventää?
+
+K5. Jälkipuinti ja syventävä video
+
+22. (S) Mitä syventävän osan pitää sisältää, kun opiskelija on juuri kokeillut
+    keskustelua ja lukenut tekoälyn jälkipuinnin?
+23. (S) Mitä Chengin ryhmän (2014) tulos asiantuntijan mallintamisesta tarkoittaa?
+    Kannattaako syventävässä videossa näyttää esimerkkikeskustelun ote?
+24. (S) Miten PEARLS-malli yhdistää reflektion ja suoran ohjeistuksen, ja mitä siitä voi
+    siirtää videoon, jossa ei ole keskustelua ohjaajan kanssa?
+25. (S) Miten psykologinen turvallisuus säilytetään purussa, joka tapahtuu ilman
+    ohjaajaa (Kolbe ym. 2020)?
+
+K6. Opetusvideon suunnittelu
+
+26. (T) Mikä pituus, segmentointi ja rakenne sopivat 2–5 minuutin perehdytysvideoon?
+    Anna suositukset lähteineen.
+27. (T) Hyödyttävätkö hyvät ja huonot esimerkkidialogit (Renkl 2014; Gartmeier ym.
+    2015), ja miten niitä käytetään ilman, että opiskelija kopioi repliikit sanasta
+    sanaan?
+28. (T) Mitä multimedian periaatteet sanovat diojen tekstin määrästä, kaavioista ja
+    tekstityksestä, kun kertojana on puheääni?
+29. (T) Miten videon katsomisesta tehdään aktiivista, esimerkiksi pysähdyskysymyksillä
+    tai tehtävällä ennen harjoitusta (Brame 2016; Noetel ym. 2021)?
+
+K7. Synteettinen kertojaääni
+
+30. (T) Vaikuttaako puhesynteesillä tuotettu kertojaääni oppimiseen, luottamukseen tai
+    kertojan uskottavuuteen verrattuna äänitettyyn ihmisääneen?
+31. (T) Onko tutkimusta siitä, pitääkö opiskelijalle kertoa, että kertojan ääni on
+    kloonattu? Jos tutkimusta ei ole, sano se suoraan.
+
+K8. Suomalainen konteksti
+
+32. (J, E) Mitkä oppimisen tuen käsitteet muuttuivat 1.8.2025, ja mitä termejä videoissa
+    ja skenaarioissa pitää käyttää (esimerkiksi tehostetun tuen sijaan)? Mitä kodin ja
+    koulun yhteistyöstä sanotaan nykyisissä opetussuunnitelman perusteissa?
+33. (E) Mitä Kuusimäen ryhmän tutkimukset sanovat Wilma-viestinnän vaikutuksesta
+    vanhemman tunteisiin ja luottamukseen? Miten se kannattaa ottaa huomioon, kun
+    tapaaminen alkaa Wilma-viestistä?
+
+K9. Rajoitukset
+
+34. (J) Missä lähteet ovat ristiriidassa, mitä ei voi esittää varmana tietona, ja mitkä
+    päätelmät on siirretty hoitotyöstä, lääketieteestä tai matematiikan opetuksesta?

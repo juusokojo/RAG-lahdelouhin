@@ -102,36 +102,11 @@ def kirjoita_docx(patteri: Patteri, vastaukset: list[Vastaus], lahteet: dict[str
     if patteri.tehtava:
         doc.add_paragraph(patteri.tehtava)
 
-    # Kysymykset ja vastaukset ryhmittäin
-    for ryhma_tunnus, ryhma_otsikko, kysymykset in _ryhmat(patteri):
-        doc.add_heading(f"{ryhma_tunnus}. {ryhma_otsikko}", level=1)
-        for kysymys in kysymykset:
-            merkinnat = f" ({', '.join(kysymys.merkinnat)})" if kysymys.merkinnat else ""
-            doc.add_heading(f"{kysymys.nro}.{merkinnat}", level=2)
-            doc.add_paragraph().add_run(kysymys.teksti).italic = True
-
-            vastaus = vastaus_nro.get(kysymys.nro)
-            if vastaus is None:
-                doc.add_paragraph("Ei ajettu.")
-            elif vastaus.ei_vastausta:
-                doc.add_paragraph("Ei vastausta liitetyissä lähteissä.")
-            else:
-                for osio in vastaus.osiot:
-                    if osio.otsikko:
-                        doc.add_paragraph().add_run(osio.otsikko).bold = True
-                    for kappale in osio.teksti.split("\n\n"):
-                        if kappale.strip():
-                            doc.add_paragraph(korvaa_tunnukset(kappale.strip(), vastaus))
-
-    # Lainaukset: jokainen löydös omana lohkonaan
-    doc.add_heading("Lainaukset", level=1)
-    lainauksia = False
-    for kysymys in patteri.kysymykset:
-        vastaus = vastaus_nro.get(kysymys.nro)
-        if vastaus is None or not vastaus.loydokset:
-            continue
-        lainauksia = True
-        doc.add_paragraph().add_run(f"Kysymys {kysymys.nro}").bold = True
+    def kirjoita_lainaukset(vastaus: Vastaus) -> None:
+        """Vastauksen alle: jokainen löydös omana lohkonaan (väite, sanatarkka lainaus, viite)."""
+        if not vastaus.loydokset:
+            return
+        doc.add_paragraph().add_run("Lainaukset").bold = True
         for loydos in vastaus.loydokset:
             kappale = doc.add_paragraph()
             kappale.add_run(f"{loydos.tunnus}: ").bold = True
@@ -152,8 +127,29 @@ def kirjoita_docx(patteri: Patteri, vastaukset: list[Vastaus], lahteet: dict[str
                 lohko.add_run(f"\nNäytön vahvuus: {loydos.nayton_vahvuus}.")
             if loydos.siirretty_alalta:
                 lohko.add_run(f"\nSiirretty alalta: {loydos.siirretty_alalta}.")
-    if not lainauksia:
-        doc.add_paragraph("Ei lainauksia.")
+
+    # Kysymykset ja vastaukset ryhmittäin
+    for ryhma_tunnus, ryhma_otsikko, kysymykset in _ryhmat(patteri):
+        doc.add_heading(f"{ryhma_tunnus}. {ryhma_otsikko}", level=1)
+        for kysymys in kysymykset:
+            merkinnat = f" ({', '.join(kysymys.merkinnat)})" if kysymys.merkinnat else ""
+            doc.add_heading(f"{kysymys.nro}.{merkinnat}", level=2)
+            doc.add_paragraph().add_run(kysymys.teksti).italic = True
+
+            vastaus = vastaus_nro.get(kysymys.nro)
+            if vastaus is None:
+                doc.add_paragraph("Ei ajettu.")
+            elif vastaus.ei_vastausta:
+                doc.add_paragraph("Ei vastausta liitetyissä lähteissä.")
+            else:
+                for osio in vastaus.osiot:
+                    if osio.otsikko:
+                        doc.add_paragraph().add_run(osio.otsikko).bold = True
+                    for kappale in osio.teksti.split("\n\n"):
+                        if kappale.strip():
+                            doc.add_paragraph(korvaa_tunnukset(kappale.strip(), vastaus))
+                kirjoita_lainaukset(vastaus)
+
 
     # Lähteet: vain viitatut, aakkosjärjestys, riippuva sisennys
     doc.add_heading("Lähteet", level=1)

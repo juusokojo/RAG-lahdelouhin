@@ -849,7 +849,7 @@
     "url": "",
     "aloitussivu": null,
     "tarkistettu": false,
-    "huomio": "Aloitussivua ei päätelty: sivunumeroista saatu aloitussivu 0 (kansilehti tai muu poikkeama); Crossrefin sivut 171–188"
+    "huomio": "Pistokoe 15.11.2026: PDF on rinnakkaistallenne, jonka oma sivutus (PDF-sivu 2 = s. 1) EI vastaa lehden sivuja 171–188. Aloitussivu jätetty tyhjäksi, joten viitteissä on PDF-sivu. Hanki kustantajan versio tai viittaa rinnakkaistallenteeseen."
   },
   "kuusimaki_etal_2019a.pdf": {
     "tiedosto": "kuusimaki_etal_2019a.pdf",
@@ -1017,15 +1017,15 @@
     "julkaisu": "Brain Sciences",
     "vuosikerta": "11",
     "numero": "4",
-    "sivut": "427",
-    "artikkelinumero": "",
+    "sivut": "",
+    "artikkelinumero": "427",
     "toimittajat": [],
     "kustantaja": "MDPI AG",
     "doi": "10.3390/brainsci11040427",
     "url": "",
-    "aloitussivu": null,
+    "aloitussivu": 1,
     "tarkistettu": false,
-    "huomio": "Aloitussivua ei päätelty: PDF:stä ei löytynyt yksinäisiä sivunumeroita; Crossrefin sivut 427"
+    "huomio": "Pistokoe 15.11.2026: artikkelinumero 427, sivut numeroitu '1 of 24' (PDF-sivu = sivu); aloitussivu asetettu 1."
   },
   "loibl_etal_2017.pdf": {
     "tiedosto": "loibl_etal_2017.pdf",
@@ -1087,9 +1087,9 @@
     "kustantaja": "American Psychological Association (APA)",
     "doi": "10.1037/0022-0663.95.2.419",
     "url": "",
-    "aloitussivu": null,
+    "aloitussivu": 419,
     "tarkistettu": false,
-    "huomio": "Aloitussivua ei päätelty: sivunumeroita löytyi vain 1/7 sivulta peräkkäisinä; Crossrefin sivut 419–425"
+    "huomio": "Pistokoe 15.11.2026: PDF:ssä ei painettuja sivunumeroita, mutta sivumäärä 7 = Crossref 419–425; aloitussivu asetettu 419."
   },
   "noetel_etal_2021.pdf": {
     "tiedosto": "noetel_etal_2021.pdf",

@@ -1,0 +1,70 @@
+TEHTÄVÄ:
+Laadi teoriakoonti opettajankoulutuksen rooliharjoittelutyökalun skenaariokehystä varten.
+Opiskelija harjoittelee vaikeaa keskustelua tekoälyn esittämän huoltajan kanssa puhumalla.
+Kouluttaja kirjoittaa skenaarion skenaariotyökalussa vastaamalla kehyksen kysymyksiin:
+lapsen haaste, keskustelukumppani, keskustelun kulku ja oppimistavoitteet. Vastauksista
+syntyvät hahmon tausta ja salaisuudet, hahmon luottamussäännöt, opiskelijan roolikortti,
+perehdytys ja jälkipuinnin kriteerit. Kehyksen nykyiset elementit perustuvat pääosin
+tiivistelmiin, ja tämä koonti tarkistaa ne kokotekstistä. Vastaa liitteen kysymyksiin S1–S6.
+
+SÄÄNNÖT
+1. Käytä vain liitettyjä lähteitä. Älä keksi lähteitä, sivunumeroita tai lainauksia.
+   Jos lähteistä ei löydy vastausta, kirjoita: "Ei vastausta liitetyissä lähteissä."
+2. Merkitse jokaiseen väitteeseen lähde ja sivu tai kohta.
+3. Erottele jokaisessa vastauksessa kaksi osaa:
+   - LÄHDE SANOO: mitä lähde toteaa, omin sanoin.
+   - EHDOTUS SKENAARIOKEHYKSEEN: miten sen voi käyttää kehyksen kysymyksessä,
+     esimerkissä, vaihtoehdoissa tai hahmon luottamussäännöissä.
+4. Arvioi näytön vahvuus: vahva (meta-analyysi tai useampi koe), kohtalainen (yksittäinen
+   koe tai laadullinen tutkimus), alustava (konferenssitiivistelmä, pieni aineisto) tai
+   asiantuntijan näkemys (opas, standardi).
+5. Merkitse, jos päätelmä on siirretty toiselta alalta (hoitotyö, lääketiede, matematiikka).
+6. Kerro aineiston koko ja keitä siinä on (esimerkiksi äidit, isät, opiskelijat), kun
+   lähde on laadullinen tai suomalainen.
+7. Jos lähteet ovat ristiriidassa, esitä molemmat kannat. Älä valitse puolta, ellei näyttö
+   ole selvästi vahvempi toisella puolella.
+8. Jos kysymyksessä nimettyä lähdettä ei ole, sano se ja kerro, mitkä muut liitetyt lähteet
+   käsittelevät aihetta.
+9. Kirjoita suomeksi. Säilytä menetelmien ja mallien alkuperäiset nimet.
+
+RAPORTIN RAKENNE
+1. Lapsen haaste (S1).
+2. Keskustelukumppani: huoltajan toimijuus, luottamus, tunteet ja tausta (S2).
+3. Keskustelun kulku: aloite, vaiheet, luottamusta rakentavat ja heikentävät teot,
+   osallisuus (S3).
+4. Oppimistavoitteet, perehdytys ja jälkipuinti (S4).
+5. Vaikeustaso (S5).
+6. Aukot ja rajoitukset (S6).
+7. Lähdeluettelo APA 7 -muodossa.
+
+KYSYMYSPATTERI KOONTITYÖKALULLE
+Testiajo: seitsemän kysymystä koko patterista (kysymykset/skenaariokehys.txt) samoin numeroin.
+Ne testaavat tarkistusta, puuttuvia lähteitä, väärää oletusta ja ensimmäisessä koonnissa vajaaksi
+jääneitä hakuja. Merkintä suluissa kertoo, mihin kehyksen osaan vastaus menee: A = aihe,
+K = keskustelukumppani, L = keskustelun kulku, O = oppimistavoitteet, R = rajoitukset.
+
+S2. Keskustelukumppani
+
+8. (K) Miten Koskela (2025) luokittelee vanhempien luottamuksen opettajaan? Kuinka monessa
+   haastattelussa kukin luottamuksen muoto esiintyi?
+16. (K) Sanovatko lähteet jotakin opettajan ja kollegan, esimerkiksi erityisopettajan,
+    välisestä keskustelusta tai opettajan ja oppilaan välisestä keskustelusta?
+
+S3. Keskustelun kulku
+
+18. (L) Mitä Lendrumin ryhmän (2015) strukturoidun keskustelun kussakin neljässä vaiheessa
+    tehdään, erityisesti focus- ja plan-vaiheissa?
+20. (L) Mitä Koskela (2025) sanoo tilanteista, joissa koulu edellyttää diagnoosia tai
+    asiantuntijan lausuntoa ennen tukea?
+
+S4. Oppimistavoitteet
+
+26. (O) Mitä INACSL:n standardi (2021) ja Rudolphin ryhmä (2014) sanovat simulaation
+    keskeyttämisestä, aikalisästä ja opiskelijan mahdollisuudesta poistua tilanteesta?
+27. (O) Miten Kolben ryhmä (2020) kuvaa psykologisen turvallisuuden ylläpitämistä
+    jälkipuinnissa? Mitkä keinot ovat käytettävissä, kun ohjaaja ei ole paikalla ja
+    jälkipuinnin pohjan kirjoittaa tekoäly?
+
+S6. Aukot ja rajoitukset
+
+33. (R) Mitä Lendrumin ryhmä (2015) sanoo suomalaisesta Wilma-viestinnästä?

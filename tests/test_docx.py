@@ -150,13 +150,53 @@ def test_kysymys_ilman_vastausta_ja_ei_vastausta(tmp_path):
 
 
 def test_sumea_lainaus_merkitaan(tmp_path):
-    kappaleet = _lue(_kirjoita(tmp_path))
-    lainaukset = _lohko(kappaleet, "Lainaukset")
-    teksti = [k.text for k in lainaukset]
-    assert any("[tarkista lainaus]" in t for t in teksti)
-    assert any(t == "”Lainaus Zetasta.”" for t in teksti)
+    teksti = [k.text for k in _lue(_kirjoita(tmp_path))]
+    assert any(t.startswith("”Lainaus Alfasta.” (Alfa ym., 2020, s. 5) [tarkista lainaus]") for t in teksti)
     assert any("Näytön vahvuus: vahva." in t for t in teksti)
     assert any("Siirretty alalta: hoitotyö." in t for t in teksti)
+
+
+def test_lainaus_viittaavan_virkkeen_alla_kursiivilla_ja_sisennettyna(tmp_path):
+    kappaleet = _lue(_kirjoita(tmp_path))
+    tekstit = [k.text for k in kappaleet]
+    i = tekstit.index("Ensimmäinen väite (Zeta ym., 2019, s. 3).")
+    lainaus = kappaleet[i + 1]
+    assert lainaus.text.startswith("”Lainaus Zetasta.” (Zeta ym., 2019, s. 3)")
+    assert lainaus.runs[0].italic and lainaus.runs[0].text == "”Lainaus Zetasta.”"
+    assert not lainaus.runs[1].italic
+    assert lainaus.paragraph_format.left_indent is not None
+    # L1 viitataan kerran kummassakin osiossa: lainaus näkyy kerran osiota kohden
+    assert sum(t.startswith("”Lainaus Zetasta.”") for t in tekstit) == 2
+    j = tekstit.index("Käytä väitettä (Zeta ym., 2019, s. 3).")
+    assert tekstit[j + 1].startswith("”Lainaus Zetasta.”")
+
+
+def test_sama_lainaus_kerran_osion_sisalla(tmp_path):
+    vastaus = Vastaus(kysymys_nro=1, osiot=[Osio("", "Eka [L1].\n\nToka [L1].")],
+                      loydokset=_vastaukset()[0].loydokset[:1])
+    tekstit = [k.text for k in _lue(_kirjoita(tmp_path, [vastaus]))]
+    assert sum(t.startswith("”Lainaus Zetasta.”") for t in tekstit) == 1
+
+
+def test_virkkeet_paloitellaan_viitteiden_kohdalta(tmp_path):
+    vastaus = Vastaus(kysymys_nro=1,
+                      osiot=[Osio("", "Eka väite [L1]. Toka väite [L2]. Lopuksi ilman viitettä.")],
+                      loydokset=_vastaukset()[0].loydokset)
+    tekstit = [k.text for k in _lue(_kirjoita(tmp_path, [vastaus]))]
+    i = tekstit.index("Eka väite (Zeta ym., 2019, s. 3).")
+    assert tekstit[i + 1].startswith("”Lainaus Zetasta.”")
+    assert tekstit[i + 2] == "Toka väite (Alfa ym., 2020, s. 5)."
+    assert tekstit[i + 3].startswith("”Lainaus Alfasta.”")
+    assert tekstit[i + 4] == "Lopuksi ilman viitettä."
+
+
+def test_viittaamattomat_loydokset_muut_lainaukset_osioon(tmp_path):
+    vastaus = Vastaus(kysymys_nro=1, osiot=[Osio("", "Vain eka [L1].")],
+                      loydokset=_vastaukset()[0].loydokset)
+    tekstit = [k.text for k in _lue(_kirjoita(tmp_path, [vastaus]))]
+    i = tekstit.index("Muut lainaukset")
+    assert tekstit[i + 1] == "Väite Alfasta"
+    assert tekstit[i + 2].startswith("”Lainaus Alfasta.”")
 
 
 def test_lahdeluettelo_jarjestys_ja_kursiivit(tmp_path):
@@ -236,7 +276,9 @@ def test_perakkaiset_tunnukset_yhdistetaan_yhdeksi_viitteeksi(tmp_path):
 def test_lainauslohkojen_viitteet_pysyvat_yksittaisina(tmp_path):
     vastaus = Vastaus(kysymys_nro=1, osiot=[Osio("", "Väite [L1] [L2].")],
                       loydokset=_vastaukset()[0].loydokset)
-    kappaleet = _lue(_kirjoita(tmp_path, [vastaus]))
-    lainaukset = [k.text for k in kappaleet if k.text.startswith("(")]
-    assert any(t.startswith("(Zeta ym., 2019, s. 3)") and ";" not in t for t in lainaukset)
-    assert any(t.startswith("(Alfa ym., 2020, s. 5)") and ";" not in t for t in lainaukset)
+    tekstit = [k.text for k in _lue(_kirjoita(tmp_path, [vastaus]))]
+    assert "Väite (Zeta ym., 2019, s. 3; Alfa ym., 2020, s. 5)." in tekstit
+    lainaukset = [t for t in tekstit if t.startswith("”")]
+    assert any("(Zeta ym., 2019, s. 3)" in t and ";" not in t for t in lainaukset)
+    assert any("(Alfa ym., 2020, s. 5)" in t and ";" not in t for t in lainaukset)
+

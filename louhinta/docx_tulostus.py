@@ -17,6 +17,7 @@ from louhinta.mallit import Kysymys, Lahde, Loydos, Patteri, Vastaus
 
 TUNNUS_RE = re.compile(r"\[(L\d+)\]")
 TUNNUSJONO_RE = re.compile(r"\[L\d+\](?:[\s,]*\[L\d+\])*")     # peräkkäiset tunnukset, välissä tyhjää tai pilkku
+VIRKKEEN_LOPPU_RE = re.compile(r"[.!?](?=\s|$)")
 FONTTI = "Times New Roman"
 
 
@@ -116,31 +117,62 @@ def kirjoita_docx(patteri: Patteri, vastaukset: list[Vastaus], lahteet: dict[str
     if patteri.tehtava:
         doc.add_paragraph(patteri.tehtava)
 
-    def kirjoita_lainaukset(vastaus: Vastaus) -> None:
-        """Vastauksen alle: jokainen löydös omana lohkonaan (väite, sanatarkka lainaus, viite)."""
-        if not vastaus.loydokset:
+    def kirjoita_lainaus(loydos: Loydos, vastaus: Vastaus) -> None:
+        """Sanatarkka lainaus kursiivilla ja sisennettynä, perässä viite pystyyn."""
+        lohko = doc.add_paragraph()
+        lohko.paragraph_format.left_indent = Cm(1.27)
+        lohko.paragraph_format.right_indent = Cm(1.27)
+        lohko.add_run(f"”{loydos.lainaus}”").italic = True
+        viiteteksti = " " + viite(loydos, vastaus)
+        if loydos.tapa == "sumea":
+            viiteteksti += " [tarkista lainaus]"
+        lisat = []
+        if loydos.nayton_vahvuus:
+            lisat.append(f"Näytön vahvuus: {loydos.nayton_vahvuus}.")
+        if loydos.siirretty_alalta:
+            lisat.append(f"Siirretty alalta: {loydos.siirretty_alalta}.")
+        if lisat:
+            viiteteksti += " " + " ".join(lisat)
+        lohko.add_run(viiteteksti)
+
+    def kirjoita_kappale(kappale: str, vastaus: Vastaus, kaytetyt: set[str]) -> None:
+        """Kappale paloiteltuna viitteiden kohdalta: jokaisen viitatun virkkeen alle sen lainaukset.
+
+        Pala päättyy ensimmäiseen virkkeen loppuun tunnusjonon jälkeen, ellei ennen sitä tule
+        uutta tunnusjonoa (silloin lainaukset kerätään saman palan alle).
+        """
+        tunnukset = {l.tunnus: l for l in vastaus.loydokset}
+        jonot = list(TUNNUSJONO_RE.finditer(kappale))
+        palat: list[tuple[str, list[str]]] = []
+        alku, kerätyt = 0, []
+        for i, jono in enumerate(jonot):
+            kerätyt.extend(TUNNUS_RE.findall(jono.group(0)))
+            loppu = VIRKKEEN_LOPPU_RE.search(kappale, jono.end())
+            leikkaus = loppu.end() if loppu else len(kappale)
+            if i + 1 < len(jonot) and jonot[i + 1].start() < leikkaus:
+                continue
+            palat.append((kappale[alku:leikkaus], kerätyt))
+            alku, kerätyt = leikkaus, []
+        if kappale[alku:].strip():
+            palat.append((kappale[alku:], []))
+        for teksti, pala_tunnukset in palat:
+            if teksti.strip():
+                doc.add_paragraph(korvaa_tunnukset(teksti.strip(), vastaus))
+            for tunnus in dict.fromkeys(pala_tunnukset):
+                loydos = tunnukset.get(tunnus)
+                if loydos is not None and tunnus not in kaytetyt:
+                    kaytetyt.add(tunnus)
+                    kirjoita_lainaus(loydos, vastaus)
+
+    def kirjoita_muut_lainaukset(vastaus: Vastaus, kaytetyt: set[str]) -> None:
+        """Löydökset, joihin vastausteksti ei viittaa: väite ja lainaus vastauksen loppuun."""
+        muut = [l for l in vastaus.loydokset if l.tunnus not in kaytetyt]
+        if not muut:
             return
-        doc.add_paragraph().add_run("Lainaukset").bold = True
-        for loydos in vastaus.loydokset:
-            kappale = doc.add_paragraph()
-            kappale.add_run(f"{loydos.tunnus}: ").bold = True
-            kappale.add_run(loydos.vaite)
-
-            lohko = doc.add_paragraph()
-            lohko.paragraph_format.left_indent = Cm(1.27)
-            lohko.paragraph_format.right_indent = Cm(1.27)
-            lohko.add_run(f"”{loydos.lainaus}”")
-
-            viiteteksti = viite(loydos, vastaus)
-            if loydos.tapa == "sumea":
-                viiteteksti += " [tarkista lainaus]"
-            lohko = doc.add_paragraph()
-            lohko.paragraph_format.left_indent = Cm(1.27)
-            lohko.add_run(viiteteksti)
-            if loydos.nayton_vahvuus:
-                lohko.add_run(f"\nNäytön vahvuus: {loydos.nayton_vahvuus}.")
-            if loydos.siirretty_alalta:
-                lohko.add_run(f"\nSiirretty alalta: {loydos.siirretty_alalta}.")
+        doc.add_paragraph().add_run("Muut lainaukset").bold = True
+        for loydos in muut:
+            doc.add_paragraph(loydos.vaite)
+            kirjoita_lainaus(loydos, vastaus)
 
     # Kysymykset ja vastaukset ryhmittäin
     for ryhma_tunnus, ryhma_otsikko, kysymykset in _ryhmat(patteri):
@@ -156,13 +188,16 @@ def kirjoita_docx(patteri: Patteri, vastaukset: list[Vastaus], lahteet: dict[str
             elif vastaus.ei_vastausta:
                 doc.add_paragraph("Ei vastausta liitetyissä lähteissä.")
             else:
+                kaytetyt: set[str] = set()
                 for osio in vastaus.osiot:
                     if osio.otsikko:
                         doc.add_paragraph().add_run(osio.otsikko).bold = True
+                    osiossa: set[str] = set()     # sama lainaus kerran osiota kohden
                     for kappale in osio.teksti.split("\n\n"):
                         if kappale.strip():
-                            doc.add_paragraph(korvaa_tunnukset(kappale.strip(), vastaus))
-                kirjoita_lainaukset(vastaus)
+                            kirjoita_kappale(kappale.strip(), vastaus, osiossa)
+                    kaytetyt |= osiossa
+                kirjoita_muut_lainaukset(vastaus, kaytetyt)
 
 
     # Lähteet: vain viitatut, aakkosjärjestys, riippuva sisennys

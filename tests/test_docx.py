@@ -282,3 +282,11 @@ def test_lainauslohkojen_viitteet_pysyvat_yksittaisina(tmp_path):
     assert any("(Zeta ym., 2019, s. 3)" in t and ";" not in t for t in lainaukset)
     assert any("(Alfa ym., 2020, s. 5)" in t and ";" not in t for t in lainaukset)
 
+
+
+def test_ohjausmerkki_lainauksessa_ei_kaada(tmp_path):
+    loydos = _vastaukset()[0].loydokset[0]
+    loydos.lainaus = "Ennen\x01jälkeen."
+    vastaus = Vastaus(kysymys_nro=1, osiot=[Osio("", "Väite [L1].")], loydokset=[loydos])
+    tekstit = [k.text for k in _lue(_kirjoita(tmp_path, [vastaus]))]
+    assert any("Ennen\ufffdjälkeen." in t for t in tekstit)

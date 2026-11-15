@@ -86,12 +86,16 @@ def sivu(source_text: str, indeksi: int) -> int:
     return 1 + source_text.count("\f", 0, max(indeksi, 0))
 
 
+_OHJAUSMERKIT = re.compile(r"[\x00-\x08\x0b\x0e-\x1f\x7f]")
 _LIGATUURIT = str.maketrans({"ﬀ": "ff", "ﬁ": "fi", "ﬂ": "fl", "ﬃ": "ffi", "ﬄ": "ffl", "ﬅ": "st", "ﬆ": "st"})
 
 
 def siisti(teksti: str) -> str:
     """Näyttömuoto: ligatuurit purettu, tavutus yhdistetty, tyhjät yhdeksi välilyönniksi, reunat siistitty."""
     teksti = teksti.translate(_LIGATUURIT)
+    # PDF:n tekstikerroksen ohjausmerkit (esim. \x01 puuttuvan glyfin tilalla) eivät kelpaa Wordiin:
+    # korvataan näkyvällä korvausmerkillä, jotta kohta huomataan tarkistettavaksi
+    teksti = _OHJAUSMERKIT.sub("\ufffd", teksti)
     def yhdista(m: re.Match) -> str:
         # ei kosketa, jos seuraava rivi alkaa isolla kirjaimella, numerolla tms.
         return "" if m.string[m.end()].islower() else m.group(0)

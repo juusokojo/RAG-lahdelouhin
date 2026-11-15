@@ -368,3 +368,7 @@ def test_laajenna_sailyttaa_takuun():
     a = teksti.index("tärkeää")
     alku, loppu = laajenna_virkkeisiin(teksti, a, a + 7)
     assert siisti(teksti[alku:loppu]) == "Hyvä communication on tärkeää ryhmälle."
+
+
+def test_siisti_korvaa_ohjausmerkit():
+    assert siisti("de\x01ned term\x03 here") == "de\ufffdned term\ufffd here"

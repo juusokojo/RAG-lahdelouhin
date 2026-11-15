@@ -17,6 +17,7 @@ from louhinta.mallit import Kysymys, Lahde, Loydos, Patteri, Vastaus
 
 TUNNUS_RE = re.compile(r"\[(L\d+)\]")
 TUNNUSJONO_RE = re.compile(r"\[L\d+\](?:[\s,]*\[L\d+\])*")     # peräkkäiset tunnukset, välissä tyhjää tai pilkku
+_EI_XML_RE = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f\ufffe\uffff]")
 VIRKKEEN_LOPPU_RE = re.compile(r"[.!?](?=\s|$)")
 FONTTI = "Times New Roman"
 
@@ -29,6 +30,11 @@ def _aseta_fontti(tyyli, koko: float | None = None) -> None:
         rfonts.attrib.pop(qn(teema), None)      # Wordin teemafontit ohittavat nimen muuten
     if koko:
         tyyli.font.size = Pt(koko)
+
+
+def _xml(teksti: str) -> str:
+    """Wordiin kelpaamattomat ohjausmerkit korvausmerkiksi (vanhat tallennetut vastaukset)."""
+    return _EI_XML_RE.sub("\ufffd", teksti)
 
 
 def _tyylit(doc: Document) -> None:
@@ -122,7 +128,7 @@ def kirjoita_docx(patteri: Patteri, vastaukset: list[Vastaus], lahteet: dict[str
         lohko = doc.add_paragraph()
         lohko.paragraph_format.left_indent = Cm(1.27)
         lohko.paragraph_format.right_indent = Cm(1.27)
-        lohko.add_run(f"”{loydos.lainaus}”").italic = True
+        lohko.add_run(_xml(f"”{loydos.lainaus}”")).italic = True
         viiteteksti = " " + viite(loydos, vastaus)
         if loydos.tapa == "sumea":
             viiteteksti += " [tarkista lainaus]"
@@ -157,7 +163,7 @@ def kirjoita_docx(patteri: Patteri, vastaukset: list[Vastaus], lahteet: dict[str
             palat.append((kappale[alku:], []))
         for teksti, pala_tunnukset in palat:
             if teksti.strip():
-                doc.add_paragraph(korvaa_tunnukset(teksti.strip(), vastaus))
+                doc.add_paragraph(_xml(korvaa_tunnukset(teksti.strip(), vastaus)))
             for tunnus in dict.fromkeys(pala_tunnukset):
                 loydos = tunnukset.get(tunnus)
                 if loydos is not None and tunnus not in kaytetyt:
@@ -171,7 +177,7 @@ def kirjoita_docx(patteri: Patteri, vastaukset: list[Vastaus], lahteet: dict[str
             return
         doc.add_paragraph().add_run("Muut lainaukset").bold = True
         for loydos in muut:
-            doc.add_paragraph(loydos.vaite)
+            doc.add_paragraph(_xml(loydos.vaite))
             kirjoita_lainaus(loydos, vastaus)
 
     # Kysymykset ja vastaukset ryhmittäin

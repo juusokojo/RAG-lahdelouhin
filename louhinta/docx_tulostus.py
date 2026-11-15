@@ -81,7 +81,7 @@ def kirjoita_docx(patteri: Patteri, vastaukset: list[Vastaus], lahteet: dict[str
     huomiot: list[str] = []
     viitatut: set[str] = set()          # lähteet, joihin lainauksia on viitattu
 
-    for vastaus in vastaukset:
+    for vastaus in sorted(vastaukset, key=lambda v: v.kysymys_nro):
         huomiot.extend(f"Kysymys {vastaus.kysymys_nro}: {h}" for h in vastaus.huomiot)
 
     def viite(loydos: Loydos, vastaus: Vastaus) -> str:

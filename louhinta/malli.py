@@ -38,14 +38,14 @@ def _jasenna(teksti: str) -> dict | list:
     """JSON koodiaidoista puhdistetusta tekstistä; sallii JSONia ympäröivän selitystekstin."""
     puhdas = poista_koodiaidat(teksti)
     try:
-        return json.loads(puhdas)
+        return json.loads(puhdas, strict=False)
     except json.JSONDecodeError as virhe:
         # malli saattoi lisätä JSONin ympärille prosaa: kokeillaan ensimmäisestä { tai [ viimeiseen } tai ]
         alku = min((i for i in (puhdas.find("{"), puhdas.find("[")) if i >= 0), default=-1)
         loppu = max(puhdas.rfind("}"), puhdas.rfind("]"))
         if alku >= 0 and loppu > alku:
             try:
-                return json.loads(puhdas[alku:loppu + 1])
+                return json.loads(puhdas[alku:loppu + 1], strict=False)
             except json.JSONDecodeError:
                 pass
         raise virhe

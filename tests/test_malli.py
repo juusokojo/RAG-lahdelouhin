@@ -195,3 +195,8 @@ def test_aikakatkaisun_jalkeen_vain_yksi_uusinta(monkeypatch):
     with pytest.raises(requests.Timeout):
         malli.kysy("j", "k")
     assert len(kutsuja) == 2
+
+
+def test_jasenna_sallii_ohjausmerkin_merkkijonossa():
+    from louhinta.malli import _jasenna
+    assert _jasenna('{"lainaus": "ennen\x01jälkeen"}') == {"lainaus": "ennen\x01jälkeen"}

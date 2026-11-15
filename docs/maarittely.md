@@ -148,10 +148,10 @@ Omat tiedostot: `louhinta/malli.py`, `louhinta/putki.py`, `louhi.py`, `tests/tes
 ### `malli.py`
 
 ```python
-MALLIT = {"gemma31": "jwwqblcgkizlhxjjbkcp", "qwen27": "Qwen3.8-27B", "gptoss": "azsydsttjnlbfjbgqnwd"}
+MALLIT = {"gemma31": "jwwqblcgkizlhxjjbkcp", "gptoss": "azsydsttjnlbfjbgqnwd"}
 
 class Malli:
-    def __init__(self, malli: str = "gemma31", url: str = "https://api.lehmus-ai.oulu.fi/v1", avain: str | None = None, aikakatkaisu: int = 600)
+    def __init__(self, malli: str = "gemma31", url: str = "https://api.lehmus-ai.oulu.fi/v1", avain: str | None = None, aikakatkaisu: int = 300)
     def kysy(self, jarjestelma: str, kayttaja: str, max_tokens: int = 4000, lampotila: float = 0.1) -> str
     def kysy_json(self, jarjestelma: str, kayttaja: str, **kw) -> dict | list
 ```

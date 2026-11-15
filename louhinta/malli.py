@@ -14,9 +14,11 @@ from pathlib import Path
 
 import requests
 
-MALLIT = {"gemma31": "jwwqblcgkizlhxjjbkcp", "qwen27": "Qwen3.8-27B", "gptoss": "azsydsttjnlbfjbgqnwd"}
+# Qwen3.8-27B poistettu 15.11.2026: ei avaimen mallilistalla (403).
+MALLIT = {"gemma31": "jwwqblcgkizlhxjjbkcp", "gptoss": "azsydsttjnlbfjbgqnwd"}
 OLETUS_URL = "https://api.lehmus-ai.oulu.fi/v1"
-AIKAKATKAISU = 600        # sekuntia; Model Gatewayn raja chat-kutsuille on 10 min
+AIKAKATKAISU = 300        # sekuntia; koeajon pisin onnistunut kutsu jäi selvästi alle (Gatewayn raja 10 min)
+AIKAKATKAISUJA_ENINT = 2  # aikakatkaisun jälkeen yritetään vain kerran uudelleen
 UUDELLEENYRITYKSIA = 3    # lisäyrityksiä ensimmäisen jälkeen
 ALKUVIIVE = 2.0           # sekuntia; kaksinkertaistuu joka yrityksellä
 
@@ -67,11 +69,16 @@ class Malli:
     def _pyynto(self, runko: dict) -> dict:
         """POST uudelleenyrityksin: verkkovirheet, 5xx ja 429 yritetään uudelleen."""
         viive = ALKUVIIVE
+        aikakatkaisuja = 0
         for yritys in range(UUDELLEENYRITYKSIA + 1):
             viimeinen = yritys == UUDELLEENYRITYKSIA
             try:
                 r = self.istunto.post(f"{self.url}/chat/completions", json=runko,
                                       timeout=self.aikakatkaisu)
+            except requests.Timeout:
+                aikakatkaisuja += 1
+                if viimeinen or aikakatkaisuja >= AIKAKATKAISUJA_ENINT:
+                    raise
             except requests.RequestException:
                 if viimeinen:
                     raise

@@ -71,11 +71,11 @@ def test_kysy_pyynnon_muoto():
     assert kw["json"]["messages"] == [{"role": "system", "content": "sys"},
                                       {"role": "user", "content": "usr"}]
     assert kw["json"]["max_tokens"] == 123 and kw["json"]["temperature"] == 0.3
-    assert kw["timeout"] == 600
+    assert kw["timeout"] == 300
 
 
 def test_malli_avain_tai_suora_model_id():
-    assert Malli("qwen27", avain="x").malli_id == "Qwen3.8-27B"
+    assert Malli("gptoss", avain="x").malli_id == "azsydsttjnlbfjbgqnwd"
     assert Malli("jokin-suora-id", avain="x").malli_id == "jokin-suora-id"
 
 
@@ -178,3 +178,20 @@ def test_kysy_json_kirjoittaa_lokin(tmp_path):
     assert "järjestelmäkehote" in kehote and "käyttäjäkehote" in kehote
     assert "rikki" in vastaus and '{"a": 1}' in vastaus
     json.loads(vastaus.split("=== UUDELLEENYRITYS ===")[1])
+
+
+def test_aikakatkaisun_jalkeen_vain_yksi_uusinta(monkeypatch):
+    import requests
+    import louhinta.malli as m
+    monkeypatch.setattr(m.time, "sleep", lambda s: None)
+    malli = Malli(avain="x")
+    kutsuja = []
+
+    def post(*a, **kw):
+        kutsuja.append(1)
+        raise requests.Timeout("aikakatkaisu")
+
+    monkeypatch.setattr(malli.istunto, "post", post)
+    with pytest.raises(requests.Timeout):
+        malli.kysy("j", "k")
+    assert len(kutsuja) == 2

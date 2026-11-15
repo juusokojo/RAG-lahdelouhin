@@ -1,5 +1,6 @@
 """Putken testit väärennetyllä Malli- ja Rag-oliolla ja keksityllä tekstillä. Ei verkkoa."""
 import json
+import re
 
 import pytest
 
@@ -7,9 +8,9 @@ import louhinta.putki as putki
 
 from louhinta.malli import MalliVirhe
 from louhinta.mallit import Kysymys, Lahde, Osuma, Patteri, Tekija
-from louhinta.paikannus import paikanna_patka
+from louhinta.paikannus import paikanna_patka, siisti
 from louhinta.putki import (
-    HAKU_JARJESTELMA, KOONTI_JARJESTELMA, POIMINTA_JARJESTELMA,
+    HAKU_JARJESTELMA, KOONTI_JARJESTELMA, OSUVUUS_JARJESTELMA, POIMINTA_JARJESTELMA,
     lataa_vastaus, tallenna_vastaus, vastaa, vastaa_tilastoin,
 )
 
@@ -59,18 +60,25 @@ class ValeRag:
 class ValeMalli:
     """Vastaa kehotteen järjestelmäosan perusteella; kirjaa kutsut."""
 
-    def __init__(self, haku=None, poiminta=None, koonti=None, poiminta_kutsut=None):
+    def __init__(self, haku=None, poiminta=None, koonti=None, poiminta_kutsut=None, osuvuus=None):
         self.poiminta_kutsut = poiminta_kutsut      # vastaus kutsua kohti; viimeistä toistetaan
         self.haku = haku or {"haut": ["rehearsal anxiety"], "nimetyt": [], "puuttuvat": []}
         self.poiminta = poiminta if poiminta is not None else []
         self.koonti = koonti or {"osiot": [{"otsikko": "", "teksti": "Väite yksi [L1]."}]}
+        self.osuvuus = osuvuus          # None = kaikki "suora"; muuten {tunnus: arvio} tai poikkeus
         self.kutsut = []
+        self.kw = []
 
     def kysy_json(self, jarjestelma, kayttaja, **kw):
         vaihe = {HAKU_JARJESTELMA: "haku", POIMINTA_JARJESTELMA: "poiminta",
-                 KOONTI_JARJESTELMA: "koonti"}[jarjestelma]
+                 KOONTI_JARJESTELMA: "koonti", OSUVUUS_JARJESTELMA: "osuvuus"}[jarjestelma]
         self.kutsut.append((vaihe, kayttaja))
+        self.kw.append((vaihe, kw))
         arvo = getattr(self, vaihe)
+        if vaihe == "osuvuus" and not isinstance(arvo, Exception):
+            tunnukset = re.findall(r"^\[(L\d+)\]", kayttaja, re.MULTILINE)
+            return [{"tunnus": t, "arvio": (arvo or {}).get(t, "suora"), "perustelu": "Perustelu."}
+                    for t in tunnukset]
         if vaihe == "poiminta" and self.poiminta_kutsut:
             arvo = self.poiminta_kutsut.pop(0) if len(self.poiminta_kutsut) > 1 else self.poiminta_kutsut[0]
         if isinstance(arvo, Exception):
@@ -104,7 +112,7 @@ def test_keksitty_lainaus_hylataan_eika_paady_vastaukseen():
     keksitty = "Rehearsal completely eliminates anxiety in every teacher according to this invented study."
     malli = ValeMalli(poiminta=[ehdotus("O1", keksitty, vaite="Keksitty väite"), ehdotus("O1")])
     v, t = aja(malli)
-    assert [l.lainaus for l in v.loydokset] == [LAINAUS_ALFA.replace("final", "ﬁnal")]
+    assert [l.lainaus for l in v.loydokset] == [LAINAUS_ALFA]
     assert len(v.loydokset) == 1 and v.loydokset[0].tunnus == "L1"
     assert "eliminates" not in json.dumps(v.__dict__, default=lambda o: o.__dict__, ensure_ascii=False)
     assert (t.ehdotuksia, t.hyvaksyttyja, t.hylattyja) == (2, 1, 1)
@@ -116,9 +124,9 @@ def test_lainaus_leikataan_lahdetekstista_ei_mallin_tekstista():
     malli = ValeMalli(poiminta=[ehdotus("O1", LAINAUS_ALFA)])      # ehdotuksessa "final" ja yksi välilyönti
     v, _ = aja(malli)
     lainaus = v.loydokset[0].lainaus
-    assert lainaus != LAINAUS_ALFA                   # lähteessä on ligatuuri ﬁ ja kaksi välilyöntiä
-    assert "ﬁnal" in lainaus and "that  rehearsal" not in lainaus   # välilyönnit siistitty, ligatuuri säilyy
-    assert lainaus in " ".join(SIVU2.split())        # sama kuin lähdeteksti siistittynä
+    assert lainaus == LAINAUS_ALFA                   # lähteessä on ligatuuri ﬁ ja kaksi välilyöntiä: siistitty
+    assert "ﬁ" not in lainaus and "that  rehearsal" not in lainaus
+    assert lainaus in siisti(SIVU2)        # sama kuin lähdeteksti siistittynä
     assert v.loydokset[0].tapa == "tarkka"
     assert (v.loydokset[0].pdf_sivu_alku, v.loydokset[0].pdf_sivu_loppu) == (2, 2)
 
@@ -200,8 +208,8 @@ def test_paallekkaiset_loydokset_yhdistetaan():
     v, t = aja(malli)
     assert len(v.loydokset) == 1 and t.hyvaksyttyja == 2 and t.loydoksia == 1
     l = v.loydokset[0]
-    assert "ﬁnal analysis" in l.lainaus and l.lainaus.endswith("stable across sites.")
-    assert l.lainaus in " ".join(SIVU2.split())       # yhdistetty lainaus on leikattu lähteestä
+    assert "final analysis" in l.lainaus and l.lainaus.endswith("stable across sites.")
+    assert l.lainaus in siisti(SIVU2)       # yhdistetty lainaus on leikattu lähteestä
     assert "Ensimmäinen" in l.vaite and "Toinen" in l.vaite
     assert l.nayton_vahvuus == "vahva"
 
@@ -362,7 +370,7 @@ def test_tallenna_ja_lataa_edestakaisin(tmp_path):
     polku = tmp_path / "vastaukset" / "k7.json"
     tallenna_vastaus(v, polku)
     assert lataa_vastaus(polku) == v
-    assert "ﬁnal" in polku.read_text(encoding="utf-8")           # ei \u-koodauksia
+    assert "LÄHDE SANOO" in polku.read_text(encoding="utf-8")    # ei \u-koodauksia
 
 
 def test_tallenna_ja_lataa_ei_vastausta(tmp_path):
@@ -370,3 +378,82 @@ def test_tallenna_ja_lataa_ei_vastausta(tmp_path):
     tallenna_vastaus(v, tmp_path / "k7.json")
     ladattu = lataa_vastaus(tmp_path / "k7.json")
     assert ladattu == v and ladattu.ei_vastausta
+
+
+# ---------------------------------------------------------------- osuvuustarkistus
+
+def _kaksi_loydosta(**osuvuus):
+    return ValeMalli(poiminta=[ehdotus("O1", LAINAUS_ALFA, vaite="Alfa-väite"), ehdotus("O2", LAINAUS_BETA, vaite="Beta-väite")],
+                     koonti={"osiot": [{"otsikko": "", "teksti": "Väite [L1]."}]}, **osuvuus)
+
+
+def test_osuvuus_ei_pudotetaan_ja_loput_numeroidaan_uudelleen():
+    malli = _kaksi_loydosta(osuvuus={"L1": "ei", "L2": "osittainen"})
+    v, t = aja(malli)
+    assert [(l.tunnus, l.tiedosto) for l in v.loydokset] == [("L1", "beta_2021.pdf")]
+    assert t.osuvuus_pudotettuja == 1 and t.loydoksia == 1
+    assert any("1 löydöstä pudotettiin osuvuustarkistuksessa" in h for h in v.huomiot)
+    assert malli.vaiheet() == ["haku", "poiminta", "osuvuus", "koonti"]
+    koonto = dict(malli.kutsut)["koonti"]
+    assert "Beta" in koonto or "beta" in koonto
+    assert "Alfa-väite" not in koonto
+
+
+def test_osuvuus_kehote_sisaltaa_kysymyksen_ja_loydokset_ja_lampotila_nolla():
+    malli = _kaksi_loydosta()
+    aja(malli)
+    kayttaja = dict(malli.kutsut)["osuvuus"]
+    assert KYSYMYS.teksti in kayttaja and "Alfa-väite" in kayttaja and LAINAUS_ALFA in kayttaja
+    assert "[L1]" in kayttaja and "[L2]" in kayttaja
+    assert all(kw.get("lampotila") == 0 for vaihe, kw in malli.kw if vaihe in ("poiminta", "osuvuus"))
+
+
+def test_osuvuus_kaikki_pudotettu_antaa_ei_vastausta():
+    malli = _kaksi_loydosta(osuvuus={"L1": "ei", "L2": "ei"})
+    v, t = aja(malli)
+    assert v.ei_vastausta and v.loydokset == [] and t.osuvuus_pudotettuja == 2 and t.loydoksia == 0
+    assert "koonti" not in malli.vaiheet()
+
+
+def test_osuvuuskutsun_epaonnistuminen_sailyttaa_loydokset():
+    malli = _kaksi_loydosta(osuvuus=MalliVirhe("kaatui"))
+    v, t = aja(malli)
+    assert [l.tunnus for l in v.loydokset] == ["L1", "L2"] and t.osuvuus_pudotettuja == 0
+    assert any("Osuvuustarkistus epäonnistui" in h for h in v.huomiot)
+    assert not v.ei_vastausta
+
+
+def test_osuvuus_puuttuva_tai_outo_arvio_sailytetaan():
+    malli = _kaksi_loydosta(osuvuus={"L1": "ehkä"})
+    v, _ = aja(malli)
+    assert len(v.loydokset) == 2
+
+
+# ---------------------------------------------------------------- lainaus kokonaisina virkkeinä
+
+def test_lainaus_laajenee_kokonaisiin_virkkeisiin_ja_sivut_laajennetusta_valista():
+    # ehdotus alkaa keskeltä virkettä sivulla 1 ja päättyy kesken virkkeen sivulla 2
+    sivu1 = "Intro. The invented method was first described by several early groups in a long and careful report of results"
+    sivu2 = "and it was later replicated by many others across the field. Next sentence follows here."
+    teksti = "\f".join([sivu1, sivu2])
+    rag = ValeRag(osumat=[Osuma("f-x", "x.pdf", sivu1, 0.9, [1, 2])], tekstit={**TEKSTIT, "f-x": teksti})
+    rag.tiedostot = lambda: [{"id": "f-x", "tiedosto": "x.pdf"}]
+    ehd = "first described by several early groups in a long and careful report of results and it was later replicated"
+    v, _ = vastaa_tilastoin(KYSYMYS, PATTERI, rag, ValeMalli(poiminta=[ehdotus("O1", ehd)]), {}, None)
+    l = v.loydokset[0]
+    assert l.lainaus == ("The invented method was first described by several early groups in a long and careful report "
+                         "of results and it was later replicated by many others across the field.")
+    assert (l.pdf_sivu_alku, l.pdf_sivu_loppu) == (1, 2)
+
+
+def test_laajennusta_ei_tehda_jos_lainaus_ylittaa_700_merkkia():
+    alku = "Lead sentence. Start " + " ".join(["alpha"] * 40)                 # ~240 merkkiä ennen ehdotusta
+    keski = "Middle part of the quoted passage " + " ".join(["beta"] * 60)    # ~330 merkkiä
+    loppu = " ".join(["gamma"] * 40) + " end. Final sentence."                # ~240 merkkiä jälkeen
+    teksti = f"{alku} {keski} {loppu}"
+    rag = ValeRag(osumat=[Osuma("f-x", "x.pdf", teksti, 0.9, [1])], tekstit={**TEKSTIT, "f-x": teksti})
+    rag.tiedostot = lambda: [{"id": "f-x", "tiedosto": "x.pdf"}]
+    ehd = "Middle part of the quoted passage " + " ".join(["beta"] * 60)
+    v, _ = vastaa_tilastoin(KYSYMYS, PATTERI, rag, ValeMalli(poiminta=[ehdotus("O1", ehd)]), {}, None)
+    l = v.loydokset[0].lainaus
+    assert len(siisti(teksti)) > 700 and len(l) < 400 and l.startswith("Middle part")    # laajennus kokonaisuudessaan > 700

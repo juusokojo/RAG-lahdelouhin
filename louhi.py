@@ -73,18 +73,18 @@ def aja_kysymys(kysymys, patteri, rag, malli, lahteet, kansio: Path):
 
 
 def tulosta_taulukko(valitut, kansio: Path, virheet: dict[int, str]) -> None:
-    otsikko = ["Kysymys", "Osumia", "Ehdotuksia", "Hyväksyttyjä", "Sumeita", "Hylättyjä", "Löydöksiä", "Kesto"]
+    otsikko = ["Kysymys", "Osumia", "Ehdotuksia", "Hyväksyttyjä", "Sumeita", "Hylättyjä", "Osuvuus-pudotettuja", "Löydöksiä", "Kesto"]
     rivit = []
     syyt: dict[str, int] = {}
     for k in valitut:
         t = lue_tilasto(kansio / "tilastot" / f"k{k.nro}.json")
         if k.nro in virheet:
-            rivit.append([str(k.nro), "VIRHE", "", "", "", "", "", ""])
+            rivit.append([str(k.nro), "VIRHE", "", "", "", "", "", "", ""])
         elif t is None:
-            rivit.append([str(k.nro), "–", "", "", "", "", "", ""])
+            rivit.append([str(k.nro), "–", "", "", "", "", "", "", ""])
         else:
             rivit.append([str(k.nro), str(t.osumia), str(t.ehdotuksia), str(t.hyvaksyttyja), str(t.sumeita),
-                          str(t.hylattyja), str(t.loydoksia), f"{t.kesto_s:.0f} s"])
+                          str(t.hylattyja), str(t.osuvuus_pudotettuja), str(t.loydoksia), f"{t.kesto_s:.0f} s"])
             for syy, n in t.syyt.items():
                 syyt[syy] = syyt.get(syy, 0) + n
     leveys = [max(len(otsikko[i]), *(len(r[i]) for r in rivit)) for i in range(len(otsikko))]

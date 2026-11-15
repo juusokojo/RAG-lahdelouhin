@@ -10,14 +10,14 @@ import json
 import re
 import threading
 import time
-from dataclasses import asdict, dataclass, field, fields
+from dataclasses import asdict, dataclass, field, fields, replace
 from pathlib import Path
 
 from louhinta.lahteet import lyhytviite
 from louhinta.lehmus import Rag
 from louhinta.malli import Malli, MalliVirhe
 from louhinta.mallit import Kysymys, Lahde, Loydos, Osio, Osuma, Patteri, Vastaus
-from louhinta.paikannus import normalisoi, paikanna_lainaus, siisti, sivu
+from louhinta.paikannus import laajenna_virkkeisiin, normalisoi, paikanna_lainaus, siisti, sivu
 
 # ---------------------------------------------------------------- asetukset
 
@@ -27,6 +27,8 @@ NIMETTY_ENINTAAN = 10      # nimetyn tiedoston osumia enintään (parhaat pistee
 OSUMIA_ENINTAAN = 40
 OSUMIA_KUTSUSSA = 12
 MIN_LAINAUS = 40           # normalisoituja merkkejä (kirjaimet ja numerot)
+LAINAUS_ENINTAAN = 700     # lainaus laajennetaan kokonaisiin virkkeisiin vain, jos tulos on enintään näin pitkä
+LAMPOTILA = 0.0            # poiminta ja osuvuustarkistus
 
 # ---------------------------------------------------------------- kehotteet
 
@@ -92,6 +94,26 @@ LISAOHJE_ALASIIRTO = """- "siirretty_alalta": jos lähteen tulos on peräisin to
 (esim. hoitotyö, lääketiede, matematiikka), kirjoita ala; muuten tyhjä merkkijono "". Sääntö:
   {saanto}"""
 
+OSUVUUS_JARJESTELMA = (
+    "Olet tarkka tutkimusavustaja, joka arvioi, vastaavatko jo tarkistetut lainaukset kysymykseen. "
+    "Et muuta lainauksia. Vastaat aina pelkällä JSONilla."
+)
+OSUVUUS_KAYTTAJA = """Kysymys:
+{kysymys}
+
+Löydökset (tunnus, lähde, väite, lainaus):
+{loydokset}
+
+Tehtävä: arvioi jokaisesta löydöksestä, kuinka hyvin lainaus liittyy kysymykseen. Arvio on yksi seuraavista:
+- "suora": lainaus vastaa kysymykseen tai sen osaan suoraan.
+- "osittainen": lainaus valaisee kysymyksen aihetta, antaa taustaa tai rajauksia tai vastaa vain osaan.
+- "ei": lainaus ei käsittele kysymyksen aihetta lainkaan.
+Anna "ei" vain, kun lainaus ei käsittele kysymyksen aihetta lainkaan; taustaa tai rajauksia antava kohta on "osittainen". \
+Epäselvässä tapauksessa valitse "osittainen". Perustelu on yksi virke suomeksi.
+
+Vastaa täsmälleen tässä muodossa, yksi alkio jokaisesta löydöksestä:
+[{{"tunnus": "L1", "arvio": "suora", "perustelu": "..."}}]"""
+
 KOONTI_JARJESTELMA = (
     "Olet tarkka tutkimusavustaja, joka kirjoittaa suomenkielisen vastauksen vain annettujen, "
     "jo tarkistettujen löydösten pohjalta. Vastaat aina pelkällä JSONilla."
@@ -140,6 +162,7 @@ class Tilasto:
     hyvaksyttyja: int = 0       # paikannus onnistui (ennen päällekkäisten yhdistämistä)
     sumeita: int = 0            # lopullisista löydöksistä
     hylattyja: int = 0
+    osuvuus_pudotettuja: int = 0   # osuvuustarkistuksessa ("ei") pudotetut löydökset
     loydoksia: int = 0          # lopulliset löydökset yhdistämisen jälkeen
     syyt: dict[str, int] = field(default_factory=dict)   # hylkäyssyy -> lukumäärä
     kesto_s: float = 0.0
@@ -265,7 +288,7 @@ def _poimi(kysymys: Kysymys, patteri: Patteri, osumat: list[Osuma], lahteet: dic
                                             lisakentat=lisakentat, lisaohje=lisaohje)
         try:
             vastaus = malli.kysy_json(POIMINTA_JARJESTELMA, kayttaja,
-                                      loki=_lokipolku(loki, kysymys, f"2_poiminta{era_nro}"), max_tokens=6000)
+                                      loki=_lokipolku(loki, kysymys, f"2_poiminta{era_nro}"), max_tokens=6000, lampotila=LAMPOTILA)
         except MalliVirhe as virhe:
             virheet.append(f"poimintakutsu {era_nro}/{len(erat)} epäonnistui: {virhe}")
             huomiot.append(virheet[-1][0].upper() + virheet[-1][1:])
@@ -317,11 +340,15 @@ def _tarkista(kysymys: Kysymys, ehdotukset: list[tuple[dict, Osuma | None]], rag
         tilasto.hyvaksyttyja += 1
         tapa = p.tapa
         sivut = set(range(p.pdf_sivu_alku, p.pdf_sivu_loppu + 1))
+        # lainaus kokonaisiksi virkkeiksi, jos tulos ei veny liian pitkäksi
+        alku, loppu = laajenna_virkkeisiin(teksti, p.alku, p.loppu)
+        if (alku, loppu) == (p.alku, p.loppu) or len(siisti(teksti[alku:loppu])) > LAINAUS_ENINTAAN:
+            alku, loppu = p.alku, p.loppu
         if osuma.pdf_sivut and not sivut & set(osuma.pdf_sivut):
             tapa = "sumea"          # lainaus löytyi, mutta ei osuman sivuilta: merkitään tarkistettavaksi
         ehdokkaat.append({
             "file_id": osuma.file_id, "tiedosto": osuma.tiedosto, "teksti": teksti,
-            "alku": p.alku, "loppu": p.loppu, "tapa": tapa,
+            "alku": alku, "loppu": loppu, "tapa": tapa,
             "vaite": str(ehdotus.get("vaite") or "").strip(),
             "vahvuus": str(ehdotus.get("nayton_vahvuus") or "").strip(),
             "alasiirto": str(ehdotus.get("siirretty_alalta") or "").strip(),
@@ -356,6 +383,50 @@ def _tarkista(kysymys: Kysymys, ehdotukset: list[tuple[dict, Osuma | None]], rag
     if loki is not None and hylatyt:
         _kirjoita_loki(loki, kysymys, "3_hylatyt.json", json.dumps(hylatyt, ensure_ascii=False, indent=2))
     return loydokset
+
+
+def _osuvuus(kysymys: Kysymys, loydokset: list[Loydos], lahteet: dict[str, Lahde], malli: Malli,
+             tilasto: Tilasto, loki: Path | None, huomiot: list[str]) -> list[Loydos]:
+    """Yksi mallikutsu: pudottaa löydökset, joiden arvio on "ei"; numeroi loput uudelleen L1…
+
+    Jos kutsu epäonnistuu, löydökset säilytetään ja asia kirjataan huomioihin.
+    """
+    if loydokset:
+        rivit = [f"[{l.tunnus}] Lähde: {_lahdenimi(l.tiedosto, lahteet)}\n  väite: {l.vaite}\n"
+                 f"  lainaus: ”{l.lainaus}”" for l in loydokset]
+        kayttaja = OSUVUUS_KAYTTAJA.format(kysymys=kysymys.teksti, loydokset="\n\n".join(rivit))
+        try:
+            vastaus = malli.kysy_json(OSUVUUS_JARJESTELMA, kayttaja, loki=_lokipolku(loki, kysymys, "3b_osuvuus"),
+                                      max_tokens=6000, lampotila=LAMPOTILA)
+            if isinstance(vastaus, dict):
+                vastaus = [vastaus] if "tunnus" in vastaus else next(
+                    (v for v in vastaus.values() if isinstance(v, list)), [])
+            if not isinstance(vastaus, list):
+                raise MalliVirhe("osuvuusvastaus ei ollut lista")
+        except Exception as virhe:     # myös verkkovirheet: löydökset säilytetään
+            huomiot.append(f"Osuvuustarkistus epäonnistui ({str(virhe)[:200]}); löydökset säilytettiin "
+                           "ilman osuvuusarviota.")
+            vastaus = []
+        arviot = {str(a.get("tunnus", "")).strip(): str(a.get("arvio", "")).strip().lower()
+                  for a in vastaus if isinstance(a, dict)}
+        pudotetut = [l for l in loydokset if arviot.get(l.tunnus) == "ei"]
+        if pudotetut:
+            tilasto.osuvuus_pudotettuja = len(pudotetut)
+            nimet = ", ".join(l.tiedosto for l in pudotetut)
+            huomiot.append(f"{len(pudotetut)} löydöstä pudotettiin osuvuustarkistuksessa "
+                           f"(lainaus ei käsitellyt kysymyksen aihetta): {nimet}.")
+            if loki is not None:
+                perustelut = {str(a.get("tunnus", "")).strip(): str(a.get("perustelu", "")).strip()
+                              for a in vastaus if isinstance(a, dict)}
+                _kirjoita_loki(loki, kysymys, "3b_pudotetut.json", json.dumps(
+                    [{"tunnus": l.tunnus, "tiedosto": l.tiedosto, "vaite": l.vaite, "lainaus": l.lainaus,
+                      "perustelu": perustelut.get(l.tunnus, "")} for l in pudotetut],
+                    ensure_ascii=False, indent=2))
+            loydokset = [l for l in loydokset if arviot.get(l.tunnus) != "ei"]
+    tulos = [replace(l, tunnus=f"L{i}") for i, l in enumerate(loydokset, 1)]
+    tilasto.loydoksia = len(tulos)
+    tilasto.sumeita = sum(1 for l in tulos if l.tapa == "sumea")
+    return tulos
 
 
 _TUNNUS = re.compile(r"\[(L\d+)\]")
@@ -435,6 +506,7 @@ def vastaa_tilastoin(kysymys: Kysymys, patteri: Patteri, rag: Rag, malli: Malli,
         if osumat:
             ehdotukset = _poimi(kysymys, patteri, osumat, lahteet, malli, loki, huomiot)
             vastaus.loydokset = _tarkista(kysymys, ehdotukset, rag, lahteet, tilasto, loki)
+            vastaus.loydokset = _osuvuus(kysymys, vastaus.loydokset, lahteet, malli, tilasto, loki, huomiot)
         if tilasto.hylattyja:
             syyt = ", ".join(f"{s}: {n}" for s, n in sorted(tilasto.syyt.items()))
             huomiot.append(f"{tilasto.hylattyja} lainausehdotusta hylättiin ({syyt}).")

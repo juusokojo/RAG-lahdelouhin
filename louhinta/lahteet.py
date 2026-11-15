@@ -120,6 +120,43 @@ def tekstiviite(lahde: Lahde, pdf_sivu_alku: int, pdf_sivu_loppu: int, vuosi: st
     return f"({_tekstiviitteen_tekijat(lahde)}, {vuosi}, {_sivuviite(lahde, pdf_sivu_alku, pdf_sivu_loppu)})"
 
 
+def _sivuyksikko(lahde: Lahde, alku: int, loppu: int, painettu: bool) -> tuple[int, int]:
+    if painettu:
+        return painettu_sivu(lahde, alku), painettu_sivu(lahde, loppu)
+    return alku, loppu
+
+
+def _sivut_yhdistettyna(lahde: Lahde, sivut: list[tuple[int, int]]) -> str:
+    """Saman lähteen PDF-sivuvälit -> "s. 78", "ss. 78, 83" tai "ss. 78–79, 83"; nousevasti, ei toistoja."""
+    painettu = all(painettu_sivu(lahde, a) is not None and painettu_sivu(lahde, b) is not None
+                   for a, b in sivut)
+    yksikot = sorted({_sivuyksikko(lahde, a, b, painettu) for a, b in sivut})
+    # yksittäinen sivu, joka sisältyy johonkin sivuväliin, jätetään pois
+    yksikot = [(a, b) for a, b in yksikot
+               if not (a == b and any(c <= a <= d and (c, d) != (a, b) for c, d in yksikot))]
+    osat = [str(a) if a == b else f"{a}–{b}" for a, b in yksikot]
+    if painettu:
+        return ("s. " if len(yksikot) == 1 and yksikot[0][0] == yksikot[0][1] else "ss. ") + ", ".join(osat)
+    return ("PDF-sivu " if len(yksikot) == 1 and yksikot[0][0] == yksikot[0][1] else "PDF-sivut ") + ", ".join(osat)
+
+
+def yhdista_tekstiviitteet(viitteet: list[tuple[Lahde, int, int]], vuodet: dict[str, str] | None = None) -> str:
+    """Peräkkäiset viitteet yhdeksi: "(Page-Cutrara & Turk, 2017, ss. 78, 83)".
+
+    viitteet: (lähde, PDF-sivu alku, PDF-sivu loppu). Sama lähde yhdistetään (sivut nousevassa
+    järjestyksessä, sama sivu kerran); eri lähteet erotetaan puolipisteellä aakkosjärjestyksessä:
+    "(Kolbe ym., 2020, s. 168; Sinha & Kapur, 2021, s. 761)".
+    """
+    vuodet = vuodet or {}
+    ryhmat: dict[str, tuple[Lahde, list[tuple[int, int]]]] = {}
+    for lahde, alku, loppu in viitteet:
+        ryhmat.setdefault(lahde.tiedosto, (lahde, []))[1].append((alku, loppu))
+    jarjestetty = sorted(ryhmat.values(), key=lambda r: (lajitteluavain(r[0]), vuodet.get(r[0].tiedosto, _vuosi(r[0]))))
+    osat = [f"{_tekstiviitteen_tekijat(l)}, {vuodet.get(l.tiedosto) or _vuosi(l)}, {_sivut_yhdistettyna(l, sivut)}"
+            for l, sivut in jarjestetty]
+    return "(" + "; ".join(osat) + ")"
+
+
 def lyhytviite(lahde: Lahde, vuosi: str | None = None) -> str:
     """Viite ilman sivua ja sulkeita: "Kolbe ym., 2020"."""
     return f"{_tekstiviitteen_tekijat(lahde)}, {vuosi or _vuosi(lahde)}"

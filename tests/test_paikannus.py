@@ -5,7 +5,7 @@ import re
 import pytest
 
 from louhinta.paikannus import (
-    _normalisoi_kartalla, normalisoi, paikanna_lainaus, paikanna_patka, siisti, sivu,
+    _normalisoi_kartalla, laajenna_virkkeisiin, normalisoi, paikanna_lainaus, paikanna_patka, siisti, sivu,
 )
 
 SIVU1 = ("Oppiminen on aktiivinen prosessi, jossa opiskelija rakentaa merkityksiä.\n"
@@ -110,7 +110,7 @@ def test_ligatuuri_lahteessa():
     p = paikanna_lainaus("että office-työntekijöiden flexibility ja final-arvosana paranivat", teksti)
     assert p is not None and p.tapa == "tarkka"
     assert p.pdf_sivu_alku == p.pdf_sivu_loppu == 2
-    assert p.lainaus.startswith("että oﬃce-työntekijöiden ﬂexibility")   # leikattu alkuperäisestä
+    assert p.lainaus.startswith("että office-työntekijöiden flexibility")   # ligatuurit purettu
     assert p.lainaus == siisti(teksti[p.alku:p.loppu])
 
 
@@ -125,7 +125,7 @@ def test_alku_ligatuurin_keskelta_laajenee_sanan_alkuun():
     teksti = "Johdanto.\fTässä on ﬁnaali ja jatkoa tekstille kappaleessa."
     p = paikanna_lainaus("naali ja jatkoa tekstille kappaleessa", teksti)
     assert p is not None
-    assert p.lainaus == "ﬁnaali ja jatkoa tekstille kappaleessa."
+    assert p.lainaus == "finaali ja jatkoa tekstille kappaleessa."
     assert p.alku == teksti.index("ﬁnaali")
 
 
@@ -290,3 +290,81 @@ def test_sumea_virhe_ensimmaisessa_ja_viimeisessa_sanassa_ei_vuoda_naapureihin()
     assert p is not None and p.tapa == "sumea"
     assert p.lainaus == "Palaute annetaan heti harjoituksen päätyttyä, jotta kokemus on tuore."
     assert p.pdf_sivu_alku == p.pdf_sivu_loppu == 2
+
+
+# ------------------------------------------------------------------ ligatuurit siisti-funktiossa
+
+def test_siisti_purkaa_latinalaiset_ligatuurit():
+    assert siisti("ﬀ ﬁ ﬂ ﬃ ﬄ ﬅ ﬆ") == "ff fi fl ffi ffl st st"
+    assert siisti("o\ufb03ce  e\ufb00ect \ufb01nal") == "office effect final"
+
+
+def test_paikannuksen_takuu_sailyy_ligatuureilla():
+    teksti = "Alku.\fThe ﬁnal e\ufb00ect was clear in the o\ufb03ce setting for all participants."
+    p = paikanna_lainaus("final effect was clear in the office setting for all", teksti)
+    assert p is not None and p.lainaus == siisti(teksti[p.alku:p.loppu]) and "ﬁ" not in p.lainaus
+
+
+# ------------------------------------------------------------------ laajenna_virkkeisiin
+
+def _laajenna(teksti: str, osa: str, **kw) -> str:
+    a = teksti.index(osa)
+    alku, loppu = laajenna_virkkeisiin(teksti, a, a + len(osa), **kw)
+    return teksti[alku:loppu]
+
+
+def test_laajenna_edeltavan_virkkeen_alkuun_ja_seuraavan_loppuun():
+    teksti = "First one here. The effect of rehearsal was large in all groups. Third one follows."
+    assert _laajenna(teksti, "rehearsal was large") == "The effect of rehearsal was large in all groups."
+
+
+def test_laajenna_ei_muuta_jo_kokonaista_virkkeita():
+    teksti = "First one here. The effect was large. Third one follows."
+    assert _laajenna(teksti, "The effect was large.") == "The effect was large."
+
+
+def test_laajenna_kysymys_ja_huutomerkki_ovat_virkerajoja():
+    teksti = "Is it so? Yes the effect was large indeed! Then it ended."
+    assert _laajenna(teksti, "effect was large") == "Yes the effect was large indeed!"
+
+
+def test_laajenna_lyhenteet_ja_desimaaliluvut_eivat_ole_rajoja():
+    teksti = ("Start here. Smith et al. found that e.g. the score rose by 3.5 points, i.e. a lot, "
+              "see p. 5 for details. Next one.")
+    assert _laajenna(teksti, "score rose by") == ("Smith et al. found that e.g. the score rose by 3.5 points, "
+                                                 "i.e. a lot, see p. 5 for details.")
+
+
+def test_laajenna_nimikirjain_ei_ole_raja():
+    teksti = "Intro. As shown by J. Smith the effect was large. Outro."
+    assert _laajenna(teksti, "the effect was") == "As shown by J. Smith the effect was large."
+
+
+def test_laajenna_vain_siihen_reunaan_jonka_raja_loytyy_enintaan_rajan_sisalta():
+    taytto = "Word " + "word " * 59                                     # 300 merkkiä ilman virkerajaa
+    teksti = f"Before. {taytto}core part here and more words. After one."
+    tulos = _laajenna(teksti, "core part here", enint=100)
+    assert tulos.startswith("core") and tulos.endswith("more words.")     # alku ei laajene, loppu laajenee
+    tulos = _laajenna(teksti, "core part here", enint=500)
+    assert tulos.startswith("Word word")     # nyt alkuraja löytyy
+
+
+def test_laajenna_sivurajan_yli():
+    teksti = "Intro text. The long sentence starts on page one and\fcontinues on page two until the end. Tail."
+    a = teksti.index("starts on page")
+    alku, loppu = laajenna_virkkeisiin(teksti, a, a + len("starts on page one"))
+    assert siisti(teksti[alku:loppu]) == "The long sentence starts on page one and continues on page two until the end."
+    assert sivu(teksti, alku) == 1 and sivu(teksti, loppu - 1) == 2
+
+
+def test_laajenna_tekstin_alku_ja_loppu_ja_lainausmerkit():
+    teksti = "The effect was large in all groups and sites. “Quoted start here and ends now.” Last."
+    assert _laajenna(teksti, "start here") == "“Quoted start here and ends now.”"
+    assert _laajenna(teksti, "effect was large") == "The effect was large in all groups and sites."
+
+
+def test_laajenna_sailyttaa_takuun():
+    teksti = "A b c. Hyvä commu-\nnication on tärkeää ryhmälle. Seuraava."
+    a = teksti.index("tärkeää")
+    alku, loppu = laajenna_virkkeisiin(teksti, a, a + 7)
+    assert siisti(teksti[alku:loppu]) == "Hyvä communication on tärkeää ryhmälle."

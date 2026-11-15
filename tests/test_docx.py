@@ -21,6 +21,10 @@ def _korvikkeet() -> types.ModuleType:
     def tekstiviite(lahde, pdf_sivu_alku, pdf_sivu_loppu, vuosi=None):
         return f"({lahde.tekijat[0].suku} ym., {vuosi}, s. {pdf_sivu_alku})"
 
+    def yhdista_tekstiviitteet(viitteet, vuodet=None):
+        osat = [f"{l.tekijat[0].suku} ym., {(vuodet or {}).get(l.tiedosto)}, s. {a}" for l, a, _ in viitteet]
+        return "(" + "; ".join(osat) + ")"
+
     def lyhytviite(lahde, vuosi=None):
         return f"{lahde.tekijat[0].suku} ym., {vuosi}"
 
@@ -37,6 +41,7 @@ def _korvikkeet() -> types.ModuleType:
         return (lahde.tekijat[0].suku.lower(),)
 
     moduuli.tekstiviite = tekstiviite
+    moduuli.yhdista_tekstiviitteet = yhdista_tekstiviitteet
     moduuli.lyhytviite = lyhytviite
     moduuli.vuositunnukset = vuositunnukset
     moduuli.lahdeluettelorivi = lahdeluettelorivi
@@ -214,3 +219,24 @@ def test_tiedosto_tallentuu_luodulle_kansiolle(tmp_path):
     polku = tmp_path / "uusi" / "kansio" / "tulos.docx"
     kirjoita_docx(_patteri(), _vastaukset(), _lahteet(), polku)
     assert polku.exists()
+
+
+def test_perakkaiset_tunnukset_yhdistetaan_yhdeksi_viitteeksi(tmp_path):
+    vastaus = Vastaus(
+        kysymys_nro=1,
+        osiot=[Osio("", "Väite [L1] [L2], toinen [L2], [L1]. Eri kohdissa [L1] ja [L2]. Tuntematon [L1][L9].")],
+        loydokset=_vastaukset()[0].loydokset)
+    teksti = "\n".join(k.text for k in _lue(_kirjoita(tmp_path, [vastaus])))
+    assert "Väite (Zeta ym., 2019, s. 3; Alfa ym., 2020, s. 5)," in teksti
+    assert "Eri kohdissa (Zeta ym., 2019, s. 3) ja (Alfa ym., 2020, s. 5)." in teksti
+    assert "Tuntematon (Zeta ym., 2019, s. 3) [L9]." in teksti
+    assert "tuntematon tunnus [L9]" in teksti
+
+
+def test_lainauslohkojen_viitteet_pysyvat_yksittaisina(tmp_path):
+    vastaus = Vastaus(kysymys_nro=1, osiot=[Osio("", "Väite [L1] [L2].")],
+                      loydokset=_vastaukset()[0].loydokset)
+    kappaleet = _lue(_kirjoita(tmp_path, [vastaus]))
+    lainaukset = [k.text for k in kappaleet if k.text.startswith("(")]
+    assert any(t.startswith("(Zeta ym., 2019, s. 3)") and ";" not in t for t in lainaukset)
+    assert any(t.startswith("(Alfa ym., 2020, s. 5)") and ";" not in t for t in lainaukset)

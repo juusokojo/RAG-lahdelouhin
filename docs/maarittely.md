@@ -12,8 +12,9 @@ Työkalu vastaa kysymyspatteriin Lehmus-RAGin artikkeleiden perusteella ja tuott
 2. `putki.py` (vaihe 2) pyytää mallilta hakulauseet, hakee `lehmus.py`:llä → `Osuma`-lista.
 3. Malli poimii osumista väitteet ja lainausehdotukset.
 4. `paikannus.py` tarkistaa ehdotukset → `Paikannus` → `Loydos`.
+4b. Lainaus laajennetaan kokonaisiin virkkeisiin (`laajenna_virkkeisiin`, enintään 700 merkkiä), ja yksi osuvuuskutsu arvioi löydökset ("suora" | "osittainen" | "ei"); "ei" pudotetaan ennen tunnusten L1… antamista. Poiminta ja osuvuustarkistus ajetaan lämpötilalla 0.
 5. Malli kirjoittaa vastauksen tarkistetuista löydöksistä ja viittaa niihin tunnuksilla `[L1]` → `Vastaus`.
-6. `docx_tulostus.py` korvaa tunnukset APA-viitteillä (`lahteet.py`) ja kirjoittaa dokumentin.
+6. `docx_tulostus.py` korvaa tunnukset APA-viitteillä (peräkkäiset tunnukset yhdeksi viitteeksi, `yhdista_tekstiviitteet`) (`lahteet.py`) ja kirjoittaa dokumentin.
 
 ## Moduulit ja omistajat
 

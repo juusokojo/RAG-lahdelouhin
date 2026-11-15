@@ -16,6 +16,7 @@ from docx.shared import Cm, Pt, RGBColor
 from louhinta.mallit import Kysymys, Lahde, Loydos, Patteri, Vastaus
 
 TUNNUS_RE = re.compile(r"\[(L\d+)\]")
+TUNNUSJONO_RE = re.compile(r"\[L\d+\](?:[\s,]*\[L\d+\])*")     # peräkkäiset tunnukset, välissä tyhjää tai pilkku
 FONTTI = "Times New Roman"
 
 
@@ -65,7 +66,8 @@ def _puuttuvat_viitetiedot(lahde: Lahde) -> list[str]:
 
 def kirjoita_docx(patteri: Patteri, vastaukset: list[Vastaus], lahteet: dict[str, Lahde],
                   polku: Path, otsikko: str = "Teoriakoonti") -> None:
-    from louhinta.lahteet import lahdeluettelorivi, lajitteluavain, lyhytviite, tekstiviite, vuositunnukset
+    from louhinta.lahteet import (
+        lahdeluettelorivi, lajitteluavain, lyhytviite, tekstiviite, vuositunnukset, yhdista_tekstiviitteet)
 
     vuodet = vuositunnukset(list(lahteet.values()))
     vastaus_nro = {v.kysymys_nro: v for v in vastaukset}
@@ -87,13 +89,25 @@ def kirjoita_docx(patteri: Patteri, vastaukset: list[Vastaus], lahteet: dict[str
         tunnukset = {l.tunnus: l for l in vastaus.loydokset}
 
         def korvaa(osuma: re.Match) -> str:
-            loydos = tunnukset.get(osuma.group(1))
-            if loydos is None:
-                huomiot.append(f"Kysymys {vastaus.kysymys_nro}: tuntematon tunnus [{osuma.group(1)}] jätettiin tekstiin")
-                return osuma.group(0)
-            return viite(loydos, vastaus)
+            """Tunnusjono -> yksi yhdistetty viite; tuntemattomat tunnukset jätetään tekstiin."""
+            viitteet: list[tuple[Lahde, int, int]] = []
+            jaljelle: list[str] = []
+            for tunnus in dict.fromkeys(TUNNUS_RE.findall(osuma.group(0))):
+                loydos = tunnukset.get(tunnus)
+                if loydos is None:
+                    huomiot.append(f"Kysymys {vastaus.kysymys_nro}: tuntematon tunnus [{tunnus}] jätettiin tekstiin")
+                    jaljelle.append(f"[{tunnus}]")
+                    continue
+                lahde = lahteet.get(loydos.tiedosto)
+                if lahde is None:
+                    jaljelle.append(viite(loydos, vastaus))     # kirjaa huomion ja palauttaa "(tiedosto)"
+                    continue
+                viitatut.add(loydos.tiedosto)
+                viitteet.append((lahde, loydos.pdf_sivu_alku, loydos.pdf_sivu_loppu))
+            osat = ([yhdista_tekstiviitteet(viitteet, vuodet)] if viitteet else []) + jaljelle
+            return " ".join(osat)
 
-        return TUNNUS_RE.sub(korvaa, teksti)
+        return TUNNUSJONO_RE.sub(korvaa, teksti)
 
     doc = Document()
     _tyylit(doc)

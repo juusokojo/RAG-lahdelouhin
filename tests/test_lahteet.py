@@ -5,7 +5,7 @@ import json
 
 from louhinta.lahteet import (
     lahdeluettelorivi, lajitteluavain, lataa_lahteet, lyhytviite, nimikirjaimet, painettu_sivu,
-    tallenna_lahteet, tekstiviite, vuositunnukset,
+    tallenna_lahteet, tekstiviite, vuositunnukset, yhdista_tekstiviitteet,
 )
 from louhinta.mallit import Lahde, Tekija
 
@@ -324,3 +324,44 @@ def test_lyhytviite():
     assert lyhytviite(artikkeli(tekijat=[t("Kolbe"), t("Eppich"), t("Rudolph")])) == "Kolbe ym., 2020"
     assert lyhytviite(artikkeli(), "2020a") == "Virtanen, 2020a"
     assert lyhytviite(Lahde(tiedosto="a_b_2000.pdf")) == "a_b_2000, n.d."
+
+
+# ---------------------------------------------------------------- yhdistetyt viitteet
+
+def _page() -> Lahde:
+    return artikkeli(tiedosto="p.pdf", tekijat=[t("Page-Cutrara", "K."), t("Turk", "M.")], vuosi="2017", aloitussivu=71)
+
+
+def _kolbe() -> Lahde:
+    return artikkeli(tiedosto="k.pdf", tekijat=[t("Kolbe"), t("B"), t("C")], vuosi="2020", aloitussivu=164)
+
+
+def _sinha() -> Lahde:
+    return artikkeli(tiedosto="s.pdf", tekijat=[t("Sinha"), t("Kapur")], vuosi="2021", aloitussivu=751)
+
+
+def test_yhdistetty_viite_sama_lahde_sivut_nousevasti_ja_ilman_toistoa():
+    viitteet = [(_page(), 13, 13), (_page(), 8, 8), (_page(), 8, 8)]
+    assert yhdista_tekstiviitteet(viitteet) == "(Page-Cutrara & Turk, 2017, ss. 78, 83)"
+
+
+def test_yhdistetty_viite_yksi_sivu_ja_sivuvali():
+    assert yhdista_tekstiviitteet([(_page(), 8, 8)]) == "(Page-Cutrara & Turk, 2017, s. 78)"
+    assert yhdista_tekstiviitteet([(_page(), 8, 9)]) == "(Page-Cutrara & Turk, 2017, ss. 78–79)"
+    assert yhdista_tekstiviitteet([(_page(), 8, 9), (_page(), 9, 9), (_page(), 20, 20)]) \
+        == "(Page-Cutrara & Turk, 2017, ss. 78–79, 90)"
+
+
+def test_yhdistetty_viite_eri_lahteet_puolipisteella_aakkosjarjestyksessa():
+    viitteet = [(_sinha(), 11, 11), (_kolbe(), 5, 5), (_sinha(), 11, 11)]
+    assert yhdista_tekstiviitteet(viitteet) == "(Kolbe ym., 2020, s. 168; Sinha & Kapur, 2021, s. 761)"
+
+
+def test_yhdistetty_viite_kayttaa_vuositunnuksia_ja_pdf_sivuja():
+    ilman = artikkeli(tiedosto="x.pdf", tekijat=[t("Zed")], vuosi="2019", aloitussivu=None)
+    assert yhdista_tekstiviitteet([(ilman, 9, 9), (ilman, 2, 2)], {"x.pdf": "2019a"}) == "(Zed, 2019a, PDF-sivut 2, 9)"
+    assert yhdista_tekstiviitteet([(ilman, 2, 2)]) == "(Zed, 2019, PDF-sivu 2)"
+
+
+def test_yhdistetty_viite_yhdella_viitteella_vastaa_tekstiviitetta():
+    assert yhdista_tekstiviitteet([(_kolbe(), 5, 6)]) == tekstiviite(_kolbe(), 5, 6)

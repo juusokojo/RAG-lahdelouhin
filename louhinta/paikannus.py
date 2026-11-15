@@ -86,8 +86,12 @@ def sivu(source_text: str, indeksi: int) -> int:
     return 1 + source_text.count("\f", 0, max(indeksi, 0))
 
 
+_LIGATUURIT = str.maketrans({"ﬀ": "ff", "ﬁ": "fi", "ﬂ": "fl", "ﬃ": "ffi", "ﬄ": "ffl", "ﬅ": "st", "ﬆ": "st"})
+
+
 def siisti(teksti: str) -> str:
-    """Näyttömuoto: tavutus yhdistetty, tyhjät yhdeksi välilyönniksi, reunat siistitty."""
+    """Näyttömuoto: ligatuurit purettu, tavutus yhdistetty, tyhjät yhdeksi välilyönniksi, reunat siistitty."""
+    teksti = teksti.translate(_LIGATUURIT)
     def yhdista(m: re.Match) -> str:
         # ei kosketa, jos seuraava rivi alkaa isolla kirjaimella, numerolla tms.
         return "" if m.string[m.end()].islower() else m.group(0)
@@ -204,3 +208,79 @@ def paikanna_patka(patka: str, source_text: str) -> list[int]:
         if j >= 0 and k.norm.find(ankkuri, j + 1) < 0:
             loydetyt |= sivut(j, j + ANKKURI)
     return sorted(loydetyt)
+
+
+# ---------------------------------------------------------------- virkerajat
+
+_LYHENTEET = frozenset({
+    "al", "e.g", "i.e", "p", "pp", "vs", "cf", "fig", "figs", "eq", "eqs", "no", "nos", "vol", "ed", "eds",
+    "dr", "mr", "mrs", "ms", "prof", "st", "ca", "approx", "resp", "viz", "inc", "ltd", "co", "ym", "jne",
+    "esim", "ks", "ss",
+})
+_LOPPUMERKKI = re.compile(r"[.!?][\"'”’)\]]*")
+_AVAAVAT = "\"'“‘(["
+
+
+def _on_lyhenne(t: str, piste: int) -> bool:
+    """Onko t[piste] lyhenteen tai nimikirjaimen piste (ei virkkeen loppu)."""
+    if t[piste] != ".":
+        return False
+    m = re.search(r"(?<!\w)([^\W\d_](?:[^\W\d_]|\.(?=[^\W\d_]))*)\Z", t[max(0, piste - 20):piste])
+    if not m:
+        return False
+    sana = m.group(1)
+    return sana.lower() in _LYHENTEET or (len(sana) == 1 and sana.isupper())
+
+
+def _virkerajat(t: str, a: int, b: int) -> list[tuple[int, int]]:
+    """Virkerajat, joiden loppumerkki on välillä [a, b): (virkkeen loppu, seuraavan virkkeen alku).
+
+    Rajan jälkeen tulee tyhjää ja iso kirjain (avaavien lainausmerkkien tai sulkujen jälkeen)
+    tai tekstin loppu; tällöin seuraavan virkkeen alku on tekstin pituus.
+    """
+    n = len(t)
+    rajat = []
+    for m in _LOPPUMERKKI.finditer(t, max(a, 0), min(n, b + 100)):
+        if m.start() >= b or _on_lyhenne(t, m.start()):
+            continue
+        loppu = m.end()
+        k = loppu
+        while k < n and t[k].isspace():
+            k += 1
+        if k == n:
+            rajat.append((loppu, n))
+            continue
+        if k == loppu:                      # ei tyhjää välissä: desimaaliluku, URL tms.
+            continue
+        alku = k
+        while k < n and t[k] in _AVAAVAT:
+            k += 1
+        if k < n and t[k].isupper():
+            rajat.append((loppu, alku))
+    return rajat
+
+
+def laajenna_virkkeisiin(source_text: str, alku: int, loppu: int, enint: int = 250) -> tuple[int, int]:
+    """Laajentaa välin edeltävän virkkeen alkuun ja seuraavan virkkeen loppuun.
+
+    Virkeraja on piste, kysymys- tai huutomerkki + tyhjä + iso kirjain; lyhenteet
+    (et al., e.g., i.e., p.), nimikirjaimet ja desimaaliluvut eivät ole rajoja. Jos rajaa
+    ei löydy enint merkin sisältä, sitä reunaa ei laajenneta.
+    """
+    t = source_text
+    n = len(t)
+    uusi_alku, uusi_loppu = alku, loppu
+
+    # alku: viimeinen raja, jonka seuraava virke alkaa kohdassa <= alku (enintään enint merkkiä taaksepäin)
+    ehdokkaat = [r for r in _virkerajat(t, alku - enint - 2, alku) if r[1] <= alku and alku - r[1] <= enint]
+    if ehdokkaat:
+        uusi_alku = ehdokkaat[-1][1]
+    elif 0 < alku <= enint:
+        uusi_alku = len(t) - len(t.lstrip())      # tekstin alku on enint merkin sisällä ja toimii virkkeen alkuna
+        uusi_alku = min(uusi_alku, alku)
+
+    # loppu: ensimmäinen raja, jonka loppumerkki päättyy kohdassa >= loppu (enintään enint merkkiä eteenpäin)
+    ehdokkaat = [r for r in _virkerajat(t, loppu - 8, loppu + enint) if r[0] >= loppu and r[0] - loppu <= enint]
+    if ehdokkaat:
+        uusi_loppu = ehdokkaat[0][0]
+    return uusi_alku, uusi_loppu

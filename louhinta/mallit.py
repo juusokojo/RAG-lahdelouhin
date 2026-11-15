@@ -112,3 +112,4 @@ class Lahde:
     aloitussivu: int | None = None   # painettu sivunumero PDF:n sivulla 1; None = ei painettua sivutusta
     tarkistettu: bool = False   # käyttäjä on tarkistanut rivin
     huomio: str = ""            # rakentajan havainnot, esim. "aloitussivu ja Crossrefin sivut ristiriidassa"
+    aineisto: str = ""          # tutkimusaineisto käsin, esim. "11 haastattelua: 10 äitiä ja yksi pariskunta"

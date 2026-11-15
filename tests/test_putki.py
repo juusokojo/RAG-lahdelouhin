@@ -262,7 +262,8 @@ def test_koontikehote_sisaltaa_loydokset_ja_saannot():
 
 # ---------------------------------------------------------------- haku ja hakulauseet
 
-def test_puuttuvat_lahteet_huomioihin_ja_tuntematon_tiedosto_pudotetaan():
+def test_puuttuvat_lahteet_huomioihin_ja_tuntematon_tiedosto_pudotetaan(monkeypatch):
+    monkeypatch.setattr(putki, "KOKOTEKSTI_SIVUJA_ENINTAAN", 0)     # pitkän lähteen polku: rajattu haku
     malli = ValeMalli(haku={"haut": ["a", "b"], "nimetyt": ["alfa_2020.pdf", "olematon.pdf"],
                             "puuttuvat": ["Gamma (2019)"]})
     rag = ValeRag()
@@ -290,6 +291,8 @@ def test_sama_patka_vain_kerran_ja_kutsukohtainen_raja(monkeypatch):
 
 def test_nimettyjen_osumat_sailytetaan_osumarajassa(monkeypatch):
     monkeypatch.setattr(putki, "OSUMIA_ENINTAAN", 5)
+    monkeypatch.setattr(putki, "MUITA_VAHINTAAN", 0)
+    monkeypatch.setattr(putki, "KOKOTEKSTI_SIVUJA_ENINTAAN", 0)
     muut = [Osuma("f-beta", "beta_2021.pdf", f"beta {i}", 0.9 - i / 1000, [1]) for i in range(8)]
     nimetty = Osuma("f-alfa", "alfa_2020.pdf", SIVU2, 0.01, [2])         # huonoin piste
     malli = ValeMalli(haku={"haut": ["a"], "nimetyt": ["alfa_2020.pdf"], "puuttuvat": []})
@@ -457,3 +460,98 @@ def test_laajennusta_ei_tehda_jos_lainaus_ylittaa_700_merkkia():
     v, _ = vastaa_tilastoin(KYSYMYS, PATTERI, rag, ValeMalli(poiminta=[ehdotus("O1", ehd)]), {}, None)
     l = v.loydokset[0].lainaus
     assert len(siisti(teksti)) > 700 and len(l) < 400 and l.startswith("Middle part")    # laajennus kokonaisuudessaan > 700
+
+
+# ---------------------------------------------------------------- nimetty lähde kokonaan, väärä oletus, aineisto
+
+def test_lyhyt_nimetty_lahde_luetaan_kokonaan_sivulohkoina(monkeypatch):
+    monkeypatch.setattr(putki, "KOKOTEKSTI_LOHKO", len(SIVU1) + 10)      # yksi sivu lohkoa kohti
+    malli = ValeMalli(haku={"haut": ["a"], "nimetyt": ["alfa_2020.pdf"], "puuttuvat": []})
+    rag = ValeRag([osuma("beta_2021.pdf", BETA)])        # semanttinen haku ei löydä alfasta mitään
+    _, t = aja(malli, rag)
+    assert not any(f for _, _, f in rag.haut)            # kokonaan luetusta ei tehdä rajattua hakua
+    kehote = next(k for v, k in malli.kutsut if v == "poiminta")
+    assert SIVU1 in kehote and SIVU3 in kehote and BETA in kehote
+    assert "PDF-sivu 3" in kehote
+    assert t.osumia == 4                                  # kolme sivulohkoa + beta
+
+
+def test_kokonaan_luetun_lainaus_saa_oikean_sivun():
+    malli = ValeMalli(haku={"haut": ["a"], "nimetyt": ["alfa_2020.pdf"], "puuttuvat": []},
+                      poiminta=[ehdotus("O1")])
+    v, _ = aja(malli, ValeRag([]))
+    assert len(v.loydokset) == 1
+    assert v.loydokset[0].pdf_sivu_alku == 2 and v.loydokset[0].tapa == "tarkka"
+
+
+def test_pitka_nimetty_lahde_haetaan_rajatusti(monkeypatch):
+    monkeypatch.setattr(putki, "KOKOTEKSTI_SIVUJA_ENINTAAN", 2)          # alfassa on 3 sivua
+    malli = ValeMalli(haku={"haut": ["a"], "nimetyt": ["alfa_2020.pdf"], "puuttuvat": []})
+    rag = ValeRag()
+    aja(malli, rag)
+    assert ("a", 6, ["f-alfa"]) in rag.haut
+
+
+KYSYMYS_ALFA = Kysymys(8, "K2", "Ryhmä", ["P"], "Mitä Alfan ryhmä (2020) sanoo ahdistuksesta?")
+
+
+def test_nimetty_ilman_loydoksia_huomioihin_ja_koontiin():
+    # kysymys nimeää alfan, mutta asia löytyy betasta (väärä oletus)
+    malli = ValeMalli(haku={"haut": ["a"], "nimetyt": ["alfa_2020.pdf"], "puuttuvat": []},
+                      poiminta=[ehdotus("O2", lainaus=LAINAUS_BETA)])   # O1 = alfa kokonaan
+    v, _ = vastaa_tilastoin(KYSYMYS_ALFA, PATTERI, ValeRag([osuma("beta_2021.pdf", BETA)]), malli, LAHTEET, None)
+    assert [l.tiedosto for l in v.loydokset] == ["beta_2021.pdf"]
+    huomio = next(h for h in v.huomiot if "nimetystä lähteestä" in h)
+    assert "Alfa, 2020" in huomio and "luettiin kokonaan" in huomio and "Beta, 2021" in huomio
+    koonti = next(k for vaihe, k in malli.kutsut if vaihe == "koonti")
+    assert "Alfa, 2020 (ei löydöksiä)" in koonti
+
+
+def test_nimetty_jolla_on_loydos_ei_saa_huomiota():
+    malli = ValeMalli(haku={"haut": ["a"], "nimetyt": ["alfa_2020.pdf"], "puuttuvat": []},
+                      poiminta=[ehdotus("O1")])
+    v, _ = vastaa_tilastoin(KYSYMYS_ALFA, PATTERI, ValeRag([]), malli, LAHTEET, None)
+    assert v.loydokset and not any("nimetystä lähteestä" in h for h in v.huomiot)
+    koonti = next(k for vaihe, k in malli.kutsut if vaihe == "koonti")
+    assert "Alfa, 2020 (löydökset L1)" in koonti
+
+
+def test_aineisto_valitetaan_koontiin():
+    lahteet = dict(LAHTEET)
+    lahteet["alfa_2020.pdf"] = Lahde("alfa_2020.pdf", tekijat=[Tekija("Alfa", "A.")], vuosi="2020",
+                                     otsikko="Alfa", aloitussivu=10, aineisto="11 haastattelua: 10 äitiä")
+    malli = ValeMalli(poiminta=[ehdotus("O1")])
+    vastaa_tilastoin(KYSYMYS, PATTERI, ValeRag(), malli, lahteet, None)
+    koonti = next(k for v, k in malli.kutsut if v == "koonti")
+    assert "aineisto: 11 haastattelua: 10 äitiä" in koonti and ", aineisto)" in koonti
+
+
+def test_vahvuus_ja_alasiirto_yhtenaistetaan_lahteittain():
+    toinen = "Teachers who skipped the rehearsal reported higher stress during the first conversation."
+    malli = ValeMalli(poiminta=[
+        ehdotus("O1", nayton_vahvuus="kohtalainen", siirretty_alalta="lääketiede"),
+        ehdotus("O1", lainaus=toinen, nayton_vahvuus="kohtalainen", siirretty_alalta=""),
+        ehdotus("O2", lainaus=LAINAUS_BETA, nayton_vahvuus="alustava", siirretty_alalta="")])
+    v, _ = aja(malli)
+    alfat = [l for l in v.loydokset if l.tiedosto == "alfa_2020.pdf"]
+    assert len(alfat) == 2 and all(l.siirretty_alalta == "lääketiede" for l in alfat)
+    beta = next(l for l in v.loydokset if l.tiedosto == "beta_2021.pdf")
+    assert beta.siirretty_alalta == "" and beta.nayton_vahvuus == "alustava"
+
+
+def test_hakuvaiheen_ehdottama_lahde_jota_kysymys_ei_nimea_ei_saa_huomiota():
+    malli = ValeMalli(haku={"haut": ["a"], "nimetyt": ["alfa_2020.pdf"], "puuttuvat": []},
+                      poiminta=[ehdotus("O2", lainaus=LAINAUS_BETA)])
+    v, _ = aja(malli, ValeRag([osuma("beta_2021.pdf", BETA)]))       # KYSYMYS ei mainitse Alfaa
+    assert v.loydokset and not any("nimetystä lähteestä" in h for h in v.huomiot)
+    koonti = next(k for vaihe, k in malli.kutsut if vaihe == "koonti")
+    assert "Kysymyksessä nimetyt lähteet" not in koonti
+
+
+def test_lahdeluettelo_jatetaan_pois_kokotekstista():
+    lahdeluettelo = "\nReferences\nMiller S. Why having control reduces stress. Academic Press; 1980."
+    tekstit = {"f-alfa": ALFA + lahdeluettelo, "f-beta": BETA}
+    malli = ValeMalli(haku={"haut": ["a"], "nimetyt": ["alfa_2020.pdf"], "puuttuvat": []})
+    aja(malli, ValeRag([], tekstit))
+    kehote = next(k for v, k in malli.kutsut if v == "poiminta")
+    assert SIVU3 in kehote and "Miller S." not in kehote

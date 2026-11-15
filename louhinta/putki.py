@@ -26,6 +26,9 @@ HAKU_NIMETTY = 6           # max_chunks nimettyä tiedostoa kohti
 NIMETTY_ENINTAAN = 10      # nimetyn tiedoston osumia enintään (parhaat pisteet)
 OSUMIA_ENINTAAN = 40
 OSUMIA_KUTSUSSA = 12
+KOKOTEKSTI_SIVUJA_ENINTAAN = 40   # nimetty lähde, jossa on enintään näin monta sivua, luetaan kokonaan
+KOKOTEKSTI_LOHKO = 6000           # kokotekstin lohkon tavoitepituus merkkeinä (kokonaisia sivuja)
+MUITA_VAHINTAAN = 12              # rajaamattoman haun osumia vähintään nimettyjen rinnalla
 MIN_LAINAUS = 40           # normalisoituja merkkejä (kirjaimet ja numerot)
 LAINAUS_ENINTAAN = 700     # lainaus laajennetaan kokonaisiin virkkeisiin vain, jos tulos on enintään näin pitkä
 LAMPOTILA = 0.0            # poiminta ja osuvuustarkistus
@@ -71,18 +74,23 @@ jokaisen katkelman otsikossa.
 Tehtävä: poimi katkelmista kohdat, jotka vastaavat kysymykseen tai valaisevat sitä selvästi \
 (myös osittainen vastaus tai lähteen omat rajaukset ja varaukset käyvät, kunhan ne liittyvät \
 kysymyksen aiheeseen). Älä poimi kohtia, jotka vain sivuavat aihetta. \
+Jos kysymys nimeää lähteen, poimi myös muiden lähteiden kohdat, jotka käsittelevät kysymyksen asiaa: \
+kysymyksen oletus voi olla väärä, ja asia voi löytyä toisesta lähteestä. \
 Palauta JSON-lista, jonka jokainen alkio on muotoa
 {{"osuma": "O3", "vaite": "...", "lainaus": "..."{lisakentat}}}
 
 Säännöt:
 - "osuma" on sen katkelman tunnus, josta lainaus on kopioitu.
-- "vaite": mitä lähde tässä kohdassa toteaa, yhtenä tai kahtena lauseena suomeksi, omin sanoin. \
-Älä lisää mitään, mitä katkelma ei sano.
+- "vaite": mitä lainaus toteaa, yhtenä tai kahtena lauseena suomeksi, omin sanoin. Väite kattaa \
+vain lainauksen sisällön, ei katkelman muita kohtia: jos haluat sanoa jotain muuta katkelmasta, \
+tee siitä oma alkionsa omalla lainauksellaan. Älä lisää mitään, mitä lainaus ei sano. Kirjoita \
+huoliteltua yleiskieltä; jos et osaa kääntää termiä, käytä alkuperäistä termiä.
 - "lainaus": 1–3 virkettä, kopioitu katkelmasta merkilleen sellaisena kuin se siinä on: \
 alkuperäinen kieli, ei käännöstä, ei korjauksia, ei lyhennysmerkkejä (… tai [...]), \
 ei yhdistelyä eri kohdista. Lainauksen pitää olla vähintään noin 60 merkkiä pitkä ja \
 yhtenäinen pätkä yhdestä katkelmasta.
 - Sama kohta vain kerran. Jos katkelma ei vastaa kysymykseen, jätä se pois.
+- Älä poimi lähdeluettelon tai viitteiden rivejä: viitatun teoksen otsikko ei ole lähteen väite.
 - Jos mikään katkelma ei vastaa kysymykseen, palauta tyhjä lista: []
 {lisaohje}"""
 LISAKENTAT_VAHVUUS = ', "nayton_vahvuus": "..."'
@@ -90,8 +98,9 @@ LISAKENTAT_ALASIIRTO = ', "siirretty_alalta": "..."'
 LISAOHJE_VAHVUUS = """- "nayton_vahvuus": arvioi näytön vahvuus tämän lähdetyypin perusteella \
 (vahva / kohtalainen / alustava / asiantuntijan näkemys) säännön mukaan:
   {saanto}"""
-LISAOHJE_ALASIIRTO = """- "siirretty_alalta": jos lähteen tulos on peräisin toiselta alalta kuin kysymys \
-(esim. hoitotyö, lääketiede, matematiikka), kirjoita ala; muuten tyhjä merkkijono "". Sääntö:
+LISAOHJE_ALASIIRTO = """- "siirretty_alalta": jos lähde on toiselta alalta kuin kysymys \
+(esim. hoitotyö, lääketiede, matematiikka), kirjoita ala; muuten tyhjä merkkijono "". Arvioi lähteen \
+alan perusteella, ei yksittäisen virkkeen: saman lähteen kaikki kohdat saavat saman arvon. Sääntö:
   {saanto}"""
 
 OSUVUUS_JARJESTELMA = (
@@ -109,6 +118,8 @@ Tehtävä: arvioi jokaisesta löydöksestä, kuinka hyvin lainaus liittyy kysymy
 - "osittainen": lainaus valaisee kysymyksen aihetta, antaa taustaa tai rajauksia tai vastaa vain osaan.
 - "ei": lainaus ei käsittele kysymyksen aihetta lainkaan.
 Anna "ei" vain, kun lainaus ei käsittele kysymyksen aihetta lainkaan; taustaa tai rajauksia antava kohta on "osittainen". \
+Kysymyksen aihe on asia, josta kysytään, ei kysymyksessä nimetty lähde: jos lainaus on toisesta lähteestä \
+mutta käsittelee samaa asiaa, arvio on vähintään "osittainen". \
 Epäselvässä tapauksessa valitse "osittainen". Perustelu on yksi virke suomeksi.
 
 Vastaa täsmälleen tässä muodossa, yksi alkio jokaisesta löydöksestä:
@@ -129,9 +140,11 @@ Kysymys:
 
 Tarkistetut löydökset (tunnus, lähde, väite, lainaus{vahvuus_otsikko}):
 {loydokset}
-
+{nimetyt}
 Kirjoita vastaus kysymykseen. Vaatimukset:
 - Käytä vain löydösten tietoa. Älä lisää tietoa, jota löydöksissä ei ole.
+- Löydöksen "aineisto" on lähderekisteristä (tutkimuksen koko ja osallistujat). Kerro se, kun säännöt \
+pyytävät aineiston kokoa tai osallistujia; älä arvaa aineistoa lähteelle, jolta sitä ei ole annettu.
 - Viittaa jokaiseen väitteeseen löydöksen tunnuksella hakasulkeissa, esim. [L1]. Useampi tunnus \
 omina hakasulkeinaan: [L1] [L2]. Käytä vain yllä lueteltuja tunnuksia.
 - Älä kirjoita tekstiin tekijöitä, vuosilukuja, sivunumeroita tai lainauksia: ohjelma korvaa \
@@ -233,15 +246,85 @@ def _hakulauseet(kysymys: Kysymys, tiedostot: dict[str, str], lahteet: dict[str,
     return haut[:4], nimetyt
 
 
-def _hae(rag: Rag, haut: list[str], nimetyt: list[str], tiedostot: dict[str, str]) -> list[Osuma]:
-    """Rajaamattomat haut + nimettyihin rajatut haut. Sama pätkä vain kerran; enintään OSUMIA_ENINTAAN."""
-    nimetyt_idt = {tiedostot[n] for n in nimetyt}
+_LAHDELUETTELO = re.compile(
+    r"^[ \t]*(references|reference list|bibliography|literature|lähteet|lähdeluettelo|kirjallisuus)[ \t]*$",
+    re.IGNORECASE | re.MULTILINE)
+
+
+def _nimetty_kysymyksessa(nimi: str, lahteet: dict[str, Lahde], kysymys: str) -> bool:
+    """Mainitaanko lähde kysymyksessä: ensimmäisen tekijän sukunimi tai tiedostonimen alku (esim. "inacsl").
+
+    Hakuvaihe saa ehdottaa luettavaksi myös lähteitä, joita kysymys ei nimeä; niistä ei kirjata
+    "nimetty lähde ei käsittele asiaa" -huomiota.
+    """
+    teksti = kysymys.casefold()
+    ehdokkaat = [nimi.split("_")[0].split(".")[0]]
+    lahde = lahteet.get(nimi)
+    if lahde is not None and lahde.tekijat:
+        ehdokkaat.append(lahde.tekijat[0].suku)
+    return any(len(e) >= 3 and e.casefold() in teksti for e in ehdokkaat)
+
+
+def _kokoteksti(rag: Rag, nimi: str, file_id: str) -> list[Osuma] | None:
+    """Lyhyen lähteen koko teksti peräkkäisinä sivulohkoina; None, jos lähde on pitkä tai tekstiä ei saada.
+
+    Semanttinen haku voi ohittaa juuri sen kohdan, jota nimettyä lähdettä koskeva kysymys hakee
+    (esim. montako haastattelua): lyhyt nimetty lähde luetaan siksi poimintaan kokonaan.
+    """
+    try:
+        teksti = rag.lahdeteksti(file_id)
+    except (ValueError, OSError):
+        return None
+    # lähdeluettelo pois: sen rivit eivät ole lähteen väitteitä (esim. viitatun teoksen otsikko)
+    otsikot = list(_LAHDELUETTELO.finditer(teksti))
+    if otsikot and otsikot[-1].start() > len(teksti) // 2:
+        teksti = teksti[:otsikot[-1].start()]
+    sivut = teksti.split("\f")
+    if len(sivut) > KOKOTEKSTI_SIVUJA_ENINTAAN:
+        return None
+    lohkot: list[Osuma] = []
+    kesken: list[tuple[int, str]] = []
+
+    def valmis() -> None:
+        if kesken:
+            lohkot.append(Osuma(file_id=file_id, tiedosto=nimi, pisteet=1.0,
+                                teksti="\n\n".join(s for _, s in kesken),
+                                pdf_sivut=[n for n, _ in kesken]))
+            kesken.clear()
+
+    for nro, sivu_teksti in enumerate(sivut, 1):
+        if not sivu_teksti.strip():
+            continue
+        if kesken and sum(len(s) for _, s in kesken) + len(sivu_teksti) > KOKOTEKSTI_LOHKO:
+            valmis()
+        kesken.append((nro, sivu_teksti.strip()))
+    valmis()
+    return lohkot or None
+
+
+def _hae(rag: Rag, haut: list[str], nimetyt: list[str], tiedostot: dict[str, str],
+         kokonaan: set[str] | None = None) -> list[Osuma]:
+    """Rajaamattomat haut + nimetyt lähteet. Sama pätkä vain kerran.
+
+    Lyhyt nimetty lähde luetaan kokonaan (kaikki lohkot säilytetään), pitkästä haetaan rajatuilla
+    hauilla. Nimettyjen rinnalle otetaan rajaamattomia osumia niin, että yhteensä on enintään
+    OSUMIA_ENINTAAN, mutta muita aina vähintään MUITA_VAHINTAAN. `kokonaan` saa kokonaan luettujen nimet.
+    """
     ainutkertaiset: dict[tuple[str, str], Osuma] = {}
     for haku in haut:
         for osuma in rag.hae(haku, max_chunks=HAKU_RAJAAMATON):
             ainutkertaiset.setdefault((osuma.file_id, osuma.teksti), osuma)
+    kokotekstit: list[Osuma] = []
+    luettu_idt: set[str] = set()
     nimettyja: dict[tuple[str, str], Osuma] = {}
     for nimi in nimetyt:
+        lohkot = _kokoteksti(rag, nimi, tiedostot[nimi])
+        if lohkot is not None:
+            kokotekstit.extend(lohkot)
+            luettu_idt.add(tiedostot[nimi])
+            if kokonaan is not None:
+                kokonaan.add(nimi)
+            continue
         omat: dict[tuple[str, str], Osuma] = {}
         for haku in haut:
             for osuma in rag.hae(haku, max_chunks=HAKU_NIMETTY, filter_ids=[tiedostot[nimi]]):
@@ -252,9 +335,11 @@ def _hae(rag: Rag, haut: list[str], nimetyt: list[str], tiedostot: dict[str, str
         nimettyja.update(parhaat)
     # nimettyjen osumat säilytetään aina; loput täydennetään pisteiden mukaan
     nimetyt_lista = sorted(nimettyja.values(), key=lambda o: -o.pisteet)[:OSUMIA_ENINTAAN]
-    muut = sorted((o for k, o in ainutkertaiset.items() if k not in nimettyja),
+    muut = sorted((o for k, o in ainutkertaiset.items()
+                   if k not in nimettyja and o.file_id not in luettu_idt),   # kokonaan luettu on jo mukana
                   key=lambda o: -o.pisteet)
-    return nimetyt_lista + muut[:OSUMIA_ENINTAAN - len(nimetyt_lista)]
+    tilaa = max(OSUMIA_ENINTAAN - len(kokotekstit) - len(nimetyt_lista), MUITA_VAHINTAAN)
+    return kokotekstit + nimetyt_lista + muut[:tilaa]
 
 
 def _sivuteksti(sivut: list[int]) -> str:
@@ -438,9 +523,40 @@ def _siisti_tunnukset(teksti: str) -> str:
     return _TUNNUSRYHMA.sub(lambda m: " ".join(f"[{t}]" for t in re.findall(r"L\d+", m.group(1))), teksti)
 
 
+def _yhtenaista(loydokset: list[Loydos]) -> list[Loydos]:
+    """Näytön vahvuus ja alasiirto koskevat lähdettä: saman lähteen löydökset saavat yleisimmän ei-tyhjän arvon."""
+    def yleisin(arvot: list[str]) -> str:
+        arvot = [a for a in arvot if a]
+        return max(dict.fromkeys(arvot), key=arvot.count) if arvot else ""
+
+    tulos = []
+    for l in loydokset:
+        samat = [m for m in loydokset if m.tiedosto == l.tiedosto]
+        tulos.append(replace(l, nayton_vahvuus=yleisin([m.nayton_vahvuus for m in samat]),
+                             siirretty_alalta=yleisin([m.siirretty_alalta for m in samat])))
+    return tulos
+
+
+def _nimetyt_ilman_loydoksia(nimetyt: list[str], loydokset: list[Loydos], lahteet: dict[str, Lahde],
+                             kokonaan: set[str]) -> list[str]:
+    """Huomiot nimetyistä lähteistä, joista ei jäänyt yhtään löydöstä (sääntö: kerro muut aihetta käsittelevät)."""
+    muut = list(dict.fromkeys(_lahdenimi(l.tiedosto, lahteet) for l in loydokset if l.tiedosto not in nimetyt))
+    huomiot = []
+    for nimi in nimetyt:
+        if any(l.tiedosto == nimi for l in loydokset):
+            continue
+        tapa = "lähde luettiin kokonaan" if nimi in kokonaan else "haku ei löytänyt sopivaa kohtaa"
+        jatko = (f" Aihetta käsittelevät: {'; '.join(muut)}." if muut
+                 else " Muistakaan lähteistä ei löytynyt aihetta käsittelevää kohtaa.")
+        huomiot.append(f"Kysymyksessä nimetystä lähteestä {_lahdenimi(nimi, lahteet)} ei löytynyt "
+                       f"kysymykseen vastaavaa kohtaa ({tapa}).{jatko}")
+    return huomiot
+
+
 def _kokoa(kysymys: Kysymys, patteri: Patteri, loydokset: list[Loydos], lahteet: dict[str, Lahde],
-           malli: Malli, loki: Path | None, huomiot: list[str]) -> list[Osio]:
+           malli: Malli, loki: Path | None, huomiot: list[str], nimetyt: list[str] | None = None) -> list[Osio]:
     vahvuus = any(l.nayton_vahvuus or l.siirretty_alalta for l in loydokset)
+    aineistoja = False
     rivit = []
     for l in loydokset:
         lisa = []
@@ -448,14 +564,34 @@ def _kokoa(kysymys: Kysymys, patteri: Patteri, loydokset: list[Loydos], lahteet:
             lisa.append(f"näytön vahvuus: {l.nayton_vahvuus}")
         if l.siirretty_alalta:
             lisa.append(f"siirretty alalta: {l.siirretty_alalta}")
+        lahde = lahteet.get(l.tiedosto)
+        if lahde is not None and lahde.aineisto:
+            lisa.append(f"aineisto: {lahde.aineisto}")
+            aineistoja = True
         rivit.append(f"[{l.tunnus}] Lähde: {_lahdenimi(l.tiedosto, lahteet)}\n"
                      f"  väite: {l.vaite}\n  lainaus: ”{l.lainaus}”"
                      + (f"\n  {'; '.join(lisa)}" if lisa else ""))
+    otsikko = (", näytön vahvuus ja alasiirto" if vahvuus else "") + (", aineisto" if aineistoja else "")
+    nimetyt_teksti = ""
+    if nimetyt:
+        kuvaukset, ilman = [], []
+        for nimi in nimetyt:
+            omat = [l.tunnus for l in loydokset if l.tiedosto == nimi]
+            kuvaukset.append(f"{_lahdenimi(nimi, lahteet)} ("
+                             + (f"löydökset {', '.join(omat)}" if omat else "ei löydöksiä") + ")")
+            if not omat:
+                ilman.append(_lahdenimi(nimi, lahteet))
+        nimetyt_teksti = f"\nKysymyksessä nimetyt lähteet: {'; '.join(kuvaukset)}.\n"
+        if ilman:
+            nimetyt_teksti += (
+                "Aloita ensimmäinen osio täsmälleen lauseella: \"Kysymyksessä nimetty lähde ("
+                + "; ".join(ilman) + ") ei käsittele tätä asiaa.\" Kerro sitten, mitä muut lähteet siitä "
+                "sanovat (viittaa niiden löydöksiin tunnuksilla).\n")
     kayttaja = KOONTI_KAYTTAJA.format(
         tehtava=patteri.tehtava or "(ei annettu)",
         saannot="\n".join(f"{i}. {s}" for i, s in enumerate(patteri.saannot, 1)) or "(ei sääntöjä)",
-        kysymys=kysymys.teksti, vahvuus_otsikko=", näytön vahvuus ja alasiirto" if vahvuus else "",
-        loydokset="\n\n".join(rivit))
+        kysymys=kysymys.teksti, vahvuus_otsikko=otsikko,
+        loydokset="\n\n".join(rivit), nimetyt=nimetyt_teksti)
     vastaus = malli.kysy_json(KOONTI_JARJESTELMA, kayttaja, loki=_lokipolku(loki, kysymys, "4_koonti"),
                               max_tokens=6000)
     raaka = vastaus.get("osiot") if isinstance(vastaus, dict) else vastaus
@@ -496,22 +632,26 @@ def vastaa_tilastoin(kysymys: Kysymys, patteri: Patteri, rag: Rag, malli: Malli,
     try:
         tiedostot = _tiedostot(rag)
         haut, nimetyt = _hakulauseet(kysymys, tiedostot, lahteet, malli, loki, huomiot)
-        osumat = _hae(rag, haut, nimetyt, tiedostot)
+        kokonaan: set[str] = set()
+        osumat = _hae(rag, haut, nimetyt, tiedostot, kokonaan)
         tilasto.osumia = len(osumat)
         if loki is not None:
             _kirjoita_loki(loki, kysymys, "1_osumat.json", json.dumps(
-                {"haut": haut, "nimetyt": nimetyt,
+                {"haut": haut, "nimetyt": nimetyt, "kokonaan": sorted(kokonaan),
                  "osumat": [{"tiedosto": o.tiedosto, "pisteet": o.pisteet, "pdf_sivut": o.pdf_sivut,
                              "merkkeja": len(o.teksti)} for o in osumat]}, ensure_ascii=False, indent=2))
         if osumat:
             ehdotukset = _poimi(kysymys, patteri, osumat, lahteet, malli, loki, huomiot)
             vastaus.loydokset = _tarkista(kysymys, ehdotukset, rag, lahteet, tilasto, loki)
             vastaus.loydokset = _osuvuus(kysymys, vastaus.loydokset, lahteet, malli, tilasto, loki, huomiot)
+            vastaus.loydokset = _yhtenaista(vastaus.loydokset)
+        nimetyt = [n for n in nimetyt if _nimetty_kysymyksessa(n, lahteet, kysymys.teksti)]
+        huomiot.extend(_nimetyt_ilman_loydoksia(nimetyt, vastaus.loydokset, lahteet, kokonaan))
         if tilasto.hylattyja:
             syyt = ", ".join(f"{s}: {n}" for s, n in sorted(tilasto.syyt.items()))
             huomiot.append(f"{tilasto.hylattyja} lainausehdotusta hylättiin ({syyt}).")
         if vastaus.loydokset:
-            vastaus.osiot = _kokoa(kysymys, patteri, vastaus.loydokset, lahteet, malli, loki, huomiot)
+            vastaus.osiot = _kokoa(kysymys, patteri, vastaus.loydokset, lahteet, malli, loki, huomiot, nimetyt)
         else:
             vastaus.ei_vastausta = True       # ei mallikutsua
     finally:

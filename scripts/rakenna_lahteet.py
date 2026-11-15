@@ -387,6 +387,8 @@ def main() -> int:
             lahde, tila = rakenna_rivi(nimi, teksti, crossref)
         except Exception as e:  # yksi tiedosto ei kaada koko ajoa
             lahde, tila = Lahde(tiedosto=nimi, huomio=f"Käsittely epäonnistui: {type(e).__name__}"), {}
+        if nimi in vanhat and vanhat[nimi].aineisto:     # käsin kirjoitettu, ei tule Crossrefistä
+            lahde.aineisto = vanhat[nimi].aineisto
         lahteet[nimi] = lahde
         summa["tiedostoja"] += 1
         for avain_, arvo in tila.items():

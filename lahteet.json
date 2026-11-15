@@ -25,7 +25,8 @@
     "url": "",
     "aloitussivu": 477,
     "tarkistettu": false,
-    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. DOI johdettu sivun 1 PII-tunnisteesta."
+    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. DOI johdettu sivun 1 PII-tunnisteesta.",
+    "aineisto": ""
   },
   "badash_etal_2026.pdf": {
     "tiedosto": "badash_etal_2026.pdf",
@@ -44,7 +45,8 @@
     "url": "",
     "aloitussivu": null,
     "tarkistettu": false,
-    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. PUUTTUU: tekijät ja julkaisupaikka (konferenssi) eivät näy PDF:ssä, täydennä käsin. PDF:ssä ei ole sivunumeroita, joten viitteeseen tulee PDF-sivu."
+    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. PUUTTUU: tekijät ja julkaisupaikka (konferenssi) eivät näy PDF:ssä, täydennä käsin. PDF:ssä ei ole sivunumeroita, joten viitteeseen tulee PDF-sivu.",
+    "aineisto": ""
   },
   "bearman_ajjawi_2018.pdf": {
     "tiedosto": "bearman_ajjawi_2018.pdf",
@@ -72,7 +74,8 @@
     "url": "",
     "aloitussivu": 1,
     "tarkistettu": false,
-    "huomio": "Crossrefillä ei sivuja vertailuun"
+    "huomio": "Crossrefillä ei sivuja vertailuun",
+    "aineisto": ""
   },
   "brame_2016.pdf": {
     "tiedosto": "brame_2016.pdf",
@@ -96,7 +99,8 @@
     "url": "",
     "aloitussivu": 1,
     "tarkistettu": false,
-    "huomio": "Pistokoe 15.11.2026: artikkelinumero es6, sivut numeroitu 1–n (PDF-sivu = sivu); aloitussivu asetettu 1."
+    "huomio": "Pistokoe 15.11.2026: artikkelinumero es6, sivut numeroitu 1–n (PDF-sivu = sivu); aloitussivu asetettu 1.",
+    "aineisto": ""
   },
   "bronfenbrenner_morris_2006.pdf": {
     "tiedosto": "bronfenbrenner_morris_2006.pdf",
@@ -129,7 +133,8 @@
     "url": "",
     "aloitussivu": 793,
     "tarkistettu": false,
-    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. Teoksen nimi, toimittaja, kustantaja ja DOI eivät näy PDF:ssä, vaan ne on täytetty yleistiedon pohjalta: varmista."
+    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. Teoksen nimi, toimittaja, kustantaja ja DOI eivät näy PDF:ssä, vaan ne on täytetty yleistiedon pohjalta: varmista.",
+    "aineisto": ""
   },
   "cheng_etal_2014.pdf": {
     "tiedosto": "cheng_etal_2014.pdf",
@@ -173,7 +178,8 @@
     "url": "",
     "aloitussivu": 657,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "chernikova_etal_2020.pdf": {
     "tiedosto": "chernikova_etal_2020.pdf",
@@ -217,7 +223,8 @@
     "url": "",
     "aloitussivu": 499,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "chiou_etal_2020.pdf": {
     "tiedosto": "chiou_etal_2020.pdf",
@@ -249,7 +256,8 @@
     "url": "",
     "aloitussivu": 1,
     "tarkistettu": false,
-    "huomio": "Crossrefin sivu '103756' on yksittäinen luku (tulkittu artikkelinumeroksi); PDF:n sivutus alkaa luvusta 1"
+    "huomio": "Crossrefin sivu '103756' on yksittäinen luku (tulkittu artikkelinumeroksi); PDF:n sivutus alkaa luvusta 1",
+    "aineisto": ""
   },
   "craig_schroeder_2017.pdf": {
     "tiedosto": "craig_schroeder_2017.pdf",
@@ -277,7 +285,8 @@
     "url": "",
     "aloitussivu": 193,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "craig_schroeder_2019.pdf": {
     "tiedosto": "craig_schroeder_2019.pdf",
@@ -305,7 +314,8 @@
     "url": "",
     "aloitussivu": 1534,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "deconinck_etal_2023.pdf": {
     "tiedosto": "deconinck_etal_2023.pdf",
@@ -349,7 +359,8 @@
     "url": "",
     "aloitussivu": 68,
     "tarkistettu": false,
-    "huomio": "Pistokoe 15.11.2026: PDF-sivu 1 on kansilehti, PDF-sivu 2 = s. 69 (Crossref 69–101); aloitussivu asetettu 68."
+    "huomio": "Pistokoe 15.11.2026: PDF-sivu 1 on kansilehti, PDF-sivu 2 = s. 69 (Crossref 69–101); aloitussivu asetettu 68.",
+    "aineisto": ""
   },
   "dotger_2010.pdf": {
     "tiedosto": "dotger_2010.pdf",
@@ -373,7 +384,8 @@
     "url": "",
     "aloitussivu": 805,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "duque_etal_2023.pdf": {
     "tiedosto": "duque_etal_2023.pdf",
@@ -413,7 +425,8 @@
     "url": "",
     "aloitussivu": 447,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "eppich_cheng_2015.pdf": {
     "tiedosto": "eppich_cheng_2015.pdf",
@@ -441,7 +454,8 @@
     "url": "",
     "aloitussivu": 106,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "eriksson_arnkil_2012.pdf": {
     "tiedosto": "eriksson_arnkil_2012.pdf",
@@ -469,7 +483,8 @@
     "url": "",
     "aloitussivu": -2,
     "tarkistettu": false,
-    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. Sarja: Oppaita 60. Kustantaja päätelty (nimiösivulla Stakes, aiemmin Stakesin kustantama 2009): varmista. Painettu s. 3 = PDF-sivu 6."
+    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. Sarja: Oppaita 60. Kustantaja päätelty (nimiösivulla Stakes, aiemmin Stakesin kustantama 2009): varmista. Painettu s. 3 = PDF-sivu 6.",
+    "aineisto": ""
   },
   "fiorella_mayer_2018.pdf": {
     "tiedosto": "fiorella_mayer_2018.pdf",
@@ -497,7 +512,8 @@
     "url": "",
     "aloitussivu": 465,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "gartmeier_etal_2015.pdf": {
     "tiedosto": "gartmeier_etal_2015.pdf",
@@ -553,7 +569,8 @@
     "url": "",
     "aloitussivu": 443,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "gerich_schmitz_2016.pdf": {
     "tiedosto": "gerich_schmitz_2016.pdf",
@@ -581,7 +598,8 @@
     "url": "",
     "aloitussivu": 285,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "guo_etal_2014.pdf": {
     "tiedosto": "guo_etal_2014.pdf",
@@ -613,7 +631,8 @@
     "url": "",
     "aloitussivu": 41,
     "tarkistettu": false,
-    "huomio": "Konferenssijulkaisu: lähdeluettelorivi muotoiltu artikkelina, tarkista"
+    "huomio": "Konferenssijulkaisu: lähdeluettelorivi muotoiltu artikkelina, tarkista",
+    "aineisto": ""
   },
   "hallmen_etal_2025.pdf": {
     "tiedosto": "hallmen_etal_2025.pdf",
@@ -657,7 +676,8 @@
     "url": "",
     "aloitussivu": 1,
     "tarkistettu": false,
-    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. arXiv-esijulkaisu (arXiv:2505.03423v1), ei painettua sivutusta: sivut ovat PDF-sivuja 1–9. Tarkista, onko artikkeli sittemmin julkaistu konferenssissa."
+    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. arXiv-esijulkaisu (arXiv:2505.03423v1), ei painettua sivutusta: sivut ovat PDF-sivuja 1–9. Tarkista, onko artikkeli sittemmin julkaistu konferenssissa.",
+    "aineisto": ""
   },
   "honkasilta_2016.pdf": {
     "tiedosto": "honkasilta_2016.pdf",
@@ -681,7 +701,8 @@
     "url": "http://urn.fi/URN:ISBN:978-951-39-6636-2",
     "aloitussivu": -2,
     "tarkistettu": false,
-    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. Väitöskirja, sarja Jyväskylä Studies in Education, Psychology and Social Research 553. Painettu s. 12 = PDF-sivu 15. PDF sisältää vain yhteenveto-osan."
+    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. Väitöskirja, sarja Jyväskylä Studies in Education, Psychology and Social Research 553. Painettu s. 12 = PDF-sivu 15. PDF sisältää vain yhteenveto-osan.",
+    "aineisto": "13 ADHD-diagnoosin saanutta 11–16-vuotiasta nuorta ja 18 äitiä (Suomi); haastattelut"
   },
   "honkasilta_etal_2015.pdf": {
     "tiedosto": "honkasilta_etal_2015.pdf",
@@ -713,7 +734,8 @@
     "url": "",
     "aloitussivu": 673,
     "tarkistettu": false,
-    "huomio": "Pistokoe 15.11.2026: PDF-sivu 1 on kansilehti, PDF-sivu 2 = s. 674 (Crossref 674–690); aloitussivu asetettu 673."
+    "huomio": "Pistokoe 15.11.2026: PDF-sivu 1 on kansilehti, PDF-sivu 2 = s. 674 (Crossref 674–690); aloitussivu asetettu 673.",
+    "aineisto": "18 suomalaista äitiä, joiden lapsella on ADHD-diagnoosi; diskurssianalyysi"
   },
   "inacsl_etal_2021.pdf": {
     "tiedosto": "inacsl_etal_2021.pdf",
@@ -749,7 +771,8 @@
     "url": "",
     "aloitussivu": 9,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "jonsson_2014.pdf": {
     "tiedosto": "jonsson_2014.pdf",
@@ -773,7 +796,8 @@
     "url": "",
     "aloitussivu": 839,
     "tarkistettu": false,
-    "huomio": "Pistokoe 15.11.2026: PDF-sivu 1 on kustantajan kansilehti, PDF-sivu 2 = s. 840 (Crossref 840–852); aloitussivu asetettu 839."
+    "huomio": "Pistokoe 15.11.2026: PDF-sivu 1 on kustantajan kansilehti, PDF-sivu 2 = s. 840 (Crossref 840–852); aloitussivu asetettu 839.",
+    "aineisto": ""
   },
   "kolbe_etal_2020.pdf": {
     "tiedosto": "kolbe_etal_2020.pdf",
@@ -825,7 +849,8 @@
     "url": "",
     "aloitussivu": 164,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "koskela_2025.pdf": {
     "tiedosto": "koskela_2025.pdf",
@@ -849,7 +874,8 @@
     "url": "",
     "aloitussivu": null,
     "tarkistettu": false,
-    "huomio": "Pistokoe 15.11.2026: PDF on rinnakkaistallenne, jonka oma sivutus (PDF-sivu 2 = s. 1) EI vastaa lehden sivuja 171–188. Aloitussivu jätetty tyhjäksi, joten viitteissä on PDF-sivu. Hanki kustantajan versio tai viittaa rinnakkaistallenteeseen."
+    "huomio": "Pistokoe 15.11.2026: PDF on rinnakkaistallenne, jonka oma sivutus (PDF-sivu 2 = s. 1) EI vastaa lehden sivuja 171–188. Aloitussivu jätetty tyhjäksi, joten viitteissä on PDF-sivu. Hanki kustantajan versio tai viittaa rinnakkaistallenteeseen.",
+    "aineisto": "11 haastattelua: 10 äitiä ja yksi pariskunta; vanhempia, joiden lapsella on tuen tarve, viidestä maakunnasta (Suomi)"
   },
   "kuusimaki_etal_2019a.pdf": {
     "tiedosto": "kuusimaki_etal_2019a.pdf",
@@ -881,7 +907,8 @@
     "url": "",
     "aloitussivu": 1,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": "kysely: 1 123 vanhempaa ja 118 opettajaa (Suomi)"
   },
   "kuusimaki_etal_2019b.pdf": {
     "tiedosto": "kuusimaki_etal_2019b.pdf",
@@ -913,7 +940,8 @@
     "url": "",
     "aloitussivu": 1,
     "tarkistettu": false,
-    "huomio": "Crossrefillä ei sivuja vertailuun"
+    "huomio": "Crossrefillä ei sivuja vertailuun",
+    "aineisto": "kyselyn avovastaukset: 400 vanhempaa ja 80 opettajaa (Suomi)"
   },
   "lendrum_etal_2015.pdf": {
     "tiedosto": "lendrum_etal_2015.pdf",
@@ -945,7 +973,8 @@
     "url": "",
     "aloitussivu": 87,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "levin_etal_2023.pdf": {
     "tiedosto": "levin_etal_2023.pdf",
@@ -977,7 +1006,8 @@
     "url": "",
     "aloitussivu": 1,
     "tarkistettu": false,
-    "huomio": "Crossrefillä ei sivuja vertailuun"
+    "huomio": "Crossrefillä ei sivuja vertailuun",
+    "aineisto": ""
   },
   "lohvansuu_etal_2021.pdf": {
     "tiedosto": "lohvansuu_etal_2021.pdf",
@@ -1025,7 +1055,8 @@
     "url": "",
     "aloitussivu": 1,
     "tarkistettu": false,
-    "huomio": "Pistokoe 15.11.2026: artikkelinumero 427, sivut numeroitu '1 of 24' (PDF-sivu = sivu); aloitussivu asetettu 1."
+    "huomio": "Pistokoe 15.11.2026: artikkelinumero 427, sivut numeroitu '1 of 24' (PDF-sivu = sivu); aloitussivu asetettu 1.",
+    "aineisto": "Jyväskylän pitkittäistutkimus: 108 lasta, joilla on suvussa lukivaikeutta, ja 92 verrokkia syntymästä aikuisuuteen"
   },
   "loibl_etal_2017.pdf": {
     "tiedosto": "loibl_etal_2017.pdf",
@@ -1057,7 +1088,8 @@
     "url": "",
     "aloitussivu": 693,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "mayer_etal_2003.pdf": {
     "tiedosto": "mayer_etal_2003.pdf",
@@ -1089,7 +1121,8 @@
     "url": "",
     "aloitussivu": 419,
     "tarkistettu": false,
-    "huomio": "Pistokoe 15.11.2026: PDF:ssä ei painettuja sivunumeroita, mutta sivumäärä 7 = Crossref 419–425; aloitussivu asetettu 419."
+    "huomio": "Pistokoe 15.11.2026: PDF:ssä ei painettuja sivunumeroita, mutta sivumäärä 7 = Crossref 419–425; aloitussivu asetettu 419.",
+    "aineisto": ""
   },
   "noetel_etal_2021.pdf": {
     "tiedosto": "noetel_etal_2021.pdf",
@@ -1137,7 +1170,8 @@
     "url": "",
     "aloitussivu": 204,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "noetel_etal_2022.pdf": {
     "tiedosto": "noetel_etal_2022.pdf",
@@ -1189,7 +1223,8 @@
     "url": "",
     "aloitussivu": 413,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "page-cutrara_turk_2017.pdf": {
     "tiedosto": "page-cutrara_turk_2017.pdf",
@@ -1217,7 +1252,8 @@
     "url": "",
     "aloitussivu": 78,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "palmu_etal_2025.pdf": {
     "tiedosto": "palmu_etal_2025.pdf",
@@ -1257,7 +1293,8 @@
     "url": "",
     "aloitussivu": 72,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": "921 vanhemman avovastaukset laajemmasta kyselystä (9 842 vastaajaa; Suomi)"
   },
   "panadero_jonsson_2013.pdf": {
     "tiedosto": "panadero_jonsson_2013.pdf",
@@ -1285,7 +1322,8 @@
     "url": "",
     "aloitussivu": 129,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "pekkanen_2015.pdf": {
     "tiedosto": "pekkanen_2015.pdf",
@@ -1309,7 +1347,8 @@
     "url": "",
     "aloitussivu": -3,
     "tarkistettu": false,
-    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. Otsikko kansilehdeltä; tiivistelmäsivulla otsikko on eri muodossa. Painettu s. 1 = PDF-sivu 5. Lisää JYX-osoite url-kenttään."
+    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. Otsikko kansilehdeltä; tiivistelmäsivulla otsikko on eri muodossa. Painettu s. 1 = PDF-sivu 5. Lisää JYX-osoite url-kenttään.",
+    "aineisto": "37 luokanopettajaopiskelijaa (10 % miehiä), Jyväskylän yliopisto; kysely, sisällönanalyysi (pro gradu)"
   },
   "perala-littunen_book_2019.pdf": {
     "tiedosto": "perala-littunen_book_2019.pdf",
@@ -1337,7 +1376,8 @@
     "url": "",
     "aloitussivu": 37,
     "tarkistettu": false,
-    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. Ei DOI:ta. Loppusivu laskettu PDF:n sivumäärästä (9 sivua)."
+    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. Ei DOI:ta. Loppusivu laskettu PDF:n sivumäärästä (9 sivua).",
+    "aineisto": "viisi fokusryhmähaastattelua, yhteensä 19 suomalaista opettajaopiskelijaa"
   },
   "renkl_2014.pdf": {
     "tiedosto": "renkl_2014.pdf",
@@ -1361,7 +1401,8 @@
     "url": "",
     "aloitussivu": 1,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "rudolph_etal_2014.pdf": {
     "tiedosto": "rudolph_etal_2014.pdf",
@@ -1393,7 +1434,8 @@
     "url": "",
     "aloitussivu": 339,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "sinha_kapur_2021.pdf": {
     "tiedosto": "sinha_kapur_2021.pdf",
@@ -1421,7 +1463,8 @@
     "url": "",
     "aloitussivu": 761,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   },
   "solantaus_2019.pdf": {
     "tiedosto": "solantaus_2019.pdf",
@@ -1445,7 +1488,8 @@
     "url": "",
     "aloitussivu": 0,
     "tarkistettu": false,
-    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. Tekijä päätelty osioiden ©-merkinnöistä (neuvonpito-osio: Mika Niemelä ja Tytti Solantaus). Julkaisija päätelty tekstissä mainitusta osoitteesta mieli.fi: varmista ja lisää url. Painettu s. 1 = PDF-sivu 2."
+    "huomio": "Täytetty PDF:n alkusivujen perusteella 14.11.2026, tarkista. Tekijä päätelty osioiden ©-merkinnöistä (neuvonpito-osio: Mika Niemelä ja Tytti Solantaus). Julkaisija päätelty tekstissä mainitusta osoitteesta mieli.fi: varmista ja lisää url. Painettu s. 1 = PDF-sivu 2.",
+    "aineisto": ""
   },
   "torrance_2007.pdf": {
     "tiedosto": "torrance_2007.pdf",
@@ -1469,7 +1513,8 @@
     "url": "",
     "aloitussivu": 280,
     "tarkistettu": false,
-    "huomio": "Pistokoe 15.11.2026: PDF-sivu 1 on kansilehti, PDF-sivu 2 = s. 281 (Crossref 281–294); aloitussivu asetettu 280."
+    "huomio": "Pistokoe 15.11.2026: PDF-sivu 1 on kansilehti, PDF-sivu 2 = s. 281 (Crossref 281–294); aloitussivu asetettu 280.",
+    "aineisto": ""
   },
   "walker_dotger_2012.pdf": {
     "tiedosto": "walker_dotger_2012.pdf",
@@ -1497,6 +1542,7 @@
     "url": "",
     "aloitussivu": 62,
     "tarkistettu": false,
-    "huomio": ""
+    "huomio": "",
+    "aineisto": ""
   }
 }

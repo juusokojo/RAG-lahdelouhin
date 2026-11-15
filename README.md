@@ -71,6 +71,8 @@ Skripti etsii jokaisesta artikkelista DOI:n, hakee viitetiedot Crossrefistä ja 
 
 Kentän `aloitussivu` arvo on PDF:n ensimmäisen sivun painettu sivunumero. Se saa olla nolla tai negatiivinen, jos alussa on numeroimattomia sivuja.
 
+Kenttään `aineisto` voi kirjoittaa käsin tutkimuksen aineiston, esim. `"11 haastattelua: 10 äitiä ja yksi pariskunta"`. Se välitetään vastauksen kirjoittajalle, kun säännöt pyytävät aineiston kokoa. Kenttä kannattaa täyttää ainakin laadullisille ja suomalaisille lähteille, sillä aineiston kuvaus on harvoin samassa kohdassa kuin haun löytämä tulos. Uusi rakennusajo säilyttää kentän.
+
 ### 3. Kirjoita kysymykset
 
 Kysymykset ovat tekstitiedostossa, ks. [kysymykset/rooliharjoittelu.txt](kysymykset/rooliharjoittelu.txt). Tehtävänanto, säännöt ja ryhmäotsikot ovat valinnaisia; pelkkä numeroitu kysymyslista riittää.
@@ -114,8 +116,8 @@ Tulos tulee tiedostoon `tulokset/<ajo>/<ajo>.docx`. Välitulokset tallennetaan k
 
 ## Miten yksi kysymys käsitellään
 
-1. **Hakulauseet.** Malli muotoilee kysymyksestä 3–4 englanninkielistä hakulausetta ja tunnistaa kysymyksessä nimetyt lähteet. Puuttuvat nimetyt lähteet kirjataan dokumentin huomioihin.
-2. **Haku.** Jokainen hakulause haetaan koko kirjastosta ja lisäksi rajattuna nimettyihin lähteisiin.
+1. **Hakulauseet.** Malli muotoilee kysymyksestä 3–4 englanninkielistä hakulausetta ja tunnistaa kysymyksessä nimetyt lähteet. Puuttuvat nimetyt lähteet kirjataan dokumentin huomioihin, samoin nimetty lähde, josta ei löytynyt kysymykseen vastaavaa kohtaa. Silloin vastaus kertoo, mitkä muut lähteet asiaa käsittelevät.
+2. **Haku.** Jokainen hakulause haetaan koko kirjastosta. Nimetty lähde, jossa on enintään 40 sivua, luetaan kokonaan sivulohkoina, jotta esimerkiksi haastattelumäärät eivät jää semanttisen haun varaan. Pidemmästä nimetystä lähteestä haetaan rajatuilla hauilla.
 3. **Poiminta.** Malli poimii osumista väitteet ja lainausehdotukset.
 4. **Tarkistus.** Lainaukset paikannetaan lähdetekstiin ja leikataan sieltä; löytymättömät hylätään.
 5. **Osuvuus.** Malli arvioi, käsitteleekö lainaus kysymyksen aihetta. Aiheeseen kuulumattomat pudotetaan.
@@ -129,7 +131,7 @@ Tulos tulee tiedostoon `tulokset/<ajo>/<ajo>.docx`. Välitulokset tallennetaan k
 - sama lainaus kerran kussakin vastauksen osiossa; lainaukset, joihin vastausteksti ei viittaa, otsikon *Muut lainaukset* alla
 - lähdeluettelo APA 7 -muodossa
 - taulukko siitä, mitä lähteitä käytettiin ja missä kysymyksissä
-- huomiot: puuttuvat lähteet, hylätyt ja pudotetut lainaukset, puutteelliset viitetiedot
+- huomiot: puuttuvat lähteet, nimetyt lähteet ilman löydöksiä, hylätyt ja pudotetut lainaukset, puutteelliset viitetiedot
 
 ## Rajoitukset
 

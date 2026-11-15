@@ -94,9 +94,9 @@
     "kustantaja": "American Society for Cell Biology (ASCB)",
     "doi": "10.1187/cbe.16-03-0125",
     "url": "",
-    "aloitussivu": null,
+    "aloitussivu": 1,
     "tarkistettu": false,
-    "huomio": "Aloitussivua ei päätelty: PDF:stä ei löytynyt yksinäisiä sivunumeroita; Crossrefin sivut es6"
+    "huomio": "Pistokoe 15.11.2026: artikkelinumero es6, sivut numeroitu 1–n (PDF-sivu = sivu); aloitussivu asetettu 1."
   },
   "bronfenbrenner_morris_2006.pdf": {
     "tiedosto": "bronfenbrenner_morris_2006.pdf",
@@ -347,9 +347,9 @@
     "kustantaja": "Informa UK Limited",
     "doi": "10.1080/02671522.2021.1961291",
     "url": "",
-    "aloitussivu": null,
+    "aloitussivu": 68,
     "tarkistettu": false,
-    "huomio": "Aloitussivu ja Crossrefin sivut ristiriidassa: PDF:stä päätelty 68, Crossref 69–101; aloitussivua ei asetettu"
+    "huomio": "Pistokoe 15.11.2026: PDF-sivu 1 on kansilehti, PDF-sivu 2 = s. 69 (Crossref 69–101); aloitussivu asetettu 68."
   },
   "dotger_2010.pdf": {
     "tiedosto": "dotger_2010.pdf",
@@ -711,9 +711,9 @@
     "kustantaja": "Informa UK Limited",
     "doi": "10.1080/00313831.2014.965794",
     "url": "",
-    "aloitussivu": null,
+    "aloitussivu": 673,
     "tarkistettu": false,
-    "huomio": "Aloitussivu ja Crossrefin sivut ristiriidassa: PDF:stä päätelty 673, Crossref 674–690; aloitussivua ei asetettu"
+    "huomio": "Pistokoe 15.11.2026: PDF-sivu 1 on kansilehti, PDF-sivu 2 = s. 674 (Crossref 674–690); aloitussivu asetettu 673."
   },
   "inacsl_etal_2021.pdf": {
     "tiedosto": "inacsl_etal_2021.pdf",
@@ -771,9 +771,9 @@
     "kustantaja": "Informa UK Limited",
     "doi": "10.1080/02602938.2013.875117",
     "url": "",
-    "aloitussivu": null,
+    "aloitussivu": 839,
     "tarkistettu": false,
-    "huomio": "Aloitussivu ja Crossrefin sivut ristiriidassa: PDF:stä päätelty 839, Crossref 840–852; aloitussivua ei asetettu"
+    "huomio": "Pistokoe 15.11.2026: PDF-sivu 1 on kustantajan kansilehti, PDF-sivu 2 = s. 840 (Crossref 840–852); aloitussivu asetettu 839."
   },
   "kolbe_etal_2020.pdf": {
     "tiedosto": "kolbe_etal_2020.pdf",
@@ -1467,9 +1467,9 @@
     "kustantaja": "Informa UK Limited",
     "doi": "10.1080/09695940701591867",
     "url": "",
-    "aloitussivu": null,
+    "aloitussivu": 280,
     "tarkistettu": false,
-    "huomio": "Aloitussivu ja Crossrefin sivut ristiriidassa: PDF:stä päätelty 280, Crossref 281–294; aloitussivua ei asetettu"
+    "huomio": "Pistokoe 15.11.2026: PDF-sivu 1 on kansilehti, PDF-sivu 2 = s. 281 (Crossref 281–294); aloitussivu asetettu 280."
   },
   "walker_dotger_2012.pdf": {
     "tiedosto": "walker_dotger_2012.pdf",

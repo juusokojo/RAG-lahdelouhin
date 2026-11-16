@@ -555,3 +555,58 @@ def test_lahdeluettelo_jatetaan_pois_kokotekstista():
     aja(malli, ValeRag([], tekstit))
     kehote = next(k for v, k in malli.kutsut if v == "poiminta")
     assert SIVU3 in kehote and "Miller S." not in kehote
+
+
+def test_nimetty_ilman_loydoksia_saman_tekijan_vuositunnus_ja_toinen_nimetty_muissa():
+    # kysymys nimeää kaksi saman tekijän saman vuoden lähdettä; löydökset vain toisesta
+    lahteet = {
+        "alfa_2020.pdf": Lahde("alfa_2020.pdf", tekijat=[Tekija("Alfa", "A.")], vuosi="2020", otsikko="A-otsikko"),
+        "beta_2021.pdf": Lahde("beta_2021.pdf", tekijat=[Tekija("Alfa", "A.")], vuosi="2020", otsikko="B-otsikko"),
+    }
+    huomiot = putki._nimetyt_ilman_loydoksia(
+        ["alfa_2020.pdf", "beta_2021.pdf"],
+        [putki.Loydos("L1", 1, "f-beta", "beta_2021.pdf", "v", "l", 1, 1)], lahteet, set())
+    assert huomiot == ["Kysymyksessä nimetystä lähteestä Alfa, 2020a ei löytynyt kysymykseen vastaavaa kohtaa "
+                       "(haku ei löytänyt sopivaa kohtaa). Aihetta käsittelevät: Alfa, 2020b."]
+
+
+PATTERI_OSIOT = Patteri(tehtava="T.", saannot=["Erottele kaksi osaa:\n- LÄHDE SANOO: mitä lähde sanoo.\n"
+                                                "- EHDOTUS VIDEOON: miten käytetään."],
+                        rakenne=[], kysymykset=[KYSYMYS])
+
+
+def test_vaarat_osio_otsikot_yritetaan_kerran_uudelleen():
+    vaarin = {"osiot": [{"otsikko": "Alakysymys 1", "teksti": "LÄHDE SANOO: Väite [L1]."}]}
+    oikein = {"osiot": [{"otsikko": "LÄHDE SANOO", "teksti": "Väite [L1]."},
+                        {"otsikko": "EHDOTUS VIDEOON", "teksti": "Ehdotus [L1]."}]}
+    malli = ValeMalli(poiminta=[ehdotus("O1")])
+    vastaukset = [vaarin, oikein]
+    malli.koonti = None
+    alkuperainen = malli.kysy_json
+
+    def kysy(jarjestelma, kayttaja, **kw):
+        if jarjestelma == KOONTI_JARJESTELMA:
+            malli.kutsut.append(("koonti", kayttaja))
+            return vastaukset.pop(0)
+        return alkuperainen(jarjestelma, kayttaja, **kw)
+    malli.kysy_json = kysy
+    v, _ = aja(malli, patteri=PATTERI_OSIOT)
+    assert [o.otsikko for o in v.osiot] == ["LÄHDE SANOO", "EHDOTUS VIDEOON"]
+    koonnit = [k for vaihe, k in malli.kutsut if vaihe == "koonti"]
+    assert len(koonnit) == 2 and '"Alakysymys 1"' in koonnit[1]
+
+
+def test_vaarat_otsikot_toistamiseen_huomioihin():
+    malli = ValeMalli(poiminta=[ehdotus("O1")],
+                      koonti={"osiot": [{"otsikko": "Oma", "teksti": "Väite [L1]."}]})
+    v, _ = aja(malli, patteri=PATTERI_OSIOT)
+    assert [o.otsikko for o in v.osiot] == ["Oma"]
+    assert any("osiojakoa" in h for h in v.huomiot)
+    assert malli.vaiheet().count("koonti") == 2
+
+
+def test_oikeat_otsikot_ei_uutta_yritysta():
+    malli = ValeMalli(poiminta=[ehdotus("O1")], koonti={"osiot": [
+        {"otsikko": "LÄHDE SANOO", "teksti": "Väite [L1]."}, {"otsikko": "EHDOTUS VIDEOON", "teksti": "E [L1]."}]})
+    aja(malli, patteri=PATTERI_OSIOT)
+    assert malli.vaiheet().count("koonti") == 1

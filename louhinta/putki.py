@@ -13,7 +13,7 @@ import time
 from dataclasses import asdict, dataclass, field, fields, replace
 from pathlib import Path
 
-from louhinta.lahteet import lyhytviite
+from louhinta.lahteet import lyhytviite, vuositunnukset
 from louhinta.lehmus import Rag
 from louhinta.malli import Malli, MalliVirhe
 from louhinta.mallit import Kysymys, Lahde, Loydos, Osio, Osuma, Patteri, Vastaus
@@ -144,7 +144,8 @@ Tarkistetut löydökset (tunnus, lähde, väite, lainaus{vahvuus_otsikko}):
 Kirjoita vastaus kysymykseen. Vaatimukset:
 - Käytä vain löydösten tietoa. Älä lisää tietoa, jota löydöksissä ei ole.
 - Löydöksen "aineisto" on lähderekisteristä (tutkimuksen koko ja osallistujat). Kerro se, kun säännöt \
-pyytävät aineiston kokoa tai osallistujia; älä arvaa aineistoa lähteelle, jolta sitä ei ole annettu.
+pyytävät aineiston kokoa tai osallistujia. Jos löydökselle ei ole annettu aineistoa eikä lainaus \
+kerro sitä, älä kirjoita aineistosta mitään (älä myöskään totea, ettei sitä ole annettu).
 - Viittaa jokaiseen väitteeseen löydöksen tunnuksella hakasulkeissa, esim. [L1]. Useampi tunnus \
 omina hakasulkeinaan: [L1] [L2]. Käytä vain yllä lueteltuja tunnuksia.
 - Älä kirjoita tekstiin tekijöitä, vuosilukuja, sivunumeroita tai lainauksia: ohjelma korvaa \
@@ -196,7 +197,8 @@ def _lahdenimi(tiedosto: str, lahteet: dict[str, Lahde]) -> str:
     lahde = lahteet.get(tiedosto)
     if lahde is None or not lahde.tekijat:
         return tiedosto
-    return lyhytviite(lahde)
+    # sama vuositunnus kuin dokumentissa: saman tekijän saman vuoden lähteet erotellaan (2019a, 2019b)
+    return lyhytviite(lahde, vuositunnukset(lahteet.values()).get(tiedosto))
 
 
 def _kirjastoluettelo(tiedostot: dict[str, str], lahteet: dict[str, Lahde]) -> str:
@@ -540,17 +542,38 @@ def _yhtenaista(loydokset: list[Loydos]) -> list[Loydos]:
 def _nimetyt_ilman_loydoksia(nimetyt: list[str], loydokset: list[Loydos], lahteet: dict[str, Lahde],
                              kokonaan: set[str]) -> list[str]:
     """Huomiot nimetyistä lähteistä, joista ei jäänyt yhtään löydöstä (sääntö: kerro muut aihetta käsittelevät)."""
-    muut = list(dict.fromkeys(_lahdenimi(l.tiedosto, lahteet) for l in loydokset if l.tiedosto not in nimetyt))
     huomiot = []
     for nimi in nimetyt:
         if any(l.tiedosto == nimi for l in loydokset):
             continue
+        muut = list(dict.fromkeys(_lahdenimi(l.tiedosto, lahteet) for l in loydokset))
         tapa = "lähde luettiin kokonaan" if nimi in kokonaan else "haku ei löytänyt sopivaa kohtaa"
         jatko = (f" Aihetta käsittelevät: {'; '.join(muut)}." if muut
                  else " Muistakaan lähteistä ei löytynyt aihetta käsittelevää kohtaa.")
         huomiot.append(f"Kysymyksessä nimetystä lähteestä {_lahdenimi(nimi, lahteet)} ei löytynyt "
                        f"kysymykseen vastaavaa kohtaa ({tapa}).{jatko}")
     return huomiot
+
+
+_OSIONIMI = re.compile(r"^\s*-\s*([A-ZÄÖÅ][A-ZÄÖÅ ]{2,}[A-ZÄÖÅ])\s*:", re.MULTILINE)
+
+
+def _vaaditut_osiot(patteri: Patteri) -> list[str]:
+    """Säännöissä luetellut osiot, esim. "- LÄHDE SANOO: …" ja "- EHDOTUS VIDEOON: …"; [] jos ei ole."""
+    for saanto in patteri.saannot:
+        nimet = _OSIONIMI.findall(saanto)
+        if len(nimet) >= 2:
+            return [n.strip() for n in nimet]
+    return []
+
+
+def _osiot(vastaus) -> list[Osio]:
+    raaka = vastaus.get("osiot") if isinstance(vastaus, dict) else vastaus
+    osiot = []
+    for alkio in raaka if isinstance(raaka, list) else []:
+        if isinstance(alkio, dict) and str(alkio.get("teksti") or "").strip():
+            osiot.append(Osio(str(alkio.get("otsikko") or "").strip(), _siisti_tunnukset(str(alkio["teksti"]).strip())))
+    return osiot
 
 
 def _kokoa(kysymys: Kysymys, patteri: Patteri, loydokset: list[Loydos], lahteet: dict[str, Lahde],
@@ -584,8 +607,8 @@ def _kokoa(kysymys: Kysymys, patteri: Patteri, loydokset: list[Loydos], lahteet:
         nimetyt_teksti = f"\nKysymyksessä nimetyt lähteet: {'; '.join(kuvaukset)}.\n"
         if ilman:
             nimetyt_teksti += (
-                "Aloita ensimmäinen osio täsmälleen lauseella: \"Kysymyksessä nimetty lähde ("
-                + "; ".join(ilman) + ") ei käsittele tätä asiaa.\" Kerro sitten, mitä muut lähteet siitä "
+                "Aloita ensimmäinen osio täsmälleen lauseella: \"Kysymyksessä nimetystä lähteestä ("
+                + "; ".join(ilman) + ") ei löytynyt tähän vastaavaa kohtaa.\" Kerro sitten, mitä muut lähteet siitä "
                 "sanovat (viittaa niiden löydöksiin tunnuksilla).\n")
     kayttaja = KOONTI_KAYTTAJA.format(
         tehtava=patteri.tehtava or "(ei annettu)",
@@ -594,11 +617,21 @@ def _kokoa(kysymys: Kysymys, patteri: Patteri, loydokset: list[Loydos], lahteet:
         loydokset="\n\n".join(rivit), nimetyt=nimetyt_teksti)
     vastaus = malli.kysy_json(KOONTI_JARJESTELMA, kayttaja, loki=_lokipolku(loki, kysymys, "4_koonti"),
                               max_tokens=6000)
-    raaka = vastaus.get("osiot") if isinstance(vastaus, dict) else vastaus
-    osiot = []
-    for alkio in raaka if isinstance(raaka, list) else []:
-        if isinstance(alkio, dict) and str(alkio.get("teksti") or "").strip():
-            osiot.append(Osio(str(alkio.get("otsikko") or "").strip(), _siisti_tunnukset(str(alkio["teksti"]).strip())))
+    osiot = _osiot(vastaus)
+    vaaditut = _vaaditut_osiot(patteri)
+    if osiot and vaaditut and [o.otsikko for o in osiot] != vaaditut:
+        # malli teki omat otsikot (esim. alakysymysten mukaan): yksi uusi yritys virheen kera
+        korjaus = (kayttaja + "\n\nEdellisen vastauksesi osio-otsikot olivat "
+                   + ", ".join(f'"{o.otsikko}"' for o in osiot) + ". Ne ovat väärin. Käytä täsmälleen "
+                   "näitä osioita tässä järjestyksessä: " + ", ".join(f'"{v}"' for v in vaaditut)
+                   + ". Jaa alakysymykset kappaleiksi osioiden sisällä; älä kirjoita osion nimeä tekstiin.")
+        uusi = _osiot(malli.kysy_json(KOONTI_JARJESTELMA, korjaus,
+                                      loki=_lokipolku(loki, kysymys, "4_koonti_uusi"), max_tokens=6000))
+        if uusi and [o.otsikko for o in uusi] == vaaditut:
+            osiot = uusi
+        else:
+            huomiot.append("Vastauksen osiot eivät noudata sääntöjen osiojakoa ("
+                           + ", ".join(vaaditut) + ").")
     if not osiot:
         raise MalliVirhe("koontivastauksessa ei ollut yhtään osiota")
     tunnetut = {l.tunnus for l in loydokset}

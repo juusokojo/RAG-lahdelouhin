@@ -1,14 +1,14 @@
-"""Lataa kansion PDF:t Lehmus-RAGiin valmiina tekstinä ja ohittaa jo ladatut.
+"""Lataa kansion PDF:t RAGiin valmiina tekstinä ja ohittaa jo ladatut.
 
 PDF:n teksti poimitaan paikallisesti sivu kerrallaan (PyMuPDF) ja lähetetään
 polulla POST /files/content niin, että sivut erottaa sivunvaihtomerkki \\f.
-Lehmuksen oma PDF-jäsennys (POST /files) ei alustapäivityksen jälkeen (todettu
-14.11.2026) enää tuota sivunvaihtoja, joihin sivunumeroiden laskenta perustuu.
+RAG-palvelun oma PDF-jäsennys (POST /files) ei välttämättä säilytä sivunvaihtoja,
+joihin sivunumeroiden laskenta perustuu.
 
 Jo ladatuksi katsotaan tiedosto, jonka nimi löytyy RAGin tiedostolistasta.
 
 Käyttö:
-    export LEHMUS_WRITE_API_KEY=...  # kirjoitusoikeudellinen avain, omassa päätteessä, ei keskusteluun
+    export RAG_WRITE_API_KEY=...  # kirjoitusoikeudellinen avain, omassa päätteessä, ei keskusteluun
     .venv/bin/python -I scripts/lataa_rag.py --kansio ~/polku/pdf [--kuiva]
         [--ohita nimi1 nimi2] [--korvaa nimi3 nimi4]
 """
@@ -24,7 +24,7 @@ from pathlib import Path
 import pymupdf
 import requests
 
-OLETUS_RAG_URL = os.environ.get("LEHMUS_RAG_URL", "")   # RAG-resurssin perusosoite portaalista
+OLETUS_RAG_URL = os.environ.get("RAG_URL", "")   # RAG-palvelun perusosoite
 
 
 def tiedostonimi(f: dict) -> str | None:
@@ -50,7 +50,7 @@ def rag_tiedostot(s: requests.Session, url: str) -> list[dict]:
 def pdf_teksti(polku: Path) -> tuple[str, int, int]:
     """Palauttaa (teksti sivunvaihdoin, sivumäärä, tekstittömien sivujen määrä)."""
     with pymupdf.open(polku) as doc:
-        # Nollatavu (\x00) kaataa Lehmuksen tallennuksen (PostgreSQL: invalid byte sequence 0x00).
+        # Nollatavu (\x00) voi kaataa palvelun tallennuksen (esim. PostgreSQL: invalid byte sequence 0x00).
         sivut = [sivu.get_text().replace("\x00", "") for sivu in doc]
     tyhjia = sum(1 for t in sivut if not t.strip())
     return "\f".join(sivut), len(sivut), tyhjia
@@ -71,13 +71,13 @@ def main() -> int:
                    help="jo RAGissa olevat tiedostot, jotka poistetaan ja ladataan uudelleen")
     a = p.parse_args()
     if not a.rag_url:
-        print("Ympäristömuuttuja LEHMUS_RAG_URL puuttuu (RAG-resurssin perusosoite portaalista).", file=sys.stderr)
+        print("Ympäristömuuttuja RAG_URL puuttuu (RAG-palvelun perusosoite).", file=sys.stderr)
         return 2
     ohita, korvaa = nimet(a.ohita), nimet(a.korvaa)
 
-    avain = os.environ.get("LEHMUS_WRITE_API_KEY")   # lukuavain (LEHMUS_API_KEY) ei salli latausta
+    avain = os.environ.get("RAG_WRITE_API_KEY")   # lukuavain (RAG_API_KEY) ei salli latausta
     if not avain:
-        print("Ympäristömuuttuja LEHMUS_WRITE_API_KEY puuttuu.", file=sys.stderr)
+        print("Ympäristömuuttuja RAG_WRITE_API_KEY puuttuu.", file=sys.stderr)
         return 2
     url = a.rag_url.rstrip("/")
     s = requests.Session()

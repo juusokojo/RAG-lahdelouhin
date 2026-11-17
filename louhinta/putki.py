@@ -14,7 +14,7 @@ from dataclasses import asdict, dataclass, field, fields, replace
 from pathlib import Path
 
 from louhinta.lahteet import lyhytviite, vuositunnukset
-from louhinta.lehmus import Rag
+from louhinta.rag import Rag
 from louhinta.malli import Malli, MalliVirhe
 from louhinta.mallit import Kysymys, Lahde, Loydos, Osio, Osuma, Patteri, Vastaus
 from louhinta.paikannus import laajenna_virkkeisiin, normalisoi, paikanna_lainaus, siisti, sivu

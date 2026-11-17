@@ -1,6 +1,6 @@
 # Louhintatyökalun määrittely
 
-Työkalu vastaa kysymyspatteriin Lehmus-RAGin artikkeleiden perusteella ja tuottaa docx-tiedoston, jossa jokaisella vastauksella on sanatarkka lainaus ja APA7-viite sivunumeroineen. Yhteiset tietorakenteet: [louhinta/mallit.py](../louhinta/mallit.py).
+Työkalu vastaa kysymyspatteriin RAGin artikkeleiden perusteella ja tuottaa docx-tiedoston, jossa jokaisella vastauksella on sanatarkka lainaus ja APA7-viite sivunumeroineen. Yhteiset tietorakenteet: [louhinta/mallit.py](../louhinta/mallit.py).
 
 ## Ydinperiaate
 
@@ -9,7 +9,7 @@ Työkalu vastaa kysymyspatteriin Lehmus-RAGin artikkeleiden perusteella ja tuott
 ## Putki
 
 1. `kysymykset.py` lukee kysymystiedoston → `Patteri`.
-2. `putki.py` (vaihe 2) pyytää mallilta hakulauseet, hakee `lehmus.py`:llä → `Osuma`-lista.
+2. `putki.py` (vaihe 2) pyytää mallilta hakulauseet, hakee `rag.py`:llä → `Osuma`-lista.
 3. Malli poimii osumista väitteet ja lainausehdotukset.
 4. `paikannus.py` tarkistaa ehdotukset → `Paikannus` → `Loydos`.
 4b. Lainaus laajennetaan kokonaisiin virkkeisiin (`laajenna_virkkeisiin`, enintään 700 merkkiä), ja yksi osuvuuskutsu arvioi löydökset ("suora" | "osittainen" | "ei"); "ei" pudotetaan ennen tunnusten L1… antamista. Poiminta ja osuvuustarkistus ajetaan lämpötilalla 0.
@@ -22,7 +22,7 @@ Työkalu vastaa kysymyspatteriin Lehmus-RAGin artikkeleiden perusteella ja tuott
 |---|---|---|
 | `louhinta/mallit.py` | 0 | tietorakenteet, **ei muuteta** |
 | `louhinta/lahteet.py`, `scripts/rakenna_lahteet.py`, `tests/test_lahteet.py`, `lahteet.json`, `lahteet-tarkistus.md` | 1A | lähderekisteri ja APA7 |
-| `louhinta/lehmus.py`, `louhinta/paikannus.py`, `tests/test_paikannus.py`, `tests/test_lehmus.py` | 1B | RAG-asiakas ja lainauksen paikannus |
+| `louhinta/rag.py`, `louhinta/paikannus.py`, `tests/test_paikannus.py`, `tests/test_rag.py` | 1B | RAG-asiakas ja lainauksen paikannus |
 | `louhinta/kysymykset.py`, `louhinta/docx_tulostus.py`, `tests/test_kysymykset.py`, `tests/test_docx.py`, `scripts/esimerkki_docx.py` | 1C | kysymystiedoston jäsennin ja docx |
 | `louhinta/malli.py`, `louhinta/putki.py`, `louhi.py` | 2 | mallikutsut ja ajo |
 
@@ -32,7 +32,7 @@ Työkalu vastaa kysymyspatteriin Lehmus-RAGin artikkeleiden perusteella ja tuott
 - Python 3.14, ajo aina `.venv/bin/python -I …`; testit `.venv/bin/python -m pytest tests/<oma>.py -q` projektin juuresta.
 - Koodin nimet, kommentit ja tulosteet suomeksi samaan tapaan kuin `scripts/ankkurikoe.py`. Ei turhia abstraktioita.
 - Testit toimivat ilman verkkoa ja käyttävät itse keksittyä tekstiä, ei artikkelien tekstiä. Artikkelien tekstiä ei tulosteta päätteeseen eikä raporttiin.
-- Lehmukseen saa tehdä vain lukukutsuja avaimella `LEHMUS_API_KEY` (ympäristömuuttuja). Avainta ei tulosteta. Kirjoitusavainta ei käytetä.
+- RAG-palveluun saa tehdä vain lukukutsuja avaimella `RAG_API_KEY` (ympäristömuuttuja). Avainta ei tulosteta. Kirjoitusavainta ei käytetä.
 - Loppuraportti enintään 15 riviä: mitä tehtiin, testien tulos (läpäistyt/kaikki), poikkeamat määrittelystä, avoimet asiat.
 
 ## 1A: lähderekisteri ja APA7 (`lahteet.py`)
@@ -55,7 +55,7 @@ Suomenkielinen APA7:
 
 `scripts/rakenna_lahteet.py` rakentaa rekisterin:
 
-1. Hakee RAGin tiedostolistan ja jokaisen `source_text`-kentän (`GET /content/{id}`, lukuavain). Käytä `louhinta/lehmus.py`:n asiakasta, jos se on jo olemassa; muuten kopioi pieni asiakas `scripts/ankkurikoe.py`:stä skriptin sisään.
+1. Hakee RAGin tiedostolistan ja jokaisen `source_text`-kentän (`GET /content/{id}`, lukuavain). Käytä `louhinta/rag.py`:n asiakasta, jos se on jo olemassa; muuten kopioi pieni asiakas `scripts/ankkurikoe.py`:stä skriptin sisään.
 2. Etsii DOI:n kahdelta ensimmäiseltä sivulta ja hakee tiedot Crossrefistä (`https://api.crossref.org/works/{doi}`). Pyyntöön vain DOI, `User-Agent: artikkelien-louhinta/0.1`, ei sähköpostia eikä muita käyttäjätietoja. Enintään yksi pyyntö sekunnissa.
 3. Päättelee painetun aloitussivun: etsii sivujen ensimmäisiltä ja viimeisiltä riveiltä yksinäisiä sivunumeroita ja tarkistaa, että ne kasvavat yhdellä sivulta toiselle. Vertaa Crossrefin `page`-kenttään. Ristiriita tai epävarmuus kirjataan `huomio`-kenttään, eikä arvoa arvata.
 4. Kirjoittaa `lahteet.json` (kaikki `tarkistettu: false`) ja `lahteet-tarkistus.md`: taulukko, jossa tiedosto, muotoiltu lähdeluettelorivi, aloitussivu ja huomio, jotta käyttäjä voi tarkistaa rivit yhdellä silmäyksellä. Tiedostot ilman DOI:ta tai Crossref-osumaa jäävät rekisteriin tyhjin kentin ja huomiolla.
@@ -65,17 +65,17 @@ Aja skripti oikeasti ja raportoi: montako tiedostoa, monelleko löytyi DOI, mone
 
 ## 1B: RAG-asiakas ja paikannus
 
-`lehmus.py`:
+`rag.py`:
 
 ```python
 class Rag:
-    def __init__(self, url: str = OLETUS_RAG_URL, avain: str | None = None, valimuisti: Path = Path(".valimuisti"))
+    def __init__(self, url: str | None = None, avain: str | None = None, valimuisti: Path = Path(".valimuisti"))
     def tiedostot(self) -> list[dict]                 # {"id", "tiedosto"}; sivutus cursorilla
     def lahdeteksti(self, file_id: str) -> str        # source_text; levyvälimuisti .valimuisti/lahdetekstit/<id>.txt
     def hae(self, kysely: str, max_chunks: int = 8, filter_ids: list[str] | None = None) -> list[Osuma]
 ```
 
-- `avain` oletuksena `LEHMUS_API_KEY`; puuttuva avain → selkeä virhe.
+- `url` oletuksena `RAG_URL`, `avain` oletuksena `RAG_API_KEY`; puuttuva arvo → selkeä virhe.
 - `hae` paikantaa jokaisen pätkän lähdetekstiin ja täyttää `pdf_sivut`. `/context`-vastauksessa `chunks[i]`, `scores[i]` ja `files[i]` kuuluvat yhteen.
 - Verkkovirheet ja 5xx/429: enintään 3 uudelleenyritystä kasvavalla viiveellä. Aikakatkaisu 60 s.
 - Välimuistitiedostot kirjoitetaan `newline=""`, jotta `\f` ja rivinvaihdot säilyvät merkilleen.
@@ -148,17 +148,15 @@ Omat tiedostot: `louhinta/malli.py`, `louhinta/putki.py`, `louhi.py`, `tests/tes
 ### `malli.py`
 
 ```python
-MALLIT = {"gemma31": "jwwqblcgkizlhxjjbkcp", "gptoss": "azsydsttjnlbfjbgqnwd"}
-
 class Malli:
-    def __init__(self, malli: str = "gemma31", url: str = "https://api.lehmus-ai.oulu.fi/v1", avain: str | None = None, aikakatkaisu: int = 300)
+    def __init__(self, malli: str | None = None, url: str | None = None, avain: str | None = None, aikakatkaisu: int = 300)
     def kysy(self, jarjestelma: str, kayttaja: str, max_tokens: int = 4000, lampotila: float = 0.1) -> str
     def kysy_json(self, jarjestelma: str, kayttaja: str, **kw) -> dict | list
 ```
 
-- `POST /chat/completions`, avain `LEHMUS_API_KEY`. Vastaus luetaan kentästä `choices[0].message.content`, ei kentästä `reasoning_content`. Tyhjä `content` → selkeä virhe (ajattelu söi tokenit).
-- `malli` on joko `MALLIT`-avain tai suora Model ID.
-- Uudelleenyritys kuten `lehmus.py`:ssä (verkkovirhe, 5xx, 429; 3 kertaa).
+- `POST /chat/completions` (OpenAI-yhteensopiva). Oletukset ympäristömuuttujista: `malli` = `MALLI`, `url` = `MALLI_URL`, `avain` = `MALLI_API_KEY` tai sen puuttuessa `RAG_API_KEY`. Puuttuva arvo → selkeä virhe. Vastaus luetaan kentästä `choices[0].message.content`, ei kentästä `reasoning_content`. Tyhjä `content` → selkeä virhe (ajattelu söi tokenit).
+- `malli` on mallin tunnus rajapinnassa.
+- Uudelleenyritys kuten `rag.py`:ssä (verkkovirhe, 5xx, 429; 3 kertaa).
 - `kysy_json` poistaa mahdolliset koodiaidat (```` ```json ````), jäsentää JSONin ja yrittää kerran uudelleen virheilmoituksen kanssa, jos jäsennys epäonnistuu.
 
 ### `putki.py`
@@ -183,7 +181,7 @@ Kehotteet kirjoitetaan suomeksi ja pidetään tiedoston alussa vakioina.
 ### `louhi.py`
 
 ```
-.venv/bin/python -I louhi.py kysymykset/rooliharjoittelu.txt [--ryhma K1 …] [--kysymys 3 …] [--malli gemma31] [--ajo nimi] [--rinnakkain 2] [--uudelleen] [--vain-docx]
+.venv/bin/python -I louhi.py kysymykset/rooliharjoittelu.txt [--ryhma K1 …] [--kysymys 3 …] [--malli TUNNUS] [--ajo nimi] [--rinnakkain 2] [--uudelleen] [--vain-docx]
 ```
 
 - Välitulokset `tulokset/<ajo>/vastaukset/k<nro>.json`, loki `tulokset/<ajo>/loki/`, lopputulos `tulokset/<ajo>/<ajo>.docx`. Valmis kysymys ohitetaan, ellei `--uudelleen`. Docx tehdään aina kaikista ajon tallennetuista vastauksista.

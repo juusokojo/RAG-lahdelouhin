@@ -10,8 +10,8 @@ __pycache__/
 # Ajojen tulokset: sisältävät artikkelilainauksia ja mallin raakavastauksia
 tulokset/
 
-# Paikallinen muistio Lehmuksen rajapinnasta ja ylläpidon vastauksista
-docs/lehmus-api.md
+# Paikalliset muistiot käytetyn palvelun rajapinnasta
+docs/*-api.md
 
 # Salaisuudet ja paikalliset asetukset
 .env
@@ -27,7 +27,7 @@ docs/lehmus-api.md
 .vscode/
 .idea/
 
-# Tuotettu puhe (Jooseppi-ääni pysyy koneella, ks. Kielimallit/f5-fi/AANI-JA-MALLI.md)
+# Tuotettu puhe (pysyy koneella)
 video/puhe/
 
 # Videoprojekti: sisältää artikkelilainauksia ja ruutukaappauksia tulosdokumentista

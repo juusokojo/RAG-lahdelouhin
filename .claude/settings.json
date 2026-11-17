@@ -22,9 +22,6 @@
         "api.github.com",
         "pypi.org",
         "files.pythonhosted.org"
-      ],
-      "deniedDomains": [
-        "api.lehmus-ai.oulu.fi"
       ]
     }
   }

@@ -4,7 +4,9 @@ Työkalu, joka vastaa kysymysluetteloon RAG-tietokantaan ladattujen tieteelliste
 
 Työkalu on tehty tutkijan omaan käyttöön aineistoille, joihin käyttäjällä on oikeus: yliopiston kirjaston kautta saadut tai avoimella lisenssillä julkaistut artikkelit. Repossa ei ole artikkeleita eikä niiden tekstiä.
 
-> **Tila:** toimiva ensimmäinen versio. Koko 34 kysymyksen patteri on ajettu (46 artikkelia, noin 40 minuuttia): 244 lainausta 39 lähteestä, kaikki tarkistettu lähdetekstiä vasten. Pistokokeessa 10/10 lainausta osui oikealle sivulle.
+Työkalu on alun perin tehty Oulun yliopiston Lehmus AI -palvelua varten. Se toimii minkä tahansa palvelun kanssa, joka tarjoaa alla kuvatut rajapinnat.
+
+> **Koeajo:** 34 kysymyksen patteri 46 artikkelilla tuotti 244 lainausta 39 lähteestä, ja kaikki tarkistettiin lähdetekstiä vasten. Pistokokeessa 10/10 lainausta osui oikealle sivulle.
 
 ## Miksi lainauksiin voi luottaa
 
@@ -22,16 +24,29 @@ Mallin kirjoittama vastausteksti on tulkintaa, ja se on tarkistettava lainauksia
 ## Mitä tarvitset
 
 - Python 3.12 tai uudempi
-- OpenAI-yhteensopiva kielimallirajapinta ja RAG-rajapinta. Työkalu on tehty Oulun yliopiston Lehmus AI -palvelulle (ConfidentialMind-alusta).
+- OpenAI-yhteensopiva kielimallirajapinta (`POST /chat/completions`)
+- RAG-palvelu, jossa on seuraavat polut:
+
+| Polku | Käyttö |
+|---|---|
+| `GET /files` | tiedostolista: `files[].id`, `metadata.filename`, `updated_at`; sivutus `next_cursor`-kentällä |
+| `GET /content/{id}` | tiedoston koko teksti kentässä `source_text` |
+| `POST /context` | semanttinen haku: `query`, `max_chunks`, `filter_ids` → `chunks`, `scores`, `files` |
+| `POST /files/content` | valmiin tekstin lataus: `contents[].id`, `txt`, `metadata.filename` → `processed_ids` |
+| `DELETE /files/{id}` | tiedoston poisto (vain `--korvaa`) |
+
 - Ympäristömuuttujat:
 
 | Muuttuja | Tarkoitus |
 |---|---|
-| `LEHMUS_RAG_URL` | RAG-resurssin perusosoite portaalista |
-| `LEHMUS_API_KEY` | lukuavain: haku ja mallikutsut |
-| `LEHMUS_WRITE_API_KEY` | kirjoitusavain: vain artikkelien lataus RAGiin |
+| `RAG_URL` | RAG-palvelun perusosoite |
+| `RAG_API_KEY` | RAGin lukuavain: haku ja lähdetekstit |
+| `RAG_WRITE_API_KEY` | RAGin kirjoitusavain: vain artikkelien lataus |
+| `MALLI_URL` | kielimallirajapinnan perusosoite, esim. `https://palvelu.example/v1` |
+| `MALLI` | mallin tunnus rajapinnassa |
+| `MALLI_API_KEY` | mallirajapinnan avain; jos puuttuu, käytetään `RAG_API_KEY`-avainta |
 
-Avaimia ja osoitetta ei tallenneta repoon. Lisää ne esimerkiksi tiedostoon `~/.zshrc`.
+Avaimia ja osoitteita ei tallenneta repoon. Lisää ne esimerkiksi tiedostoon `~/.zshrc`.
 
 ## Asennus
 
@@ -105,7 +120,7 @@ Valitut ryhmät tai kysymykset:
 |---|---|
 | `--ryhma K1 K3` | ajettavat ryhmät |
 | `--kysymys 4 25` | ajettavat kysymykset (yhdessä `--ryhma`n kanssa ajetaan molemmat) |
-| `--malli` | `gemma31` (oletus, Gemma 4 31B), `gptoss` (GPT OSS 120B) tai suora Model ID |
+| `--malli` | mallin tunnus rajapinnassa (oletus: ympäristömuuttuja `MALLI`) |
 | `--ajo` | ajon nimi; tulokset kansioon `tulokset/<ajo>/` |
 | `--rinnakkain` | samanaikaisten kysymysten määrä |
 | `--uudelleen` | ajaa myös jo valmiit kysymykset uudelleen |
@@ -158,22 +173,27 @@ Jos kehität tai ajat työkalua Claude Coden avulla, kaikki, mitä Claude Code l
 | `.valimuisti/` | jokaisen artikkelin koko teksti |
 | `tulokset/*/loki/` | mallille lähetetyt kehotteet; lyhyt nimetty lähde on niissä kokonaan |
 | `*.pdf` | alkuperäiset artikkelit |
-| `api.lehmus-ai.oulu.fi` | rajapinnasta saisi kokotekstin suoraan |
 
 Esto koskee sekä Claude Coden lukutyökalua että sen ajamia komentoja: komennot ajetaan hiekkalaatikossa, josta niitä ei voi ohittaa. Muut tiedostot, myös tulosdokumentit ja vastaukset, ovat Claude Coden luettavissa.
 
 Sen vuoksi Claude Code ei voi ajaa työkalua itse. Aja `lataa_rag.py`, `rakenna_lahteet.py` ja `louhi.py` omassa päätteessäsi. Claude Code voi muokata koodia ja ajaa testit, jotka eivät tarvitse artikkeleita.
 
-**Lisää oma artikkelikansiosi** tiedostoon `.claude/settings.local.json`, joka ei päädy repoon:
+**Lisää oma artikkelikansiosi ja RAG-palvelusi osoite** tiedostoon `.claude/settings.local.json`, joka ei päädy repoon. RAG-palvelun esto on tarpeen, koska sen rajapinnasta saisi kokotekstin suoraan:
 
 ```json
 {
   "permissions": {
-    "deny": ["Read(//Users/sinä/polku/artikkeleihin/**)"]
+    "deny": [
+      "Read(//Users/sinä/polku/artikkeleihin/**)",
+      "WebFetch(domain:rag.palvelu.example)"
+    ]
   },
   "sandbox": {
     "filesystem": {
       "denyRead": ["/Users/sinä/polku/artikkeleihin"]
+    },
+    "network": {
+      "deniedDomains": ["rag.palvelu.example"]
     }
   }
 }
@@ -189,12 +209,12 @@ Absoluuttinen polku alkaa Read-säännössä kahdella vinoviivalla.
 .venv/bin/python -m pytest tests -q
 ```
 
-Testit (188) toimivat ilman verkkoa. Rakenne ja moduulien rajapinnat: [docs/maarittely.md](docs/maarittely.md).
+Testit toimivat ilman verkkoa. Rakenne ja moduulien rajapinnat: [docs/maarittely.md](docs/maarittely.md).
 
 | Moduuli | Tehtävä |
 |---|---|
 | `louhinta/kysymykset.py` | kysymystiedoston jäsennys |
-| `louhinta/lehmus.py` | RAG-asiakas ja lähdetekstien välimuisti |
+| `louhinta/rag.py` | RAG-asiakas ja lähdetekstien välimuisti |
 | `louhinta/paikannus.py` | lainauksen paikannus, virkerajat ja sivunlaskenta |
 | `louhinta/malli.py` | kielimallikutsut |
 | `louhinta/putki.py` | yhden kysymyksen käsittely |

@@ -12,7 +12,7 @@
 Tietosuoja: skripti ei tulosta eikä tallenna artikkelien tekstiä.
 
 Käyttö:
-    export LEHMUS_API_KEY=...        # omassa päätteessä
+    export RAG_API_KEY=...        # omassa päätteessä
     .venv/bin/python -I scripts/rakenna_lahteet.py
 """
 from __future__ import annotations
@@ -36,7 +36,7 @@ from louhinta.lahteet import (  # noqa: E402
 )
 from louhinta.mallit import Lahde, Tekija  # noqa: E402
 
-OLETUS_RAG_URL = os.environ.get("LEHMUS_RAG_URL", "")   # RAG-resurssin perusosoite portaalista
+OLETUS_RAG_URL = os.environ.get("RAG_URL", "")   # RAG-palvelun perusosoite
 CROSSREF_URL = "https://api.crossref.org/works/"
 USER_AGENT = "artikkelien-louhinta/0.1"
 CROSSREF_VALI = 1.0          # s; enintään yksi pyyntö sekunnissa
@@ -62,7 +62,7 @@ TYYPIT = {
 
 
 # --------------------------------------------------------------------------
-# RAG-asiakas (louhinta/lehmus.py:tä ei vielä ollut; pieni lukuasiakas tässä)
+# RAG-asiakas (pieni lukuasiakas, vain tiedostolista ja source_text)
 # --------------------------------------------------------------------------
 
 class Rag:
@@ -358,12 +358,12 @@ def main() -> int:
     p.add_argument("--tarkistus", type=Path, default=JUURI / "lahteet-tarkistus.md")
     a = p.parse_args()
     if not a.rag_url:
-        print("Ympäristömuuttuja LEHMUS_RAG_URL puuttuu (RAG-resurssin perusosoite portaalista).", file=sys.stderr)
+        print("Ympäristömuuttuja RAG_URL puuttuu (RAG-palvelun perusosoite).", file=sys.stderr)
         return 2
 
-    avain = os.environ.get("LEHMUS_API_KEY")
+    avain = os.environ.get("RAG_API_KEY")
     if not avain:
-        print("Ympäristömuuttuja LEHMUS_API_KEY puuttuu.", file=sys.stderr)
+        print("Ympäristömuuttuja RAG_API_KEY puuttuu.", file=sys.stderr)
         return 2
 
     vanhat = lataa_lahteet(a.json) if a.json.exists() else {}

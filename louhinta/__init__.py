@@ -1,1 +1,1 @@
-"""Artikkelien louhinta: kysymyksiin vastaaminen Lehmus-RAGin aineistosta sanatarkoin lainauksin."""
+"""Artikkelien louhinta: kysymyksiin vastaaminen RAGin aineistosta sanatarkoin lainauksin."""

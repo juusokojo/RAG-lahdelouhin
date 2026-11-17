@@ -1,25 +1,21 @@
 #!/usr/bin/env python3
-"""Ankkurikoe: löytyvätkö Lehmus-RAGin tekstit paikallisista PDF:istä sivutarkasti?
+"""Ankkurikoe: löytyvätkö RAGin tekstit paikallisista PDF:istä sivutarkasti?
 
-Koe vertaa Lehmuksen poimimaa tekstiä (GET /content/{id} -> source_text sekä
+Koe vertaa RAG-palvelun poimimaa tekstiä (GET /content/{id} -> source_text sekä
 /context-haun pätkät) saman tiedoston paikalliseen PDF:ään ja kertoo, kuinka
 suuri osa tekstistä voidaan paikantaa PDF-sivulle mekaanisesti.
 
-Lisäksi koe paikantaa hakupätkät Lehmuksen omaan source_textiin, jossa sivut
+Lisäksi koe paikantaa hakupätkät palvelun omaan source_textiin, jossa sivut
 erottaa sivunvaihtomerkki (\\f), ja vertaa näin saatua sivua paikallisesta
-PDF:stä saatuun. Jos sivut täsmäävät, sivutarkat viitteet saa Lehmuksesta
+PDF:stä saatuun. Jos sivut täsmäävät, sivutarkat viitteet saa RAGista
 ilman paikallista PDF:ää.
-
-Lehmuksen alustaversio 3.3.0: yksittäinen dokumentti haetaan polusta
-/content/{id}. Polku /files/{id} on vasta versiossa 3.5.0, ja /content-polkujen
-on ylläpidon mukaan tarkoitus toimia myös päivityksen jälkeen.
 
 Tietosuoja: skripti tulostaa ja tallentaa vain tilastoja, ei artikkelien
 tekstiä. Valitsin --nayta-esimerkit tulostaa löytymättömiä katkelmia
 vianetsintää varten; käytä sitä vain avoimesti saatavilla olevilla artikkeleilla.
 
 Käyttö:
-    export LEHMUS_API_KEY=...        # omassa päätteessä, ei keskusteluun
+    export RAG_API_KEY=...        # omassa päätteessä, ei keskusteluun
     .venv/bin/python -I scripts/ankkurikoe.py --pdf-kansio ~/polku/pdf
 """
 from __future__ import annotations
@@ -40,7 +36,7 @@ import pymupdf
 import requests
 from rapidfuzz import fuzz
 
-OLETUS_RAG_URL = os.environ.get("LEHMUS_RAG_URL", "")   # RAG-resurssin perusosoite portaalista
+OLETUS_RAG_URL = os.environ.get("RAG_URL", "")   # RAG-palvelun perusosoite
 OLETUSKYSELYT = [
     "research methods, participants and data",
     "main results and findings",
@@ -145,7 +141,7 @@ def ikkunat(teksti_norm: str) -> list[str]:
 
 
 # --------------------------------------------------------------------------
-# Lehmus-RAG
+# RAG-palvelu
 # --------------------------------------------------------------------------
 
 class Rag:
@@ -275,12 +271,12 @@ def main() -> int:
                    help="tulosta löytymättömät katkelmat (VAIN avoimille artikkeleille)")
     a = p.parse_args()
     if not a.rag_url:
-        print("Ympäristömuuttuja LEHMUS_RAG_URL puuttuu (RAG-resurssin perusosoite portaalista).", file=sys.stderr)
+        print("Ympäristömuuttuja RAG_URL puuttuu (RAG-palvelun perusosoite).", file=sys.stderr)
         return 2
 
-    avain = os.environ.get("LEHMUS_API_KEY")
+    avain = os.environ.get("RAG_API_KEY")
     if not avain:
-        print("Ympäristömuuttuja LEHMUS_API_KEY puuttuu.", file=sys.stderr)
+        print("Ympäristömuuttuja RAG_API_KEY puuttuu.", file=sys.stderr)
         return 2
 
     rag = Rag(a.rag_url, avain)
@@ -293,12 +289,12 @@ def main() -> int:
     paikalliset = {pp.name: pp for pp in sorted(a.pdf_kansio.expanduser().rglob("*.pdf"))}
 
     yhteiset = sorted(set(nimi_id) & set(paikalliset))
-    print(f"Lehmuksessa {len(nimi_id)} tiedostoa, paikallisesti {len(paikalliset)} PDF:ää, "
+    print(f"RAGissa {len(nimi_id)} tiedostoa, paikallisesti {len(paikalliset)} PDF:ää, "
           f"samannimisiä {len(yhteiset)}.")
-    vain_lehmus = sorted(n for n in set(nimi_id) - set(paikalliset) if n.lower().endswith(".pdf"))
+    vain_ragissa = sorted(n for n in set(nimi_id) - set(paikalliset) if n.lower().endswith(".pdf"))
     vain_paikallinen = sorted(set(paikalliset) - set(nimi_id))
-    if vain_lehmus:
-        print(f"  Vain Lehmuksessa ({len(vain_lehmus)}): " + ", ".join(vain_lehmus[:10]) + (" …" if len(vain_lehmus) > 10 else ""))
+    if vain_ragissa:
+        print(f"  Vain RAGissa ({len(vain_ragissa)}): " + ", ".join(vain_ragissa[:10]) + (" …" if len(vain_ragissa) > 10 else ""))
     if vain_paikallinen:
         print(f"  Vain paikallisesti ({len(vain_paikallinen)}): " + ", ".join(vain_paikallinen[:10]) + (" …" if len(vain_paikallinen) > 10 else ""))
     if a.raja:

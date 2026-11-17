@@ -2,8 +2,8 @@
 import pytest
 import requests
 
-import louhinta.lehmus as lehmus
-from louhinta.lehmus import Rag
+import louhinta.rag as rag_moduuli
+from louhinta.rag import Rag
 
 LAHDE_A = "Ensimmäinen sivu alkaa tässä ja jatkuu pitkään.\r\nToinen rivi.\fToinen sivu sisältää tärkeän väitteen tutkimuksesta.\fKolmas sivu."
 LAHDE_B = "Toisen tiedoston ainoa sivu sisältää aivan eri asian kokonaan."
@@ -49,7 +49,7 @@ class Istunto:
 @pytest.fixture(autouse=True)
 def ei_odotusta(monkeypatch):
     viiveet = []
-    monkeypatch.setattr(lehmus.time, "sleep", viiveet.append)
+    monkeypatch.setattr(rag_moduuli.time, "sleep", viiveet.append)
     return viiveet
 
 
@@ -60,15 +60,23 @@ def rag(tmp_path, vastaukset):
 
 
 def test_avain_puuttuu(monkeypatch, tmp_path):
-    monkeypatch.delenv("LEHMUS_API_KEY", raising=False)
-    with pytest.raises(ValueError, match="LEHMUS_API_KEY"):
+    monkeypatch.delenv("RAG_API_KEY", raising=False)
+    with pytest.raises(ValueError, match="RAG_API_KEY"):
         Rag(valimuisti=tmp_path)
 
 
 def test_avain_ymparistomuuttujasta_ja_otsake(monkeypatch, tmp_path):
-    monkeypatch.setenv("LEHMUS_API_KEY", "ymparisto-avain")
+    monkeypatch.setenv("RAG_API_KEY", "ymparisto-avain")
     r = Rag(url="https://rag.testi", valimuisti=tmp_path)
     assert r.istunto.headers["Authorization"] == "Bearer ymparisto-avain"
+
+
+def test_osoite_ymparistomuuttujasta(monkeypatch, tmp_path):
+    monkeypatch.setenv("RAG_URL", "https://rag.testi/api/x/")
+    assert Rag(avain="a", valimuisti=tmp_path).url == "https://rag.testi/api/x"
+    monkeypatch.delenv("RAG_URL")
+    with pytest.raises(ValueError, match="RAG_URL"):
+        Rag(avain="a", valimuisti=tmp_path)
 
 
 def test_tiedostot_sivutus_cursorilla(tmp_path):

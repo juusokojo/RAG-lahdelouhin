@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Louhintatyökalun komentorivi: vastaa kysymyspatteriin Lehmus-RAGin artikkeleiden perusteella.
+"""Louhintatyökalun komentorivi: vastaa kysymyspatteriin RAGin artikkeleiden perusteella.
 
 Käyttö (projektin juuresta):
-    export LEHMUS_API_KEY=...        # omassa päätteessä
+    export RAG_URL=... RAG_API_KEY=... MALLI_URL=... MALLI=...   # omassa päätteessä
     .venv/bin/python -I louhi.py kysymykset/rooliharjoittelu.txt --ryhma K1 --ajo koe-k1
 
 Välitulokset: tulokset/<ajo>/vastaukset/k<nro>.json, loki: tulokset/<ajo>/loki/,
@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 import threading
 import traceback
@@ -27,8 +28,8 @@ sys.path.insert(0, str(JUURI))
 from louhinta.docx_tulostus import kirjoita_docx          # noqa: E402
 from louhinta.kysymykset import lue_patteri               # noqa: E402
 from louhinta.lahteet import lataa_lahteet                # noqa: E402
-from louhinta.lehmus import Rag                           # noqa: E402
-from louhinta.malli import MALLIT, Malli                  # noqa: E402
+from louhinta.malli import Malli                          # noqa: E402
+from louhinta.rag import Rag                              # noqa: E402
 from louhinta.putki import Tilasto, lataa_vastaus, tallenna_vastaus, vastaa_tilastoin  # noqa: E402
 
 _tulostuslukko = threading.Lock()
@@ -99,11 +100,12 @@ def tulosta_taulukko(valitut, kansio: Path, virheet: dict[int, str]) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Vastaa kysymyspatteriin Lehmus-RAGin artikkeleiden perusteella.")
+    ap = argparse.ArgumentParser(description="Vastaa kysymyspatteriin RAGin artikkeleiden perusteella.")
     ap.add_argument("kysymystiedosto", type=Path)
     ap.add_argument("--ryhma", nargs="+", metavar="K1", help="ajettavat ryhmät")
     ap.add_argument("--kysymys", nargs="+", type=int, metavar="NRO", help="ajettavat kysymykset")
-    ap.add_argument("--malli", default="gemma31", help=f"{', '.join(MALLIT)} tai suora Model ID")
+    ap.add_argument("--malli", default=os.environ.get("MALLI"),
+                    help="mallin tunnus rajapinnassa (oletus: ympäristömuuttuja MALLI)")
     ap.add_argument("--ajo", default=None, help="ajon nimi (oletus: ajo-<aika>)")
     ap.add_argument("--rinnakkain", type=int, default=1, help="samanaikaisten kysymysten määrä")
     ap.add_argument("--uudelleen", action="store_true", help="ajaa myös valmiiksi tallennetut kysymykset")
@@ -122,6 +124,8 @@ def main(argv: list[str] | None = None) -> int:
     virheet: dict[int, str] = {}
 
     if not args.vain_docx:
+        if not args.malli:
+            ap.error("malli puuttuu: anna --malli tai aseta ympäristömuuttuja MALLI")
         tehtavat = [k for k in valitut if args.uudelleen or not (vastauskansio / f"k{k.nro}.json").is_file()]
         ohitetut = [k.nro for k in valitut if k not in tehtavat]
         tulosta(f"Ajo {ajo}: malli {args.malli}, {len(tehtavat)} kysymystä ajetaan"

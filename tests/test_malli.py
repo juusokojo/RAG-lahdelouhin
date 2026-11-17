@@ -50,7 +50,7 @@ def ei_odotusta(monkeypatch):
 
 
 def malli_istunnolla(*jono, **kw):
-    m = Malli(avain="testiavain", **kw)
+    m = Malli(malli="testimalli", url="https://malli.testi/v1", avain="testiavain", **kw)
     m.istunto = Istunto(*jono)
     return m
 
@@ -66,23 +66,45 @@ def test_kysy_pyynnon_muoto():
     m = malli_istunnolla(chat("ok"))
     m.kysy("sys", "usr", max_tokens=123, lampotila=0.3)
     url, kw = m.istunto.kutsut[0]
-    assert url == "https://api.lehmus-ai.oulu.fi/v1/chat/completions"
-    assert kw["json"]["model"] == "jwwqblcgkizlhxjjbkcp"          # gemma31
+    assert url == "https://malli.testi/v1/chat/completions"
+    assert kw["json"]["model"] == "testimalli"
     assert kw["json"]["messages"] == [{"role": "system", "content": "sys"},
                                       {"role": "user", "content": "usr"}]
     assert kw["json"]["max_tokens"] == 123 and kw["json"]["temperature"] == 0.3
     assert kw["timeout"] == 300
 
 
-def test_malli_avain_tai_suora_model_id():
-    assert Malli("gptoss", avain="x").malli_id == "azsydsttjnlbfjbgqnwd"
-    assert Malli("jokin-suora-id", avain="x").malli_id == "jokin-suora-id"
+def test_malli_ja_osoite_ymparistomuuttujista(monkeypatch):
+    monkeypatch.setenv("MALLI", "ymparisto-malli")
+    monkeypatch.setenv("MALLI_URL", "https://ymparisto.testi/v1/")
+    m = Malli(avain="x")
+    assert m.malli_id == "ymparisto-malli" and m.url == "https://ymparisto.testi/v1"
+    assert Malli("suora-id", url="https://u.testi", avain="x").malli_id == "suora-id"
+
+
+def test_mallin_avain_ensisijaisesti_malli_api_keysta(monkeypatch):
+    monkeypatch.setenv("MALLI_API_KEY", "malliavain")
+    monkeypatch.setenv("RAG_API_KEY", "ragavain")
+    m = Malli("m", url="https://u.testi")
+    assert m.istunto.headers["Authorization"] == "Bearer malliavain"
+    monkeypatch.delenv("MALLI_API_KEY")
+    assert Malli("m", url="https://u.testi").istunto.headers["Authorization"] == "Bearer ragavain"
 
 
 def test_avain_puuttuu(monkeypatch):
-    monkeypatch.delenv("LEHMUS_API_KEY", raising=False)
-    with pytest.raises(ValueError, match="LEHMUS_API_KEY"):
-        Malli()
+    monkeypatch.delenv("MALLI_API_KEY", raising=False)
+    monkeypatch.delenv("RAG_API_KEY", raising=False)
+    with pytest.raises(ValueError, match="MALLI_API_KEY"):
+        Malli("m", url="https://u.testi")
+
+
+@pytest.mark.parametrize("puuttuva", ["MALLI", "MALLI_URL"])
+def test_malli_tai_osoite_puuttuu(monkeypatch, puuttuva):
+    monkeypatch.setenv("MALLI", "m")
+    monkeypatch.setenv("MALLI_URL", "https://u.testi")
+    monkeypatch.delenv(puuttuva)
+    with pytest.raises(ValueError, match=puuttuva):
+        Malli(avain="x")
 
 
 @pytest.mark.parametrize("content", ["", None, "   \n"])
@@ -184,7 +206,7 @@ def test_aikakatkaisun_jalkeen_vain_yksi_uusinta(monkeypatch):
     import requests
     import louhinta.malli as m
     monkeypatch.setattr(m.time, "sleep", lambda s: None)
-    malli = Malli(avain="x")
+    malli = Malli("m", url="https://u.testi", avain="x")
     kutsuja = []
 
     def post(*a, **kw):

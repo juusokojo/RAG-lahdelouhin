@@ -1,4 +1,7 @@
-"""Kielimallin asiakas (Lehmuksen Model Gateway, OpenAI-yhteensopiva /chat/completions).
+"""Kielimallin asiakas (OpenAI-yhteensopiva /chat/completions).
+
+Rajapinnan osoite, malli ja avain: ympäristömuuttujat MALLI_URL, MALLI ja
+MALLI_API_KEY (puuttuessa RAG_API_KEY, jos sama avain käy molempiin).
 
 Vastaus luetaan vain kentästä choices[0].message.content. Päättelyn jäsentimen
 erottama ajattelu (reasoning_content) ei kuulu vastaukseen. Selitykset:
@@ -14,10 +17,7 @@ from pathlib import Path
 
 import requests
 
-# Qwen3.8-27B poistettu 15.11.2026: ei avaimen mallilistalla (403).
-MALLIT = {"gemma31": "jwwqblcgkizlhxjjbkcp", "gptoss": "azsydsttjnlbfjbgqnwd"}
-OLETUS_URL = "https://api.lehmus-ai.oulu.fi/v1"
-AIKAKATKAISU = 300        # sekuntia; koeajon pisin onnistunut kutsu jäi selvästi alle (Gatewayn raja 10 min)
+AIKAKATKAISU = 300        # sekuntia; pitkät poiminta- ja koontikutsut voivat kestää minuutteja
 AIKAKATKAISUJA_ENINT = 2  # aikakatkaisun jälkeen yritetään vain kerran uudelleen
 UUDELLEENYRITYKSIA = 3    # lisäyrityksiä ensimmäisen jälkeen
 ALKUVIIVE = 2.0           # sekuntia; kaksinkertaistuu joka yrityksellä
@@ -52,14 +52,21 @@ def _jasenna(teksti: str) -> dict | list:
 
 
 class Malli:
-    def __init__(self, malli: str = "gemma31", url: str = OLETUS_URL,
+    def __init__(self, malli: str | None = None, url: str | None = None,
                  avain: str | None = None, aikakatkaisu: int = AIKAKATKAISU):
-        avain = avain or os.environ.get("LEHMUS_API_KEY")
+        avain = avain or os.environ.get("MALLI_API_KEY") or os.environ.get("RAG_API_KEY")
         if not avain:
-            raise ValueError("Lehmuksen avain puuttuu: aseta ympäristömuuttuja "
-                             "LEHMUS_API_KEY tai anna avain-parametri.")
+            raise ValueError("Mallin avain puuttuu: aseta ympäristömuuttuja "
+                             "MALLI_API_KEY (tai RAG_API_KEY) tai anna avain-parametri.")
+        malli = malli or os.environ.get("MALLI")
+        if not malli:
+            raise ValueError("Malli puuttuu: aseta ympäristömuuttuja MALLI tai anna malli-parametri.")
+        url = url or os.environ.get("MALLI_URL")
+        if not url:
+            raise ValueError("Mallirajapinnan osoite puuttuu: aseta ympäristömuuttuja "
+                             "MALLI_URL tai anna url-parametri.")
         self.nimi = malli
-        self.malli_id = MALLIT.get(malli, malli)
+        self.malli_id = malli
         self.url = url.rstrip("/")
         self.aikakatkaisu = aikakatkaisu
         self.istunto = requests.Session()

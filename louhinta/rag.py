@@ -1,4 +1,8 @@
-"""Lehmus-RAGin asiakas (vain lukukutsut). RAG-resurssin osoite: ympäristömuuttuja LEHMUS_RAG_URL."""
+"""RAG-palvelun asiakas (vain lukukutsut). Osoite ja avain: ympäristömuuttujat RAG_URL ja RAG_API_KEY.
+
+Käytetyt polut: GET /files (tiedostolista), GET /content/{id} (source_text)
+ja POST /context (semanttinen haku).
+"""
 from __future__ import annotations
 
 import os
@@ -12,7 +16,6 @@ import requests
 from louhinta.mallit import Osuma
 from louhinta.paikannus import paikanna_patka
 
-OLETUS_RAG_URL = os.environ.get("LEHMUS_RAG_URL", "")   # RAG-resurssin perusosoite portaalista
 AIKAKATKAISU = 60        # sekuntia
 UUDELLEENYRITYKSIA = 3   # lisäyrityksiä ensimmäisen jälkeen
 ALKUVIIVE = 1.0          # sekuntia; kaksinkertaistuu joka yrityksellä
@@ -29,15 +32,16 @@ def _aika(arvo) -> datetime | None:
 
 
 class Rag:
-    def __init__(self, url: str = OLETUS_RAG_URL, avain: str | None = None,
+    def __init__(self, url: str | None = None, avain: str | None = None,
                  valimuisti: Path = Path(".valimuisti")):
-        avain = avain or os.environ.get("LEHMUS_API_KEY")
+        avain = avain or os.environ.get("RAG_API_KEY")
         if not avain:
-            raise ValueError("Lehmuksen lukuavain puuttuu: aseta ympäristömuuttuja "
-                             "LEHMUS_API_KEY tai anna avain-parametri.")
+            raise ValueError("RAGin lukuavain puuttuu: aseta ympäristömuuttuja "
+                             "RAG_API_KEY tai anna avain-parametri.")
+        url = url or os.environ.get("RAG_URL")
         if not url:
-            raise ValueError("RAG-resurssin osoite puuttuu: aseta ympäristömuuttuja "
-                             "LEHMUS_RAG_URL tai anna url-parametri.")
+            raise ValueError("RAG-palvelun osoite puuttuu: aseta ympäristömuuttuja "
+                             "RAG_URL tai anna url-parametri.")
         self.url = url.rstrip("/")
         self.valimuisti = Path(valimuisti)
         self.istunto = requests.Session()

@@ -16,10 +16,19 @@ docs/lehmus-api.md
 # Salaisuudet ja paikalliset asetukset
 .env
 .env.*
-.claude/
+
+# Claude Code: jaettu lukuesto (.claude/settings.json) on repossa, kaikki muu paikallista
+.claude/*
+!.claude/settings.json
 
 # Käyttöjärjestelmä, editorit ja Wordin lukitustiedostot
 .DS_Store
 ~$*.docx
 .vscode/
 .idea/
+
+# Tuotettu puhe (Jooseppi-ääni pysyy koneella, ks. Kielimallit/f5-fi/AANI-JA-MALLI.md)
+video/puhe/
+
+# Videoprojekti: sisältää artikkelilainauksia ja ruutukaappauksia tulosdokumentista
+video/lainauksen-matka/

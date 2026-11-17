@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./.valimuisti/**)",
+      "Read(./tulokset/**/loki/**)",
+      "Read(**/*.pdf)",
+      "WebFetch(domain:api.lehmus-ai.oulu.fi)"
+    ]
+  },
+  "sandbox": {
+    "enabled": true,
+    "allowUnsandboxedCommands": false,
+    "filesystem": {
+      "denyRead": [
+        ".valimuisti",
+        "tulokset/**/loki"
+      ]
+    },
+    "network": {
+      "allowedDomains": [
+        "github.com",
+        "api.github.com",
+        "pypi.org",
+        "files.pythonhosted.org"
+      ],
+      "deniedDomains": [
+        "api.lehmus-ai.oulu.fi"
+      ]
+    }
+  }
+}

@@ -149,6 +149,40 @@ Tulos tulee tiedostoon `tulokset/<ajo>/<ajo>.docx`. Välitulokset tallennetaan k
 - Käyttäjä vastaa siitä, että aineiston käyttö tekstinlouhintaan on sallittua.
 - Aineisto käsitellään käyttäjän valitsemassa kielimallipalvelussa. Viitetietojen hakuun Crossrefistä lähetetään vain artikkelin DOI.
 
+### Claude Code ja artikkelien kokotekstit
+
+Jos kehität tai ajat työkalua Claude Coden avulla, kaikki, mitä Claude Code lukee tai minkä komennon tulosteen se näkee, lähetetään Anthropicin palveluun. Repon [.claude/settings.json](.claude/settings.json) estää Claude Codea lukemasta artikkelien kokotekstejä:
+
+| Kohde | Miksi |
+|---|---|
+| `.valimuisti/` | jokaisen artikkelin koko teksti |
+| `tulokset/*/loki/` | mallille lähetetyt kehotteet; lyhyt nimetty lähde on niissä kokonaan |
+| `*.pdf` | alkuperäiset artikkelit |
+| `api.lehmus-ai.oulu.fi` | rajapinnasta saisi kokotekstin suoraan |
+
+Esto koskee sekä Claude Coden lukutyökalua että sen ajamia komentoja: komennot ajetaan hiekkalaatikossa, josta niitä ei voi ohittaa. Muut tiedostot, myös tulosdokumentit ja vastaukset, ovat Claude Coden luettavissa.
+
+Sen vuoksi Claude Code ei voi ajaa työkalua itse. Aja `lataa_rag.py`, `rakenna_lahteet.py` ja `louhi.py` omassa päätteessäsi. Claude Code voi muokata koodia ja ajaa testit, jotka eivät tarvitse artikkeleita.
+
+**Lisää oma artikkelikansiosi** tiedostoon `.claude/settings.local.json`, joka ei päädy repoon:
+
+```json
+{
+  "permissions": {
+    "deny": ["Read(//Users/sinä/polku/artikkeleihin/**)"]
+  },
+  "sandbox": {
+    "filesystem": {
+      "denyRead": ["/Users/sinä/polku/artikkeleihin"]
+    }
+  }
+}
+```
+
+Absoluuttinen polku alkaa Read-säännössä kahdella vinoviivalla.
+
+**Tarkista myös tilisi asetus.** Esto pitää kokotekstit poissa Claude Coden näkyvistä, mutta keskustelujen käyttö mallien koulutukseen määräytyy tilin asetuksista. Henkilökohtaisella tilillä asetus on claude.ai:ssa kohdassa *Settings → Privacy*.
+
 ## Kehitys
 
 ```bash
